@@ -1,7 +1,6 @@
 .form-input {
 	display: flex;
-	justify-content: space-between;
-	align-items: flex-end;
+	align-items: center;
 
 	font-size: inherit;
 
@@ -14,7 +13,7 @@
 		flex: 1 1 auto;
 
 		font-size: 1em;
-		text-align: end;
+		text-align: right;
 		color: $mute-text-color;
 
 		&:not(:read-only):focus {

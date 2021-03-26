@@ -11,7 +11,7 @@ block content
 			include components/layout/backButton
 			+backButton()
 		.page__body
-			form.form.page__form.page__form_default(onsubmit='window.submitLoginForm(this); return false;')
+			form.form.page__form.page__form_default
 				.form__avatar
 					include components/avatar/avatar
 					+avatar('', { canChange: true })

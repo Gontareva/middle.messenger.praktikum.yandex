@@ -1,9 +1,9 @@
 mixin formInput(options={})
-    .form-input(class=options.classes)
+    label.form-input(class=options.classes)
         .form-input__title #{options.title}
         input.form-input__value(
             type=options.type || 'text',
-            placeholder=options.value,
+            placeholder=options.placeholder,
             value=options.value,
             readonly=options.readOnly,
             name=options.name

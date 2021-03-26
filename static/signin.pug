@@ -8,7 +8,7 @@ block params
 block content
     .page
         .page__body
-            form.form.page__form.page__form_popup(onsubmit='window.submitLoginForm(this); return false;')
+            form#signin-form.form.page__form.page__form_popup
                 .form__body
                     h1.form__title Регистрация
 
@@ -64,6 +64,8 @@ block content
 
                 .form__footer.list
                     .list__item
-                        button.button.button_primary.button_stretch Зарегистрироваться
+                        button.button.button_primary.button_stretch(type='submit') Зарегистрироваться
                     .list__item
                         a.link.button.button_stretch(href='./login.pug') Войти
+
+    script(src='/js/signin.js')
