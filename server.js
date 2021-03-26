@@ -1,6 +1,6 @@
 const express = require('express');
 
-const port = 3000;
+const PORT = 3000;
 
 const app = express();
 
@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
 	res.sendFile('./dist/index.html');
 });
 
-app.listen(port, 'localhost', () => {
+app.listen(PORT, 'localhost', () => {
 	//eslint-disable-next-line
-	console.log(`Server is running on localhost:${port}`);
+	console.log(`Server is running on localhost:${PORT}`);
 });
