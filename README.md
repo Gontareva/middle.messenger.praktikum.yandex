@@ -12,6 +12,8 @@ npm run start
 ## Pull requests
 - Sprint 1:  [https://github.com/Gontareva/middle.messenger.praktikum.yandex/pull/1](https://github.com/Gontareva/middle.messenger.praktikum.yandex/pull/1)
 
+### Макеты
+[Figma](https://www.figma.com/file/Ot4AS7SNntb1tacGZm2A4T/Messenger?node-id=1%3A612&viewport=552%2C552%2C0.14123226702213287)
 
 
 ### Откройте pull request изменений из ветки dev (вы можете назвать иначе) в ветку main. ВАЖНО: pull request должен называться "Sprint i", где i — номер спринта.
