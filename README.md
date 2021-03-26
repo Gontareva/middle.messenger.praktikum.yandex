@@ -1,3 +1,16 @@
+# Messenger
+
+Deploy:
+[https://stupefied-hamilton-a44e38.netlify.app](https://stupefied-hamilton-a44e38.netlify.app)
+
+## Установка
+npm install
+
+## Запуск
+npm run start
+
+
+
 ### Откройте pull request изменений из ветки dev (вы можете назвать иначе) в ветку main. ВАЖНО: pull request должен называться "Sprint i", где i — номер спринта.
 ### Также не забудьте проверить, что репозиторий публичный.
 ### Добавьте ниже ссылку на открытый pull request.

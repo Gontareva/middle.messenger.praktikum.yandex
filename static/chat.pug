@@ -1,0 +1,159 @@
+extends components/layout/layout
+
+block params
+    - title = 'Чат';
+
+block content
+    -
+        const users = [
+            {
+                _id: 12,
+                display_name: 'qwert'
+            },
+            {
+                _id: 15,
+                display_name: 'qwert'
+            },
+            {
+                _id: 120,
+                display_name: 'qwert'
+            }
+        ];
+
+        const chats = [
+            {
+                user: {
+                    _id: 12,
+                    display_name:'qwert'
+                },
+                messages: [
+                    {
+                        text: 'fghjkl',
+                        publishDate: '1995-12-17T03:24:00',
+                        status: 'read',
+                        fromUserId: 12,
+                        toUserId: 15
+                    },
+                    {
+                        text: 'fghjkl',
+                        publishDate: new Date(),
+                        status: 'new',
+                        fromUserId: 15,
+                        toUserId: 12
+                    }
+                ]
+            },
+            {
+                user: {
+                    _id: 120,
+                    display_name: 'qwert'
+                },
+                messages: [
+                    {
+                        text: 'Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.\n\nХассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.',
+                        publishDate: new Date(),
+                        status: 'read',
+                        fromUserId: 15,
+                        toUserId: 120
+                    },
+                    {
+                        text: 'fghjkl',
+                        publishDate: new Date(),
+                        status: 'read',
+                        fromUserId: 120,
+                        toUserId: 15
+                    },{
+                        text: 'fghjkl',
+                        publishDate: new Date(),
+                        status: 'read',
+                        fromUserId: 120,
+                        toUserId: 15
+                    },
+                    {
+                        text: 'Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.\n\nХассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.',
+                        publishDate: new Date(),
+                        status: 'read',
+                        fromUserId: 15,
+                        toUserId: 120
+                    },
+                    {
+                        fileUrl: 'https://www.culture.ru:443/storage/images/cff422b4292f0fc9b6fe216ffd046307/6caf84bc93fd1de750556ebda541ff34.jpg/_/1.webp',
+                        publishDate: new Date(),
+                        status: 'sending',
+                        fromUserId: 15,
+                        toUserId: 120
+                    },
+                    {
+                        fileUrl: 'https://www.culture.ru:443/storage/images/cff422b4292f0fc9b6fe216ffd046307/6caf84bc93fd1de750556ebda541ff34.jpg/_/1.webp',
+                        text: 'Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой.\n\nХассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.',
+                        publishDate: new Date(),
+                        status: 'send',
+                        fromUserId: 15,
+                        toUserId: 120
+                    }
+                ]
+            },
+            {
+                user: {
+                    _id: 150,
+                    display_name: 'qwert'
+                },
+                messages: [
+                    {
+                        text: 'fgfghjkl,kjhggfghjkljhhgfhjkjkl',
+                        publishDate: '2021-03-22T03:24:00',
+                        status: 'new',
+                        fromUserId: 150,
+                        toUserId: 15
+                    },
+                    {
+                        text: 'gbrvfcdfg',
+                        publishDate: new Date(),
+                        status: 'new',
+                        fromUserId: 15,
+                        toUserId: 150
+                    },
+                    {
+                        fileUrl: 'https://www.culture.ru:443/storage/images/cff422b4292f0fc9b6fe216ffd046307/6caf84bc93fd1de750556ebda541ff34.jpg/_/1.webp',
+                        text: 'gbrvfcdfg',
+                        publishDate: new Date(),
+                        status: 'new',
+                        fromUserId: 15,
+                        toUserId: 150
+                    },
+                    {
+                        fileUrl: 'https://www.culture.ru:443/storage/images/cff422b4292f0fc9b6fe216ffd046307/6caf84bc93fd1de750556ebda541ff34.jpg/_/1.webp',
+                        publishDate: new Date(),
+                        status: 'new',
+                        fromUserId: 15,
+                        toUserId: 150
+                    }
+                ]
+            }
+        ];
+
+        const activeChat = chats[1];
+
+    .page.page_fixed
+        .page__sidebar
+            ul.list.list_line
+                li.list__item.list__item_column
+                    a.link.link_gray.link_arrow.list__sub-item.list__sub-item_align_right(href='./profile.pug') Профиль
+
+                    include components/search/search
+                    +search()
+
+                each chat in chats
+                    - const isActive = activeChat && activeChat === chat;
+                    - const itemClass = isActive ? 'list__item_bright' : '';
+
+                    li.list__item(class=itemClass)
+                        include components/chatListItem/chatListItem
+                        +chatListItem(chat, user)
+        .page__body
+            if activeChat
+                include components/chat/chat
+                +chat(activeChat, user)
+            else
+                | Выберите чат, чтобы отправить сообщение
+

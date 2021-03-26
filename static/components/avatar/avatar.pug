@@ -1,0 +1,7 @@
+mixin avatar(imageSrc='', options={})
+    .avatar
+        .avatar__image(style={'background-image': `url(${imageSrc})`})
+
+        if options.canChange
+              .avatar__action
+                .avatar__text Поменять аватар

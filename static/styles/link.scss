@@ -1,0 +1,15 @@
+.link {
+	&_bright {
+		color: $bright-color;
+	}
+
+	&_gray {
+		color: $mute-text-color;
+	}
+
+	&_arrow::after {
+		content: '>';
+
+		margin-left: 0.5em;
+	}
+}

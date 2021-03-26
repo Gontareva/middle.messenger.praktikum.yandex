@@ -1,0 +1,24 @@
+.form-input {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+
+	font-size: inherit;
+
+	&__title {
+		flex: 0 0 auto;
+		margin-right: 1em;
+	}
+
+	&__value {
+		flex: 1 1 auto;
+
+		font-size: 1em;
+		text-align: end;
+		color: $mute-text-color;
+
+		&:not(:read-only):focus {
+			color: $text-color;
+		}
+	}
+}

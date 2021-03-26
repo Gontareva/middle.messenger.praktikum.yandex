@@ -1,0 +1,56 @@
+mixin chat(chat, user)
+    .chat
+        .chat__header
+            .chat__avatar
+                include ../avatar/avatar
+                +avatar(chat.user.avatar)
+
+            .chat__user-name #{chat.user.display_name}
+
+        .chat__body
+            .chat__body-inner
+                each message, index in chat.messages
+                    - const isOwnMessage = message.fromUserId === user._id;
+                    - const messageClasses = [];
+
+                    if isOwnMessage
+                        - messageClasses.push('chat__message_own');
+
+                    - const prevMessage = !!index && chat.messages[index - 1];
+
+                    if !prevMessage || message.publishDate.getDate() !== prevMessage.publishDate.getDate()
+                        -
+                            const months = [
+                                'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа',
+                                'сентября', 'октября', 'ноября', 'декабря'
+                            ];
+                            const now = new Date();
+
+                            let date = `${message.publishDate.getDate()} ${months[message.publishDate.getMonth()]}`;
+
+                            if (now.getFullYear() !== message.publishDate.getFullYear()) {
+                                date = `${date} ${message.publishDate.getFullYear()}`;
+                            }
+
+                        .chat__date #{date}
+
+                    - const nextMessage = index - 1 < chat.messages.length && chat.messages[index + 1];
+                    -
+                        const isLastMessageInBlock = prevMessage
+                            && prevMessage.fromUserId === message.fromUserId
+                            || nextMessage
+                            && (nextMessage.fromUserId !== message.fromUserId
+                            || nextMessage.publishDate.getTime() - message.publishDate.getTime() > 60000)
+                            || !nextMessage;
+
+                    if isLastMessageInBlock
+                        - messageClasses.push('chat__message_last');
+
+                    .chat__message(class=messageClasses)
+                        include ../message/message
+                        +message(message, isOwnMessage)
+
+        .chat__footer
+            button.button.chat__clip-button
+            textarea.chat__input(placeholder='Сообщение', rows='1', autofocus)
+            button.button.button_primary.chat__send-button

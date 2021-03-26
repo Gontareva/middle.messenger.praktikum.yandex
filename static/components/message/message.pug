@@ -1,0 +1,18 @@
+mixin message(message, isOwnMessage)
+    - const time = `${message.publishDate.getHours().toString().padStart(2, '0')}:${message.publishDate.getMinutes().toString().padStart(2, '0')}`;
+    - const onlyFile = message.fileUrl && !message.text;
+    - const messageClass = onlyFile ? 'message_only-file' : '';
+
+    .message(class=messageClass)
+        if message.fileUrl
+            img.message__file(src=message.fileUrl)
+
+        if message.text
+            .message__text !{message.text}
+
+        .message__label
+            if isOwnMessage && message.status
+                span.message__status(class=`message__status_${message.status}`)
+
+            span.message__time #{time}
+
