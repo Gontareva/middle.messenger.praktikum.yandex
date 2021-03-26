@@ -9,6 +9,9 @@ npm install
 ## Запуск
 npm run start
 
+## Pull requests
+- Sprint 1:  [https://github.com/Gontareva/middle.messenger.praktikum.yandex/pull/1](https://github.com/Gontareva/middle.messenger.praktikum.yandex/pull/1)
+
 
 
 ### Откройте pull request изменений из ветки dev (вы можете назвать иначе) в ветку main. ВАЖНО: pull request должен называться "Sprint i", где i — номер спринта.
