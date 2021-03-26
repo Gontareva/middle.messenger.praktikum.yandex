@@ -27,7 +27,7 @@
 	"scripts": {
 		"cleanup": "rm -rf .cache dist",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start1": "parcel -p 3000 static/*.pug",
+		"parcelStart": "parcel -p 3000 static/*.pug",
 		"parcelBuild": "npm run cleanup && parcel build static/*.pug --no-cache",
 		"start": "npm run parcelBuild && node server.js",
 		"lint": "lint-staged",
