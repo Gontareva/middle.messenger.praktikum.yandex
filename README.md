@@ -2,6 +2,8 @@
 ### Также не забудьте проверить, что репозиторий публичный.
 ### Добавьте ниже ссылку на открытый pull request.
 
+#### Pull requests
+- Sprint 1:  [https://github.com/Gontareva/middle.messenger.praktikum.yandex/pull/1](https://github.com/Gontareva/middle.messenger.praktikum.yandex/pull/1)
 
 
 Даже законченный проект остаётся только заготовкой, пока им не начнут пользоваться. Но сначала пользователь должен понять, зачем ему пользоваться вашим кодом. В этом помогает файл README.
