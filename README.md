@@ -1,7 +1,7 @@
 # Messenger
 
 Deploy:
-[https://stupefied-hamilton-a44e38.netlify.app](https://stupefied-hamilton-a44e38.netlify.app)
+[https://amazing-tereshkova-cec837.netlify.app](https://amazing-tereshkova-cec837.netlify.app)
 
 ## Установка
 npm install

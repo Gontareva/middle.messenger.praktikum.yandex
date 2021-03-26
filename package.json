@@ -1,7 +1,7 @@
 {
 	"name": "middle.messenger.praktikum.yandex",
 	"version": "1.0.0",
-	"description": "Проект доступен по адресу: https://stupefied-hamilton-a44e38.netlify.app",
+	"description": "Проект доступен по адресу: https://amazing-tereshkova-cec837.netlify.app",
 	"main": "server.js",
 	"dependencies": {
 		"express": "^4.17.1",
