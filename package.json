@@ -27,9 +27,9 @@
 	"scripts": {
 		"cleanup": "rm -rf .cache dist",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "parcel -p 3000 static/*.pug",
+		"start1": "parcel -p 3000 static/*.pug",
 		"parcelBuild": "npm run cleanup && parcel build static/*.pug --no-cache",
-		"expressStart": "npm run parcelBuild && node server.js",
+		"start": "npm run parcelBuild && node server.js",
 		"lint": "lint-staged",
 		"lintJsFix": "eslint --ext js --cache --fix -- './'",
 		"lintSCSSFix": "stylelint --syntax scss --fix -- './**.scss'",
