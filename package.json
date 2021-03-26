@@ -1,5 +1,5 @@
 {
-	"name": "messenger",
+	"name": "middle.messenger.praktikum.yandex",
 	"version": "1.0.0",
 	"description": "Проект доступен по адресу: https://stupefied-hamilton-a44e38.netlify.app",
 	"main": "server.js",
@@ -36,12 +36,12 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Gontareva/messenger.git"
+		"url": "git+https://github.com/Gontareva/middle.messenger.praktikum.yandex.git"
 	},
 	"author": "",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/Gontareva/messenger/issues"
+		"url": "https://github.com/Gontareva/middle.messenger.praktikum.yandex/issues"
 	},
 	"husky": {
 		"hooks": {
@@ -52,6 +52,6 @@
 		"*.js": "eslint --quiet",
 		"*.scss": "stylelint --syntax scss"
 	},
-	"homepage": "https://github.com/Gontareva/messenger#readme",
+	"homepage": "https://github.com/Gontareva/middle.messenger.praktikum.yandex#readme",
 	"keywords": []
 }
