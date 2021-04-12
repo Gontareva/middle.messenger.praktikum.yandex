@@ -1,0 +1,10 @@
+form.form(class=className)
+    .form__body
+        if body && body.length
+            each item in body
+                | !{item}
+        else
+            | !{body}
+    if footer
+        .form__footer
+            | !{footer}

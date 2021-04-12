@@ -1,0 +1,6 @@
+ul.list(class=className)
+    each item in items
+        if item.node
+            li.list__item(class=modifiersHelper('list__item', item.modifiers)) !{item.node}
+        else
+            li.list__item !{item}

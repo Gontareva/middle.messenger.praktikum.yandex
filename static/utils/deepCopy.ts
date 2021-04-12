@@ -1,0 +1,13 @@
+export default function deepCopy(obj) {
+	if (Array.isArray(obj)) {
+		return obj.map(deepCopy);
+	} else if (obj && typeof obj === 'object') {
+		return Object.keys(obj).reduce((memo, key) => {
+			memo[key] = deepCopy(obj[key]);
+
+			return memo;
+		}, {});
+	}
+
+	return obj;
+}

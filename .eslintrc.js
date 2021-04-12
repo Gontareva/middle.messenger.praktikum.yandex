@@ -6,15 +6,18 @@ const prettierOptions = JSON.parse(
 );
 
 module.exports = {
-	extends: ['prettier'],
-	plugins: ['prettier'],
+	extends: [
+		'prettier',
+		'plugin:@typescript-eslint/recommended'
+	],
+	plugins: ['prettier', '@typescript-eslint'],
 	env: {
 		browser: true,
 		node: true,
 		es6: true
 	},
 	parserOptions: {
-		ecmaVersion: 9,
+		ecmaVersion: 2020,
 		sourceType: 'module'
 	},
 	rules: {

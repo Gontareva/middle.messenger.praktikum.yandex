@@ -1,18 +1,18 @@
 @import "./helpers/variables";
-@import "./form";
-@import "./button";
-@import "../components/input/input";
-@import "./page";
-@import "./error";
-@import "../components/avatar/avatar";
-@import "../components/formInput/formInput";
-@import "./link";
-@import "../components/search/search";
-@import "./list";
-@import "../components/chatListItem/chatListItem";
-@import "../components/chat/chat";
-@import "../components/message/message";
-@import "../components/preloader/preloader";
+@import "../components/Form/Form";
+@import "../components/Button/Button";
+@import "../components/Input/Input";
+@import "../components/Page/Page";
+@import "../pages/Error/Error";
+@import "../components/Avatar/Avatar";
+@import "../components/FormInput/FormInput";
+@import "../components/Link/Link";
+@import "../components/Search/Search";
+@import "../components/List/List";
+@import "../components/ChatListItem/ChatListItem";
+@import "../components/Chat/Chat";
+@import "../components/Message/Message";
+@import "../components/Preloader/Preloader";
 
 body {
 	box-sizing: border-box;
@@ -46,6 +46,10 @@ button {
 	background: none;
 	border: none;
 	cursor: pointer;
+
+	&:focus {
+		outline: none;
+	}
 }
 
 textarea,

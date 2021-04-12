@@ -1,0 +1,6 @@
+#{tagName}&attributes(attributes)
+    if children && children.length
+        each child in children
+            | !{child}
+    else
+        | !{children}

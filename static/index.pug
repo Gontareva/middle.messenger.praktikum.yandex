@@ -1,27 +1,12 @@
-extends components/layout/layout
+doctype html
 
-block params
-    - title = 'Messenger';
+html
+    head
+        meta(charset="utf-8")
+        link(rel='stylesheet', href="/styles/main.scss")
+        link(rel="preconnect", href="https://fonts.gstatic.com")
+        link(href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap", rel="stylesheet")
+    body
+        main#app
 
-block content
-    .page
-        .page__body.page__body_column
-            h1 Messenger
-
-            .page__form
-                nav
-                    ul.list
-                        li.list__item
-                            a.link(href='./login.pug') Страница авторизации
-                        li.list__item
-                            a.link(href='./signin.pug') Страница регистрации
-                        li.list__item
-                            a.link(href='./profile.pug') Профиль
-                        li.list__item
-                            a.link(href='./change_profile.pug') Изменить профиль
-                        li.list__item
-                            a.link(href='./change_password.pug') Изменить пароль
-                        li.list__item
-                            a.link(href='./chat.pug') Чат
-                        li.list__item
-                            a.link(href='./error.pug') Страница ошибки
+        script(src='./index.ts', async=true)

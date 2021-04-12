@@ -1,0 +1,16 @@
+.chat-list-item
+    .chat-list-item__avatar !{avatar}
+
+    .chat-list-item__body
+        .chat-list-item__user-name #{userName}
+        .chat-list-item__text
+            if ownLabel
+                span.chat-list-item__label Вы:
+            span #{text}
+
+    .chat-list-item__labels
+        if date
+            span.chat-list-item__date #{date}
+
+        if unreadMessagesCount
+            .chat-list-item__counter #{unreadMessagesCount}
