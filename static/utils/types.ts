@@ -10,7 +10,10 @@ export interface IUser {
 }
 
 export enum StatusEnum {
-	read='read', new='new', send='send', sending='sending'
+	read = 'read',
+	new = 'new',
+	send = 'send',
+	sending = 'sending'
 }
 
 export interface IMessage {

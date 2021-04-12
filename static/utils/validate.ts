@@ -7,7 +7,7 @@ export default class Validator {
 	private readonly emailRegExp: RegExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	private readonly phoneRegExp: RegExp = /^((\+7|7|8)+([0-9]){10})$/;
 	private readonly listeners = {};
-	private _errors: object = {};
+	private _errors: Record<string, unknown> = {};
 	private form: HTMLFormElement;
 	readonly schema: SchemaType;
 
@@ -85,23 +85,23 @@ export default class Validator {
 		return !Object.keys(this._errors).length;
 	}
 
-	email(string: string = '') {
+	email(string = '') {
 		return !string || this.emailRegExp.test(string) ? null : 'Невалидный email';
 	}
 
-	password(string: string = '') {
+	password(string = '') {
 		return !string || string.length > 4
 			? null
 			: 'Пароль должен быть больше 4 символов';
 	}
 
-	phone(string: string = '') {
+	phone(string = '') {
 		return !string || this.phoneRegExp.test(string)
 			? null
 			: 'Неверный формат номера! Пример: +79803777869 или 89803777869';
 	}
 
-	required(string: string = '') {
+	required(string = '') {
 		return string ? null : 'Обязательное поле!';
 	}
 

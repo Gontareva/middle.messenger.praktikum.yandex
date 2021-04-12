@@ -24,7 +24,7 @@ class Block {
 	protected readonly _props: IBlockProps;
 	public readonly props: IBlockProps;
 
-	constructor(props: object) {
+	constructor(props: Record<string, unknown>) {
 		const _eventBus = new _EventBus();
 		this._meta = {
 			props
@@ -62,19 +62,25 @@ class Block {
 		this._createResources();
 	}
 
-	init() {}
+	init() {
+		return;
+	}
 
 	private _componentDidMount(): void {
 		this.componentDidMount();
 	}
 
-	componentDidMount(): void {}
+	componentDidMount(): void {
+		return;
+	}
 
 	private _componentDidUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
 		this.componentDidUpdate(oldProps, newProps);
 	}
 
-	componentDidUpdate(oldProps: IBlockProps, newProps: IBlockProps): void {}
+	componentDidUpdate(oldProps: IBlockProps, newProps: IBlockProps): void {
+		return;
+	}
 
 	private _shouldComponentUpdate(
 		oldProps: IBlockProps,
@@ -127,8 +133,8 @@ class Block {
 		return this.element;
 	}
 
-	private _makePropsProxy = (props: IBlockProps) => {
-		return new Proxy(props, {
+	private _makePropsProxy = (props: IBlockProps) =>
+		new Proxy(props, {
 			get: (target: IBlockProps, prop: string) => {
 				if (!prop.startsWith('_')) {
 					return typeof target[prop] === 'function'
@@ -153,7 +159,6 @@ class Block {
 				throw new Error('Нет доступа');
 			}
 		});
-	};
 
 	private static _createDocumentElement(tagName: string): HTMLElement {
 		return document.createElement(tagName);
@@ -163,7 +168,9 @@ class Block {
 		this.componentWillUnmount();
 	}
 
-	componentWillUnmount() {}
+	componentWillUnmount() {
+		return;
+	}
 
 	getPlaceholderHtml(): string {
 		return `<div data-id=${this._id}></div>`;

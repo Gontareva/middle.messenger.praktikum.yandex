@@ -1,4 +1,4 @@
-type IterateeType = (i: any) => any | string;
+type IterateeType = (item: any) => any | string;
 
 export default function groupBy(list: any[], iteratee: IterateeType) {
 	const iterateeFunc =

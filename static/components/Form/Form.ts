@@ -56,11 +56,11 @@ export default class Form extends Block {
 		}
 	}
 
-	onChange(e: Event): void {
+	onChange(event: Event): void {
 		const { change } = this._props.events || {};
 
 		if (change) {
-			change(getData(e.currentTarget));
+			change(getData(event.currentTarget));
 		}
 	}
 

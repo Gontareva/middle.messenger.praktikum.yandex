@@ -1,7 +1,7 @@
 import Block, { IBlockProps } from '../../utils/Block';
 
 export interface IFormProps extends IBlockProps {
-	schema?: object;
+	schema?: Record<string, unknown>;
 	theme?: string;
 	render: (errors: { [key: string]: string }) => IFormTemplateProps;
 }

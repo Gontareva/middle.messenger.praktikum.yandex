@@ -1,6 +1,9 @@
 import Block from './Block/Block';
 
-export default function (template: (props: object) => string, props): Element {
+export default function (
+	template: (props: Record<string, unknown>) => string,
+	props
+): Element {
 	const blocks: Block[] = [];
 
 	const preparedProps = processOne(props, blocks);

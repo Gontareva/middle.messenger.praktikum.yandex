@@ -4,7 +4,7 @@ import compile from '../../utils/compile';
 
 import template from '../../../dist/templates/Element.template.js';
 
-import {IElementProps} from "./types";
+import { IElementProps } from './types';
 
 export default class Element extends Block {
 	readonly props: IElementProps;

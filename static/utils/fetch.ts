@@ -6,8 +6,8 @@ const enum METHODS {
 }
 
 interface IOption {
-	headers?: object;
-	data?: object;
+	headers?: Record<string, unknown>;
+	data?: Record<string, unknown>;
 	timeout?: number;
 	method?: METHODS;
 }
@@ -54,7 +54,7 @@ class HTTPTransport {
 	request = (
 		url: string,
 		options: IOption,
-		timeout: number = 5000
+		timeout = 5000
 	): Promise<XMLHttpRequest> =>
 		new Promise((resolve, reject) => {
 			const { data, headers = {}, method = METHODS.GET } = options;

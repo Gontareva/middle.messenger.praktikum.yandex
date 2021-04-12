@@ -1,7 +1,9 @@
-const scriptPath = window.location.pathname.slice(1) || 'main';
+let scriptPath = window.location.pathname.slice(1) || 'main';
 
 import(`/pages/${scriptPath}/index.js`).catch((err) => {
+	// eslint-disable-next-line no-console
 	console.error(err);
-	// @ts-ignore
-	import('/pages/error').catch(console.error);
+	scriptPath = 'error';
+	// eslint-disable-next-line no-console
+	import(`/pages/${scriptPath}`).catch(console.error);
 });

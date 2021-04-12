@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 
-const port = 3000;
+const PORT = 3000;
 
 const app = express();
 
@@ -36,7 +36,7 @@ app.use((req, res, next) => {
 	}
 });
 
-app.listen(port, 'localhost', () => {
+app.listen(PORT, 'localhost', () => {
 	//eslint-disable-next-line
-	console.log(`Server is running on localhost:${port}`);
+	console.log(`Server is running on localhost:${PORT}`);
 });

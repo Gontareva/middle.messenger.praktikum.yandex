@@ -94,40 +94,38 @@ export default class Chat extends Block {
 					}
 				},
 				theme: 'row',
-				render: (errors) => {
-					return {
-						body: [
-							new Button({
-								className: 'chat__clip-button'
-							}),
-							new Element({
-								tagName: 'div',
-								class: 'chat__text-block',
-								children: [
-									new Element({
-										tagName: 'textarea',
-										class: 'chat__input',
-										placeholder: 'Сообщение',
-										rows: 1,
-										// autofocus: true,
-										name: 'message',
-										children: this.state.message
-									}),
-									new Element({
-										tagName: 'span',
-										class: 'chat__error',
-										children: errors.message
-									})
-								]
-							}),
-							new Button({
-								className: 'chat__send-button',
-								themes: ['primary'],
-								type: 'submit'
-							})
-						]
-					};
-				}
+				render: (errors) => ({
+					body: [
+						new Button({
+							className: 'chat__clip-button'
+						}),
+						new Element({
+							tagName: 'div',
+							class: 'chat__text-block',
+							children: [
+								new Element({
+									tagName: 'textarea',
+									class: 'chat__input',
+									placeholder: 'Сообщение',
+									rows: 1,
+									// autofocus: true,
+									name: 'message',
+									children: this.state.message
+								}),
+								new Element({
+									tagName: 'span',
+									class: 'chat__error',
+									children: errors.message
+								})
+							]
+						}),
+						new Button({
+							className: 'chat__send-button',
+							themes: ['primary'],
+							type: 'submit'
+						})
+					]
+				})
 			}),
 			modifiersHelper: modifiers
 		});

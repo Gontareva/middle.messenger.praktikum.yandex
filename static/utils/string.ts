@@ -1,4 +1,4 @@
-export function prune(str: string = '', length: number): string {
+export function prune(str = '', length: number): string {
 	let text = str;
 
 	if (str.length > length) {
