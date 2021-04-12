@@ -4,10 +4,6 @@
 		"moduleResolution": "node",
 		"module": "ES2020",
 		"baseUrl": ".",
-		"paths": {
-			//			"utils/*": ["./static/utils/*"],
-			//			"~*": ["./static/*", "./dist/*", "./node_modules/*"],
-		},
 		"lib": ["DOM", "ES2020", "dom.iterable"]
 	}
 }
