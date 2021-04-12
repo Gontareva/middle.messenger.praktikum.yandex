@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 			if (match) {
 				const regexp = new RegExp(`${match[1]}\\..*${match[2]}`);
 
-				const file = files.find((file) => regexp.test(file));
+				const file = files.find((fileName) => regexp.test(fileName));
 
 				if (file) {
 					res.sendFile(`./dist/${file}`, { root: __dirname });

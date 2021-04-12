@@ -1,1 +1,0 @@
-function backbuttonTemplateTemplate(locals) {var pug_html = "", pug_mixins = {}, pug_interp;pug_html = pug_html + "\u003Cbutton class=\"page__button\" type=\"button\"\u003E\u003Cimg class=\"page__button-icon\" src=\"\u002Fimages\u002Farrow.svg\"\u002F\u003E\u003C\u002Fbutton\u003E";;return pug_html;} module.exports = backbuttonTemplateTemplate;
