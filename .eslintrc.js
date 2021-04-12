@@ -50,7 +50,8 @@ module.exports = {
 		'no-unused-vars': 1,
 		'no-use-before-define': 0,
 		'id-length': ['error', { min: 2, exceptions: ['_'] }],
-		'prefer-template': 2
+		'prefer-template': 2,
+		'@typescript-eslint/no-var-requires': 0
 	},
 	settings: {
 		'import/resolver': {

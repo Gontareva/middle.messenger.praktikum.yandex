@@ -1,5 +1,5 @@
-import express from 'express';
-import { readdir } from 'fs';
+const express = require('express');
+const fs = require('fs');
 
 const PORT = 3000;
 
@@ -13,7 +13,7 @@ app.get('/:page', (req, res) => {
 
 app.use((req, res, next) => {
 	if (req.originalUrl.endsWith('.svg')) {
-		readdir('./dist', (err, files) => {
+		fs.readdir('./dist', (err, files) => {
 			const urlParts = req.originalUrl.split('/');
 			const match = urlParts[urlParts.length - 1].match(/(.*?)(\.svg)/);
 
