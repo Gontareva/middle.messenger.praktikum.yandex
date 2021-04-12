@@ -1,0 +1,13 @@
+function pug_escape(e){var a=""+e,t=pug_match_html.exec(a);if(!t)return e;var r,c,n,s="";for(r=t.index,c=0;r<a.length;r++){switch(a.charCodeAt(r)){case 34:n="&quot;";break;case 38:n="&amp;";break;case 60:n="&lt;";break;case 62:n="&gt;";break;default:continue}c!==r&&(s+=a.substring(c,r)),c=r+1,s+=n}return c!==r?s+a.substring(c,r):s}
+var pug_match_html=/["&<>]/;function chatlistitemTemplateTemplate(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (avatar, date, ownLabel, text, unreadMessagesCount, userName) {pug_html = pug_html + "\u003Cdiv class=\"chat-list-item\"\u003E\u003Cdiv class=\"chat-list-item__avatar\"\u003E" + (null == (pug_interp = avatar) ? "" : pug_interp) + "\u003C\u002Fdiv\u003E\u003Cdiv class=\"chat-list-item__body\"\u003E\u003Cdiv class=\"chat-list-item__user-name\"\u003E" + (pug_escape(null == (pug_interp = userName) ? "" : pug_interp)) + "\u003C\u002Fdiv\u003E\u003Cdiv class=\"chat-list-item__text\"\u003E";
+if (ownLabel) {
+pug_html = pug_html + "\u003Cspan class=\"chat-list-item__label\"\u003EВы:\u003C\u002Fspan\u003E";
+}
+pug_html = pug_html + "\u003Cspan\u003E" + (pug_escape(null == (pug_interp = text) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E\u003Cdiv class=\"chat-list-item__labels\"\u003E";
+if (date) {
+pug_html = pug_html + "\u003Cspan class=\"chat-list-item__date\"\u003E" + (pug_escape(null == (pug_interp = date) ? "" : pug_interp)) + "\u003C\u002Fspan\u003E";
+}
+if (unreadMessagesCount) {
+pug_html = pug_html + "\u003Cdiv class=\"chat-list-item__counter\"\u003E" + (pug_escape(null == (pug_interp = unreadMessagesCount) ? "" : pug_interp)) + "\u003C\u002Fdiv\u003E";
+}
+pug_html = pug_html + "\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E";}.call(this,"avatar" in locals_for_with?locals_for_with.avatar:typeof avatar!=="undefined"?avatar:undefined,"date" in locals_for_with?locals_for_with.date:typeof date!=="undefined"?date:undefined,"ownLabel" in locals_for_with?locals_for_with.ownLabel:typeof ownLabel!=="undefined"?ownLabel:undefined,"text" in locals_for_with?locals_for_with.text:typeof text!=="undefined"?text:undefined,"unreadMessagesCount" in locals_for_with?locals_for_with.unreadMessagesCount:typeof unreadMessagesCount!=="undefined"?unreadMessagesCount:undefined,"userName" in locals_for_with?locals_for_with.userName:typeof userName!=="undefined"?userName:undefined));;return pug_html;} module.exports = chatlistitemTemplateTemplate;
