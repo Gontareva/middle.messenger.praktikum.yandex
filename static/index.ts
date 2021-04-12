@@ -5,5 +5,5 @@ import(`/pages/${scriptPath}/index.js`).catch((err) => {
 	console.error(err);
 	scriptPath = 'error';
 	// eslint-disable-next-line no-console
-	import(`/pages/${scriptPath}`).catch(console.error);
+	import(`/pages/${scriptPath}/index.js`).catch(console.error);
 });
