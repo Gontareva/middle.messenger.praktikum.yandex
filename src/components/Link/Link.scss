@@ -1,0 +1,15 @@
+.link {
+	&_bright {
+		color: $red-color;
+	}
+
+	&_gray {
+		color: $dusty-gray-color;
+	}
+
+	&_arrow::after {
+		content: '>';
+
+		margin-left: 0.5em;
+	}
+}

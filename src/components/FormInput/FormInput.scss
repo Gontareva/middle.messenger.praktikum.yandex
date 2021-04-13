@@ -1,0 +1,32 @@
+.form-input {
+	width: 100%;
+
+	font-size: inherit;
+
+	&__row {
+		display: flex;
+		align-items: center;
+	}
+
+	&__title {
+		flex: 0 0 auto;
+		margin-right: 1em;
+	}
+
+	&__value {
+		flex: 1 1 auto;
+
+		font-size: 1em;
+		text-align: right;
+		color: $dusty-gray-color;
+
+		&:not(:read-only):focus {
+			color: $cod-gray-color;
+		}
+	}
+
+	&__error {
+		font-size: 0.8em;
+		color: $red-color;
+	}
+}
