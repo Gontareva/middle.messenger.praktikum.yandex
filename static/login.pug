@@ -1,0 +1,36 @@
+extends components/layout/layout
+
+include components/input/input
+
+block params
+    - title = 'Авторизация';
+
+block content
+    .page
+        .page__body
+            form#login-form.form.page__form.page__form_popup
+                .form__body
+                    h1.form__title Вход
+
+                    .list
+                        .list__item
+                            +input({
+                                label: 'Логин',
+                                name: 'login',
+                                type: 'text'
+                            })
+
+                        .list__item
+                            +input({
+                                label: 'Пароль',
+                                name: 'password',
+                                type: 'password'
+                    })
+
+                .form__footer.list
+                    .list__item
+                        button.button.button_primary.button_stretch(type='submit') Авторизоваться
+                    .list__item
+                        a.link.button.button_stretch(href='./signin.pug') Нет аккаунта?
+
+    script(src='/js/login.js')

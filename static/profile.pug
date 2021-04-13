@@ -1,0 +1,74 @@
+extends components/layout/layout
+
+include components/formInput/formInput
+
+block params
+	- title = 'Профиль';
+
+block content
+	.page
+		.page__control
+			include components/layout/backButton
+			+backButton()
+		.page__body
+			form.form.page__form.page__form_default
+				.form__avatar
+					include components/avatar/avatar
+					+avatar('', { canChange: true })
+
+				.form__body
+					h1.form__title #{user.display_name}
+
+					.list.list_line
+						+formInput({
+							classes: ['list__item'],
+							title: 'Почта',
+							value: user.email,
+							name: 'email',
+							readOnly: true
+						})
+
+						+formInput({
+							classes: ['list__item'],
+							title: 'Логин',
+							value: user.login,
+							name: 'login',
+							readOnly: true
+						})
+
+						+formInput({
+							classes: ['list__item'],
+							title: 'Имя',
+							value: user.first_name,
+							name: 'first_name',
+							readOnly: true
+						})
+
+						+formInput({
+							classes: ['list__item'],
+							title: 'Фамилия',
+							value: user.second_name,
+							name: 'second_name',
+							readOnly: true
+						})
+
+						+formInput({
+							classes: ['list__item'],
+							title: 'Имя в чате',
+							value: user.display_name,
+							name: 'display_name',
+							readOnly: true
+						})
+
+						+formInput({
+							classes: ['list__item'],
+							title: 'Телефон',
+							value: user.phone,
+							name: 'phone',
+							readOnly: true
+						})
+
+				.form__footer.list.list_line
+					a.link.list__item(href='./change_profile.pug') Изменить данные
+					a.link.list__item(href='./change_password.pug') Изменить пароль
+					a.link.link_bright.list__item(href='/logout') Выйти

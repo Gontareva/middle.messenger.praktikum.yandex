@@ -1,0 +1,5 @@
+mixin input(options)
+    .input(class=options.classes)
+        if options.label
+            .input__label #{options.label}
+        input.input__input(name=options.name, type=options.type)

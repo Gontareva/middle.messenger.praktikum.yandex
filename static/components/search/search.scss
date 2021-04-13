@@ -1,0 +1,28 @@
+.search {
+	display: flex;
+	align-items: center;
+	padding: 0.5em;
+
+	background: $avatar-background-color;
+	border-radius: $small-border-radius;
+
+	&__input {
+		display: block;
+		width: 100%;
+
+		color: $text-color;
+
+		background: none;
+
+		&::placeholder {
+			color: $mute-text-color;
+		}
+	}
+
+	&__label {
+		content: url('/images/search.svg');
+
+		width: 1.5em;
+		height: 1.5em;
+	}
+}
