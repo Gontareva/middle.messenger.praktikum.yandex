@@ -88,10 +88,10 @@ class Block {
 
 		if (response) {
 			Object.keys(oldProps.events).forEach((eventName) => {
-				// this._element.removeEventListener(
-				// 	eventName,
-				// 	oldProps.events[eventName]
-				// );
+				this._element.removeEventListener(
+					eventName,
+					oldProps.events[eventName]
+				);
 			});
 
 			this._eventBus()
