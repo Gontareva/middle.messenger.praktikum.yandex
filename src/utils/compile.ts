@@ -40,7 +40,7 @@ function rememberBlock(block, blocks) {
 	return el;
 }
 
-function processOne(item: any, blocks: Block[]) {
+function processOne(item: unknown, blocks: Block[]) {
 	if (Array.isArray(item)) {
 		return item.map((block) => rememberBlock(block, blocks));
 	} else if (item && typeof item === 'object' && !(item instanceof Block)) {
@@ -54,6 +54,6 @@ function processOne(item: any, blocks: Block[]) {
 	return rememberBlock(item, blocks);
 }
 
-function isPrimitive(value: any): boolean {
+function isPrimitive(value: unknown): boolean {
 	return Object(value) !== value;
 }

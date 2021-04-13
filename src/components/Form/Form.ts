@@ -18,19 +18,16 @@ export default class Form extends Block {
 		super(props);
 	}
 
-	init() {
+	componentDidMount() {
 		if (this.props.schema) {
 			this.validator = new Validator(this.props.schema, this.onErrorsChange);
+			this.validator.addListeners(this.element);
 		}
-	}
-
-	componentDidMount() {
-		super.componentDidMount();
 
 		this.setProps({
 			events: {
-				submit: this.onSubmitForm,
-				change: this.onChange
+				submit: this.onSubmitForm.bind(this),
+				change: this.onChange.bind(this)
 			}
 		});
 	}
@@ -46,8 +43,6 @@ export default class Form extends Block {
 	}
 
 	componentDidUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
-		super.componentDidUpdate(oldProps, newProps);
-
 		if (this.validator) {
 			this.validator.addListeners(this.element);
 		}
@@ -61,7 +56,7 @@ export default class Form extends Block {
 		}
 	};
 
-	onSubmitForm(event: Event) {
+	onSubmitForm = (event: Event) => {
 		if (!this.validator || this.validator.validate()) {
 			const data = onSubmitForm(event);
 
@@ -73,7 +68,7 @@ export default class Form extends Block {
 		}
 
 		event.preventDefault();
-	}
+	};
 
 	onErrorsChange = (errors) => {
 		this.setProps({ errors });

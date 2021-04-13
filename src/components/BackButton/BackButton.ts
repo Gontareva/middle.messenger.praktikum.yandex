@@ -1,15 +1,16 @@
 import Block from '../../utils/Block';
 
 import compile from '../../utils/compile';
+import router from '../../utils/router';
 
 import template from 'componentTemplates/BackButton.template.js';
 
 export default class BackButton extends Block {
-	constructor(props) {
+	constructor(props: Record<string, unknown>) {
 		super(props);
 	}
 
-	componentDidMount() {
+	componentDidMount(): void {
 		this.setProps({
 			events: {
 				click: this.onBackButtonClick
@@ -17,11 +18,11 @@ export default class BackButton extends Block {
 		});
 	}
 
-	onBackButtonClick = () => {
-		window.history.back();
-	};
+	onBackButtonClick = (): void=> {
+		router.back();
+	}
 
-	render() {
+	render(): Element {
 		return compile(template, this.props);
 	}
 }

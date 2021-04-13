@@ -1,17 +1,20 @@
 import deepCopy from './deepCopy';
 
-type ValidateFuncType = (str?: any) => string | undefined | null;
+type ValidateFuncType = (str?: unknown) => string | undefined | null;
 type SchemaType = { [key: string]: (string | ValidateFuncType)[] };
 
 export default class Validator {
 	private readonly emailRegExp: RegExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	private readonly phoneRegExp: RegExp = /^((\+7|7|8)+([0-9]){10})$/;
 	private readonly listeners = {};
-	private _errors: Record<string, unknown> = {};
+	private readonly _errors: Record<string, unknown> = {};
 	private form: HTMLFormElement;
 	readonly schema: SchemaType;
 
-	constructor(schema: SchemaType, callback) {
+	constructor(
+		schema: SchemaType,
+		callback: (err: Record<string, unknown>) => void
+	) {
 		this.schema = schema;
 
 		this._errors = new Proxy(
@@ -44,16 +47,7 @@ export default class Validator {
 
 			if (el) {
 				const handle = () => {
-					const data = new FormData(this.form);
-					const value = data.get(name);
-
-					this._errors[name] = this.schema[name]
-						.map((validate) =>
-							typeof validate === 'function'
-								? validate(value)
-								: this[validate](value)
-						)
-						.filter(Boolean)[0];
+					this._errors[name] = this.validateElement(name);
 				};
 
 				if (!this.listeners[name]) {
@@ -78,11 +72,26 @@ export default class Validator {
 	}
 
 	validate() {
-		Object.keys(this.listeners).forEach((elementName) =>
-			this.listeners[elementName].handle()
-		);
+		const errors = Object.keys(this.listeners).reduce((memo, elementName) => {
+			memo[elementName] = this.validateElement(elementName);
+
+			return memo;
+		}, {});
+
+		Object.assign(this._errors, errors);
 
 		return !Object.keys(this._errors).length;
+	}
+
+	validateElement(elementName) {
+		const data = new FormData(this.form);
+		const value = data.get(elementName);
+
+		return this.schema[elementName]
+			.map((validate) =>
+				typeof validate === 'function' ? validate(value) : this[validate](value)
+			)
+			.filter(Boolean)[0];
 	}
 
 	email(string = '') {

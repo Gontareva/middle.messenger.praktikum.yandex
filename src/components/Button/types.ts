@@ -4,5 +4,5 @@ export interface IButtonProps extends IBlockProps {
 	text?: string;
 	themes?: string[];
 	className?: string;
-	[key: string]: any;
+	[key: string]: unknown;
 }

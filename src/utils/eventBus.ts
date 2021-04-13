@@ -1,5 +1,5 @@
 class EventBus {
-	private readonly listeners: Record<string, any[]>;
+	private readonly listeners: Record<string, ((...args) => void)[]>;
 
 	constructor() {
 		this.listeners = {};
@@ -23,14 +23,16 @@ class EventBus {
 		);
 	}
 
-	emit(event: string, ...args: any[]): never | void {
+	emit(event: string, ...args: unknown[]): Promise<unknown> {
 		if (!this.listeners[event]) {
 			throw new Error(`Нет события: ${event}`);
 		}
 
-		this.listeners[event].forEach(function (listener) {
-			listener(...args);
-		});
+		return Promise.all(
+			this.listeners[event].map(function (listener) {
+				return new Promise((resolve) => resolve(listener(...args)));
+			})
+		);
 	}
 }
 

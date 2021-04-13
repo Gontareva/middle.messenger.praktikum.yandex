@@ -50,11 +50,9 @@ class Block {
 	}
 
 	private _createResources() {
-		this._parent = Block._createDocumentElement('div');
-
-		this._eventBus().emit(Block.EVENTS.FLOW_RENDER);
-
-		this._eventBus().emit(Block.EVENTS.FLOW_CDM);
+		this._eventBus()
+			.emit(Block.EVENTS.FLOW_RENDER)
+			.then(() => this._eventBus().emit(Block.EVENTS.FLOW_CDM));
 	}
 
 	private _init() {
@@ -89,8 +87,18 @@ class Block {
 		const response = this.shouldComponentUpdate(oldProps, newProps);
 
 		if (response) {
-			this._eventBus().emit(Block.EVENTS.FLOW_RENDER);
-			this._eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, newProps);
+			Object.keys(oldProps.events).forEach((eventName) => {
+				// this._element.removeEventListener(
+				// 	eventName,
+				// 	oldProps.events[eventName]
+				// );
+			});
+
+			this._eventBus()
+				.emit(Block.EVENTS.FLOW_RENDER)
+				.then(() => {
+					this._eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, newProps);
+				});
 		}
 	}
 
@@ -113,7 +121,7 @@ class Block {
 	private _render(): void {
 		const block = this.render();
 
-		if (this._element) {
+		if (this._element && this._element.parentNode) {
 			this._element.parentNode.replaceChild(block, this._element);
 			delete this._element;
 		}
@@ -144,7 +152,7 @@ class Block {
 
 				return undefined;
 			},
-			set: (target: IBlockProps, prop: string, value: any): boolean => {
+			set: (target: IBlockProps, prop: string, value: unknown): boolean => {
 				if (!prop.startsWith('_')) {
 					const oldProps = deepCopy(target);
 
@@ -159,10 +167,6 @@ class Block {
 				throw new Error('Нет доступа');
 			}
 		});
-
-	private static _createDocumentElement(tagName: string): HTMLElement {
-		return document.createElement(tagName);
-	}
 
 	private _componentWillUnmount(): void {
 		this.componentWillUnmount();

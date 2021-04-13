@@ -1,7 +1,9 @@
-import { IBlockProps } from '../../utils/Block';
+import Block, { IBlockProps } from '../../utils/Block';
+
+type ChildrenType = Block | string | number | null | undefined;
 
 export interface IElementProps extends IBlockProps {
 	tagName: string;
-	children?: any | any[];
-	[key: string]: any;
+	children?: ChildrenType | ChildrenType[];
+	[key: string]: unknown;
 }

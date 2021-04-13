@@ -108,7 +108,6 @@ export default class Chat extends Block {
 									class: 'chat__input',
 									placeholder: 'Сообщение',
 									rows: 1,
-									// autofocus: true,
 									name: 'message',
 									children: this.state.message
 								}),

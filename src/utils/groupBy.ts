@@ -1,10 +1,13 @@
-type IterateeType = (item: any) => any | string;
+type IterateeType<T> = (item: T) => number | string;
 
-export default function groupBy(list: any[], iteratee: IterateeType) {
+export default function groupBy<T>(
+	list: T[],
+	iteratee: IterateeType<T>
+): Record<string, T[]> {
 	const iterateeFunc =
 		typeof iteratee === 'function' ? iteratee : (item) => item[iteratee];
 
-	return list.reduce((memo, item) => {
+	return list.reduce((memo: Record<string, T[]>, item: T) => {
 		const field = iterateeFunc(item);
 
 		if (memo[field]) {

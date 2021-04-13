@@ -1,4 +1,4 @@
-export default function isEqual(obj1: any, obj2: any) {
+export default function isEqual(obj1: unknown, obj2: unknown) {
 	if (obj1 === obj2) {
 		return true;
 	}
@@ -8,7 +8,7 @@ export default function isEqual(obj1: any, obj2: any) {
 			return false;
 		}
 
-		const array: Array<any> = obj1;
+		const array: Array<unknown> = obj1;
 
 		return compareByKeys(obj1, obj2, [...array.keys()]);
 	} else if (typeof obj1 === 'object' && typeof obj2 === 'object') {
