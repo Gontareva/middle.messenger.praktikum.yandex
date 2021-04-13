@@ -18,9 +18,9 @@ export default class BackButton extends Block {
 		});
 	}
 
-	onBackButtonClick = (): void=> {
+	onBackButtonClick = (): void => {
 		router.back();
-	}
+	};
 
 	render(): Element {
 		return compile(template, this.props);
