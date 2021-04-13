@@ -20,10 +20,7 @@ export default class Form extends Block {
 
 	init() {
 		if (this.props.schema) {
-			this.validator = new Validator(
-				this.props.schema,
-				this.onErrorsChange
-			);
+			this.validator = new Validator(this.props.schema, this.onErrorsChange);
 		}
 	}
 
@@ -62,7 +59,7 @@ export default class Form extends Block {
 		if (change) {
 			change(getData(event.currentTarget));
 		}
-	}
+	};
 
 	onSubmitForm(event: Event) {
 		if (!this.validator || this.validator.validate()) {
