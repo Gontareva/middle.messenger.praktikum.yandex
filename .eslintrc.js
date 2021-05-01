@@ -6,15 +6,18 @@ const prettierOptions = JSON.parse(
 );
 
 module.exports = {
-	extends: ['prettier'],
-	plugins: ['prettier'],
+	extends: [
+		'prettier',
+		'plugin:@typescript-eslint/recommended'
+	],
+	plugins: ['prettier', '@typescript-eslint'],
 	env: {
 		browser: true,
 		node: true,
 		es6: true
 	},
 	parserOptions: {
-		ecmaVersion: 9,
+		ecmaVersion: 2020,
 		sourceType: 'module'
 	},
 	rules: {
@@ -42,12 +45,13 @@ module.exports = {
 		'newline-per-chained-call': 0,
 		'no-confusing-arrow': 0,
 		'no-console': 2,
-		'no-shadow': 2,
-		'no-underscore-dangle': [2, { allow: ['_id'] }],
-		'no-unused-vars': 2,
+		'no-shadow': 1,
+		'no-underscore-dangle': [1, { allow: ['_id'] }],
+		'no-unused-vars': 1,
 		'no-use-before-define': 0,
 		'id-length': ['error', { min: 2, exceptions: ['_'] }],
-		'prefer-template': 2
+		'prefer-template': 2,
+		'@typescript-eslint/no-var-requires': 0
 	},
 	settings: {
 		'import/resolver': {

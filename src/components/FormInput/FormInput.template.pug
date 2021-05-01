@@ -1,0 +1,12 @@
+label.form-input(class=className)
+    .form-input__row
+        .form-input__title #{title}
+        input.form-input__value(
+            type=type || 'text',
+            placeholder=placeholder,
+            value=value,
+            readonly=readOnly,
+            name=name
+        )
+    if error
+        .form-input__error #{error}

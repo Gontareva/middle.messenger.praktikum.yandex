@@ -1,0 +1,13 @@
+.message(class=modifiersHelper('message', modifiers))
+    if fileUrl
+        img.message__file(src=fileUrl)
+
+    if text
+        .message__text !{text}
+
+    .message__label
+        if isOwnMessage && status
+            span.message__status(class=modifiersHelper('message__status', [status]))
+
+        span.message__time #{time}
+

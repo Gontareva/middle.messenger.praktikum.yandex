@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"target": "es2020",
+		"moduleResolution": "node",
+		"module": "ES2020",
+		"baseUrl": ".",
+		"lib": ["DOM", "ES2020", "dom.iterable"],
+		"paths": {
+			"componentTemplates/*": ["./dist/templates/*"],
+			"pageTemplates/*": ["./dist/pages/*"]
+		}
+	}
+}

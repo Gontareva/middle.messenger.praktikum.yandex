@@ -1,0 +1,7 @@
+.input(class=className)
+    if label
+        .input__label #{label}
+
+    input.input__input(name=name, type=type, value=value)
+    if error
+        span.input__error #{error}

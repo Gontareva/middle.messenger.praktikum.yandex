@@ -1,0 +1,17 @@
+.chat
+    .chat__header
+        .chat__avatar !{avatar}
+
+        .chat__user-name #{userName}
+    .chat__body
+        .chat__body-inner
+            each day in days
+                .chat__date
+                    | #{day.date}
+
+                each message in day.messages
+                    .chat__message(class=modifiersHelper('chat__message', message.modifiers))
+                        | !{message.node}
+
+    .chat__footer
+        | !{form}
