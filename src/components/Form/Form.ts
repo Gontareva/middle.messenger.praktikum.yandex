@@ -51,7 +51,7 @@ export default class Form extends Block {
 	onChange = (event: Event): void => {
 		const { change } = this._props.events || {};
 
-		if (change) {
+		if (change && typeof change === 'function') {
 			change(getData(event.currentTarget));
 		}
 	};
@@ -62,7 +62,7 @@ export default class Form extends Block {
 
 			const { submit } = this._meta.props.events;
 
-			if (submit) {
+			if (submit && typeof submit === 'function') {
 				submit(data);
 			}
 		}
