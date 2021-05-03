@@ -11,7 +11,12 @@ export default function isEqual(obj1: unknown, obj2: unknown) {
 		const array: Array<unknown> = obj1;
 
 		return compareByKeys(obj1, obj2, [...array.keys()]);
-	} else if (typeof obj1 === 'object' && typeof obj2 === 'object') {
+	} else if (
+		obj1 &&
+		typeof obj1 === 'object' &&
+		obj2 &&
+		typeof obj2 === 'object'
+	) {
 		const keys = Object.keys(obj1).sort();
 		if (isEqual(keys, Object.keys(obj2).sort())) {
 			return compareByKeys(obj1, obj2, keys);

@@ -23,8 +23,9 @@ class Block {
 	private readonly _eventBus: () => EventBus;
 	protected readonly _props: IBlockProps;
 	public readonly props: IBlockProps;
+	public state: Record<string, any>;
 
-	constructor(props: Record<string, unknown>) {
+	constructor(props?: Record<string, unknown>) {
 		const _eventBus = new _EventBus();
 		this._meta = {
 			props
@@ -33,6 +34,7 @@ class Block {
 		this._id = makeUUID();
 		this._props = deepCopy(props);
 		this.props = this._makePropsProxy({ events: {}, ...props });
+		this.state = {};
 
 		this._eventBus = () => _eventBus;
 
@@ -72,46 +74,81 @@ class Block {
 		return;
 	}
 
-	private _componentDidUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
-		this.componentDidUpdate(oldProps, newProps);
+	private _componentDidUpdate(
+		prevProps: IBlockProps,
+		prevState: Record<string, any>
+	) {
+		this.componentDidUpdate(prevProps, prevState);
 	}
 
-	componentDidUpdate(oldProps: IBlockProps, newProps: IBlockProps): void {
+	componentDidUpdate(
+		prevProps: IBlockProps,
+		prevState: Record<string, any>
+	): void {
 		return;
 	}
 
 	private _shouldComponentUpdate(
 		oldProps: IBlockProps,
-		newProps: IBlockProps
+		nextProps: IBlockProps,
+		oldState: Record<string, any>,
+		nextState: Record<string, any>
 	): void {
-		const response = this.shouldComponentUpdate(oldProps, newProps);
+		const response = this.shouldComponentUpdate(nextProps, nextState);
 
 		if (response) {
-			Object.keys(oldProps.events).forEach((eventName) => {
-				this._element.removeEventListener(
-					eventName,
-					oldProps.events[eventName]
-				);
-			});
+			const prevProps = deepCopy(this.props);
+			const prevState = deepCopy(this.state);
+
+			if (this.props.events) {
+				Object.keys(this.props.events).forEach((eventName) => {
+					this._element.removeEventListener(
+						eventName,
+						this.props.events[eventName]
+					);
+				});
+			}
+
+			Object.assign(oldProps, nextProps);
+			Object.assign(oldState, nextState);
 
 			this._eventBus()
 				.emit(Block.EVENTS.FLOW_RENDER)
 				.then(() => {
-					this._eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, newProps);
+					this._eventBus().emit(Block.EVENTS.FLOW_CDU, prevProps, prevState);
 				});
 		}
 	}
 
-	shouldComponentUpdate(oldProps: IBlockProps, newProps: IBlockProps): boolean {
-		return !isEqual(oldProps, newProps);
+	shouldComponentUpdate(
+		nextProps: IBlockProps,
+		nextState: Record<string, any>
+	): boolean {
+		return !isEqual(nextProps, this.props) || !isEqual(nextState, this.state);
 	}
 
-	setProps = (nextProps?: IBlockProps): void => {
-		if (!nextProps) {
+	setProps = (newProps?: IBlockProps): void => {
+		if (!newProps) {
 			return;
 		}
 
-		Object.assign(this.props, nextProps);
+		Object.assign(this.props, newProps);
+	};
+
+	setState = (newState?: Record<string, any>): void => {
+		if (!newState) {
+			return;
+		}
+
+		const nextState = Object.assign({}, this.state, newState);
+
+		this._eventBus().emit(
+			Block.EVENTS.FLOW_SCU,
+			this.props,
+			this.props,
+			this.state,
+			nextState
+		);
 	};
 
 	get element(): Element {
@@ -153,12 +190,18 @@ class Block {
 				return undefined;
 			},
 			set: (target: IBlockProps, prop: string, value: unknown): boolean => {
-				if (!prop.startsWith('_')) {
-					const oldProps = deepCopy(target);
+				if (!prop.startsWith('_') && target[prop] !== value) {
+					const newProps = Object.assign({}, target, { [prop]: value });
+
+					this._eventBus().emit(
+						Block.EVENTS.FLOW_SCU,
+						target,
+						newProps,
+						this.state,
+						this.state
+					);
 
 					target[prop] = value;
-
-					this._eventBus().emit(Block.EVENTS.FLOW_SCU, oldProps, target);
 				}
 
 				return true;
@@ -177,7 +220,7 @@ class Block {
 	}
 
 	getPlaceholderHtml(): string {
-		return `<div data-id=${this._id}></div>`;
+		return `<div data-id='${this._id}'></div>`;
 	}
 
 	insertInElement(element: HTMLElement): void {
@@ -186,6 +229,14 @@ class Block {
 		if (el) {
 			el.parentNode.replaceChild(this.element, el);
 		}
+	}
+
+	hide(): void {
+		this.element.classList.add('hidden');
+	}
+
+	show(): void {
+		this.element.classList.remove('hidden');
 	}
 }
 

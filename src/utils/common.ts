@@ -19,10 +19,9 @@ export function onSubmitForm(event: any): Record<string, unknown> {
 	return data;
 }
 
-export function renderPage(page: Block): HTMLElement {
-	const element = document.getElementById('app');
+export function renderPage(query: string, block: Block): Element {
+	const root = document.querySelector(query);
+	root.append(block.getContent());
 
-	element.appendChild(page.getContent());
-
-	return element;
+	return root;
 }

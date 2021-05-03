@@ -2,8 +2,8 @@
 @import "../components/Form/Form";
 @import "../components/Button/Button";
 @import "../components/Input/Input";
-@import "../components/Page/Page";
-@import "../pages/error/Error";
+@import "./Page";
+@import "../pages/Error/Error";
 @import "../components/Avatar/Avatar";
 @import "../components/FormInput/FormInput";
 @import "../components/Link/Link";
@@ -53,4 +53,8 @@ input {
 	font-family: 'Padauk', sans-serif;
 
 	border: none;
+}
+
+.hidden {
+	display: none;
 }
