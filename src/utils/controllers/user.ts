@@ -1,10 +1,7 @@
-import HTTPTransport from '../http';
-import { baseApiUrl } from '../../../config';
 import { IUser } from '../types';
 import { UserAPI } from '../api/user';
 import { dispatch } from '../Store';
-
-const userController = new HTTPTransport(`${baseApiUrl}/api/v2/user`);
+import { errorHandler } from '../errorHandler';
 
 export class UserController {
 	private userApi: UserAPI;
@@ -14,23 +11,25 @@ export class UserController {
 	}
 
 	changeProfile(data: IUser): void {
-		return dispatch('user', () => this.userApi.changeProfile(data))();
+		return dispatch('user', () =>
+			this.userApi.changeProfile(data).catch(errorHandler)
+		)();
 	}
 
 	changeAvatar(data: FormData) {
-		return userController.put('/profile/avatar', { data });
+		return this.userApi.changeAvatar(data).catch(errorHandler);
 	}
 
 	getUserById(id: number) {
-		return userController.post(`/${id}`);
+		return this.userApi.getUserById(id).catch(errorHandler);
 	}
 
 	changePassword(data: Record<string, any>) {
-		return this.userApi.changePassword(data);
+		return this.userApi.changePassword(data).catch(errorHandler);
 	}
 
 	search(login: string) {
-		return userController.get('/user', { data: { login } });
+		return this.userApi.search(login).catch(errorHandler);
 	}
 }
 

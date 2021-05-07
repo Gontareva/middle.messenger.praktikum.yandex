@@ -28,7 +28,7 @@ export class UserAPI extends BaseAPI {
 
 	search(login: string) {
 		return userAPIInstance
-			.get('/user', { data: { login } })
+			.post('/search', { data: { login } })
 			.then(({ response }) => JSON.parse(response));
 	}
 }

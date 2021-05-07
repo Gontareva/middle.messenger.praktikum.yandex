@@ -2,6 +2,7 @@ import ChatAPI from '../api/chat';
 import { dispatch, makeSelector } from '../Store';
 import { baseApiUrl, wsProtocol } from '../../../config';
 import UserAPI from '../api/user';
+import { errorHandler } from '../errorHandler';
 
 class ChatController {
 	private chatApi: ChatAPI;
@@ -16,21 +17,30 @@ class ChatController {
 	}
 
 	create(data) {
-		return this.chatApi.create(data).then(() => this.request());
+		return this.chatApi
+			.create(data)
+			.then(() => this.request().catch(errorHandler));
 	}
 
 	request() {
-		return dispatch('chats', this.chatApi.request)();
+		return dispatch('chats', () =>
+			this.chatApi.request().catch(errorHandler)
+		)();
 	}
 
 	delete(id: number) {
-		return this.chatApi.delete(id).then(() => this.request());
+		return this.chatApi
+			.delete(id)
+			.then(() => this.request())
+			.catch(errorHandler);
 	}
 
 	initChat(userId: number, chatId: number): void {
-		this.getChat(userId, chatId).then(() => {
-			this.getOldMessage(userId, chatId, 0);
-		});
+		this.getChat(userId, chatId)
+			.then(() => {
+				this.getOldMessage(userId, chatId, 0);
+			})
+			.catch(errorHandler);
 	}
 
 	getChat(userId: number, chatId: number): Promise<WebSocket> {
@@ -129,12 +139,14 @@ class ChatController {
 			});
 		});
 	}
+
 	/* eslint-enable no-console */
 
 	addUser(login: string, chatId: number) {
-		this.userApi
+		return this.userApi
 			.search(login)
-			.then(({ id }) => this.chatApi.addUser(id, chatId));
+			.then(([{ id }]) => this.chatApi.addUser(id, chatId))
+			.catch(errorHandler);
 	}
 }
 

@@ -79,7 +79,9 @@ export default class Chat extends Block {
 	};
 
 	addUser({ login }) {
-		chatController.addUser(login, this.props.chat.id);
+		chatController.addUser(login, this.props.chat.id).then(() => {
+			this.setState({ modalIsOpen: false });
+		});
 	}
 
 	render(): Element {

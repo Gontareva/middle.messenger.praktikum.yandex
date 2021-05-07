@@ -28,6 +28,12 @@ export default class ChatPage extends Block {
 		});
 
 		document.title = 'Чат';
+
+		this.getUser();
+		this.getChats();
+
+		attachListener('user', this.getUser);
+		attachListener('chats', this.getChats);
 	}
 
 	init(): void {
@@ -47,13 +53,6 @@ export default class ChatPage extends Block {
 		const chats = makeSelector((store) => store.chats);
 		this.setProps({ chats: chats || [] });
 	};
-
-	componentDidMount(): void {
-		this.getUser();
-
-		attachListener('user', this.getUser);
-		attachListener('chats', this.getChats);
-	}
 
 	componentWillUnmount(): void {
 		detachListener('user', this.getUser);
