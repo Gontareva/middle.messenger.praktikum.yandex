@@ -4,17 +4,17 @@ import { renderPage } from '../common';
 
 class Route {
 	private pathname: string;
-	private readonly blockClass: { new (): Block };
+	private readonly getBlock: () => { new (): Block };
 	private block: Block | null;
 	private props: Record<string, any>;
 
 	constructor(
 		pathname: string,
-		view: { new (): Block },
+		getBlock: () => { new (): Block },
 		props: Record<string, any>
 	) {
 		this.pathname = pathname;
-		this.blockClass = view;
+		this.getBlock = getBlock;
 		this.block = null;
 		this.props = props;
 	}
@@ -39,7 +39,8 @@ class Route {
 
 	render(): void {
 		if (!this.block) {
-			this.block = new this.blockClass();
+			const blockClass = this.getBlock();
+			this.block = new blockClass();
 			renderPage(this.props.rootQuery, this.block);
 			return;
 		}

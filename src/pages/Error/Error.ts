@@ -1,24 +1,28 @@
+import Block from '../../utils/Block';
 import AppLink from '../../components/AppLink';
 
 import compile from '../../utils/compile';
-import Block from '../../utils/Block';
+import { errorHash } from '../../utils/constants';
 
 import template from 'pageTemplates/Error.template.js';
 
 export default class ErrorPage extends Block {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
 		document.title = 'Ошибка';
 	}
 
 	render(): Element {
+		const code =
+			this.props.code || +window.location.hash.replace('#', '') || 404;
+
 		return compile(template, {
-			code: 404,
-			message: 'Не туда попали',
+			code,
+			message: errorHash[code],
 			backLink: new AppLink({
-				href: '/chat',
-				text: 'Назад к чатам'
+				href: code === 401 ? '/login' : '/chat',
+				text: code === 401 ? 'Попробовать' : 'Назад к чатам'
 			})
 		});
 	}

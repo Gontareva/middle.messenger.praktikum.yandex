@@ -27,7 +27,7 @@ class ChatController {
 			.then(() => this.request().catch(errorHandler));
 	}
 
-	request(data) {
+	request(data?: Record<string, any>) {
 		return dispatch('chats', () =>
 			this.chatApi.request(data).catch(errorHandler)
 		)();

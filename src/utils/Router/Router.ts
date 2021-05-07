@@ -22,15 +22,15 @@ class Router {
 		Router.instance = this;
 	}
 
-	use(pathname: string, block: { new (): Block }): Router {
-		const route = new Route(pathname, block, { rootQuery: this.rootQuery });
+	use(pathname: string, getBlock: () => { new (): Block }): Router {
+		const route = new Route(pathname, getBlock, { rootQuery: this.rootQuery });
 		this.routes.push(route);
 
 		return this;
 	}
 
-	useError(pathname: string, block: { new (): Block }): Router {
-		const route = new Route(pathname, block, { rootQuery: this.rootQuery });
+	useError(pathname: string, getBlock: () => { new (): Block }): Router {
+		const route = new Route(pathname, getBlock, { rootQuery: this.rootQuery });
 		this.routes.push(route);
 		this.errorPathname = pathname;
 
@@ -81,14 +81,3 @@ class Router {
 }
 
 export default Router;
-
-// Необходимо оставить в силу особенностей тренажёра
-// history.pushState({}, '', '/');
-//
-// const router = new Router(".app");
-//
-// // Можно обновиться на /user и получить сразу пользователя
-// router
-// 	.use("/", Chats)
-// 	.use("/users", Users)
-// 	.start();

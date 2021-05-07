@@ -38,7 +38,7 @@ export class AuthController {
 	}
 
 	user() {
-		return dispatch('user', this.authApi.user)().catch(errorHandler);
+		return dispatch('user', () => this.authApi.user())();
 	}
 }
 
