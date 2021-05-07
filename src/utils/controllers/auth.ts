@@ -2,6 +2,7 @@ import { AuthAPI } from '../api/auth';
 import { router } from '../Router';
 import { dispatch } from '../Store';
 import { errorHandler } from '../errorHandler';
+import chatController from './chat';
 
 export class AuthController {
 	private authApi: AuthAPI;
@@ -14,7 +15,9 @@ export class AuthController {
 		return this.authApi
 			.login(data)
 			.then(() => {
-				router.go('/chat');
+				this.user().then(() => {
+					chatController.request().then(() => router.go('/chat'));
+				});
 			})
 			.catch(errorHandler);
 	}
