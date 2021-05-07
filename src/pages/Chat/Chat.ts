@@ -95,6 +95,11 @@ export default class ChatPage extends Block {
 		chatController.delete(id);
 	}
 
+	onSearchChange(title: string): void {
+		chatController.request({ title });
+		this.setState({ search: title });
+	}
+
 	render(): Element {
 		const activeChat = this.props.chats.find(
 			({ id }) => id === this.state.activeChatId
@@ -123,7 +128,10 @@ export default class ChatPage extends Block {
 									href: '/profile',
 									text: 'Профиль'
 								}),
-								new Search()
+								new Search({
+									title: this.state.search,
+									onChange: this.onSearchChange.bind(this)
+								})
 							]
 						})
 					},

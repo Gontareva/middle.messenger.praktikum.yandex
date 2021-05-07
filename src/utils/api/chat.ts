@@ -11,8 +11,8 @@ export default class ChatAPI extends BaseAPI {
 		return chatAPIInstance.post('', { data });
 	}
 
-	request() {
-		return chatAPIInstance.get('').then(({ response }) =>
+	request(data = {}) {
+		return chatAPIInstance.get('', { data }).then(({ response }) =>
 			JSON.parse(response).map(({ last_message, ...chat }) => ({
 				...chat,
 				last_message: JSON.parse(last_message)

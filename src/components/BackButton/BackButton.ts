@@ -2,9 +2,9 @@ import Block from '../../utils/Block';
 
 import compile from '../../utils/compile';
 import { router } from '../../utils/Router';
+import { icons } from '../../utils/constants';
 
 import template from 'componentTemplates/BackButton.template.js';
-import { icons } from '../../utils/constants';
 
 export default class BackButton extends Block {
 	constructor(props?: Record<string, unknown>) {
