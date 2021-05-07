@@ -21,7 +21,7 @@ export default class MainPage extends Block {
 						text: 'Страница авторизации'
 					}),
 					new AppLink({
-						href: '/signin',
+						href: '/signup',
 						text: 'Страница регистрации'
 					}),
 					new AppLink({

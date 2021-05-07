@@ -7,7 +7,11 @@ import FormInput from '../../components/FormInput';
 
 import Block from '../../utils/Block';
 import compile from '../../utils/compile';
-import { user } from '../../utils/constants';
+import {
+	makeSelector,
+	attachListener,
+	detachListener
+} from '../../utils/Store';
 
 import template from 'pageTemplates/Profile.template.js';
 
@@ -18,11 +22,32 @@ export default class ProfilePage extends Block {
 		document.title = 'Профиль';
 	}
 
+	init(): void {
+		this.state = {
+			user: {}
+		};
+	}
+
+	getUser = (): void => {
+		const user = makeSelector((store) => store.user);
+		this.setState({ user: user || {} });
+	};
+
+	componentDidMount(): void {
+		this.getUser();
+
+		attachListener('user', this.getUser);
+	}
+
+	componentWillUnmount(): void {
+		detachListener('user', this.getUser);
+	}
+
 	render(): Element {
 		return compile(template, {
-			title: user.display_name,
+			title: this.state.user.display_name,
 			avatar: new Avatar({
-				imageSrc: user.avatar
+				imageSrc: this.state.user.avatar
 			}),
 			backButton: new BackButton(),
 			form: new Form({
@@ -33,37 +58,37 @@ export default class ProfilePage extends Block {
 						items: [
 							new FormInput({
 								title: 'Почта',
-								value: user.email,
+								value: this.state.user.email,
 								name: 'email',
 								readOnly: true
 							}),
 							new FormInput({
 								title: 'Логин',
-								value: user.login,
+								value: this.state.user.login,
 								name: 'login',
 								readOnly: true
 							}),
 							new FormInput({
 								title: 'Имя',
-								value: user.first_name,
+								value: this.state.user.first_name,
 								name: 'first_name',
 								readOnly: true
 							}),
 							new FormInput({
 								title: 'Фамилия',
-								value: user.second_name,
+								value: this.state.user.second_name,
 								name: 'second_name',
 								readOnly: true
 							}),
 							new FormInput({
 								title: 'Имя в чате',
-								value: user.display_name,
+								value: this.state.user.display_name,
 								name: 'display_name',
 								readOnly: true
 							}),
 							new FormInput({
 								title: 'Телефон',
-								value: user.phone,
+								value: this.state.user.phone,
 								name: 'phone',
 								readOnly: true
 							})

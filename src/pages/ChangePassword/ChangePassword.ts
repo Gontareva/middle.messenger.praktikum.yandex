@@ -7,13 +7,16 @@ import BackButton from '../../components/BackButton';
 
 import Block from '../../utils/Block';
 import compile from '../../utils/compile';
-import { user } from '../../utils/constants';
+import userController from '../../utils/controllers/user';
+import { makeSelector } from '../../utils/Store';
 
 import template from 'pageTemplates/ChangePassword.template.js';
 
+import { IChangePasswordPageProps } from './types';
+
 export default class ChangePasswordPage extends Block {
-	constructor() {
-		super();
+	constructor(props: IChangePasswordPageProps) {
+		super(props);
 
 		document.title = 'Изменить пароль';
 	}
@@ -26,10 +29,19 @@ export default class ChangePasswordPage extends Block {
 		};
 	}
 
+	getUser = (): void => {
+		const user = makeSelector((store) => store.user);
+		this.setProps({ user: user || {} });
+	};
+
+	onSubmit = (data) => {
+		userController.changePassword(data);
+	};
+
 	render(): Element {
 		return compile(template, {
 			avatar: new Avatar({
-				imageSrc: user.avatar
+				imageSrc: this.props.user.avatar
 			}),
 			backButton: new BackButton({}),
 			form: new Form({
@@ -47,7 +59,8 @@ export default class ChangePasswordPage extends Block {
 				events: {
 					change: (newValue) => {
 						this.setState(newValue);
-					}
+					},
+					submit: this.onSubmit
 				},
 				render: (errors) => ({
 					body: new List({

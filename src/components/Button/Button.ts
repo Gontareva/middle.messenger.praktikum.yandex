@@ -13,7 +13,13 @@ export default class Button extends Block {
 	}
 
 	render() {
-		const { text, themes = [], className, ...attrs } = this.props;
+		const {
+			text = '',
+			themes = [],
+			className,
+			icon = '',
+			...attrs
+		} = this.props;
 		const classes = classnames(
 			'button',
 			themes.map((theme) => `button_${theme}`),
@@ -25,7 +31,7 @@ export default class Button extends Block {
 			class: classes,
 			...attrs
 		}).getContent();
-		el.textContent = text;
+		el.innerHTML = `${icon}${text}`;
 
 		return el;
 	}

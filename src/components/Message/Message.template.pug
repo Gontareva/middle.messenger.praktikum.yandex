@@ -2,8 +2,8 @@
     if fileUrl
         img.message__file(src=fileUrl)
 
-    if text
-        .message__text !{text}
+    if content
+        .message__text !{content}
 
     .message__label
         if isOwnMessage && status

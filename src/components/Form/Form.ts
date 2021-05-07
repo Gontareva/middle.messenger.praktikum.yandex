@@ -32,8 +32,8 @@ export default class Form extends Block {
 		});
 	}
 
-	shouldComponentUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
-		const equal = isEqual(oldProps, newProps);
+	shouldComponentUpdate(nextProps: IBlockProps) {
+		const equal = isEqual(this.props, nextProps);
 
 		if (!equal && this.validator) {
 			this.validator.detachListeners();
@@ -42,7 +42,7 @@ export default class Form extends Block {
 		return !equal;
 	}
 
-	componentDidUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
+	componentDidUpdate() {
 		if (this.validator) {
 			this.validator.addListeners(this.element);
 		}

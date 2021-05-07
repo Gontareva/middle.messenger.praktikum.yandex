@@ -2,13 +2,22 @@ import Block from '../../utils/Block';
 import Avatar from '../Avatar';
 import Message from '../Message';
 import Form from '../Form';
-import Element from '../Element';
+import NodeElement from '../Element';
 import Button from '../Button';
+import Modal from '../Modal';
+import Input from '../Input';
 
 import compile from '../../utils/compile';
 import { getFormatDate } from '../../utils/date';
 import groupBy from '../../utils/groupBy';
 import { modifiers } from '../../utils/styles';
+import chatController from '../../utils/controllers/chat';
+import {
+	attachListener,
+	detachListener,
+	makeSelector
+} from '../../utils/Store';
+import { icons } from '../../utils/constants';
 
 import template from 'componentTemplates/Chat.template.js';
 
@@ -17,39 +26,80 @@ import { IMessage } from '../../utils/types';
 
 export default class Chat extends Block {
 	readonly props: IChatProps;
-	private state: { message: string };
+	private state: {
+		message: string;
+		modalIsOpen: boolean;
+		newUser: { login: string };
+	};
 
 	constructor(props: IChatProps) {
 		super(props);
+
+		attachListener('messages', this.getMessages);
 	}
 
 	init() {
-		this.state = { message: '' };
+		this.state = {
+			message: '',
+			modalIsOpen: false,
+			newUser: { login: '' }
+		};
+
+		chatController.initChat(this.props.user.id, this.props.chat.id);
+	}
+
+	// componentDidMount() {}
+
+	componentWillUnmount(): void {
+		detachListener('messages', this.getMessages);
 	}
 
 	sort(message1: IMessage, message2: IMessage): number {
-		return message1.publishDate.getTime() - message2.publishDate.getTime() >= 0
-			? 1
-			: -1;
+		return message1.time.getTime() - message2.time.getTime() >= 0 ? 1 : -1;
 	}
 
-	render() {
-		const { chat, user } = this.props;
+	getMessages = (): void => {
+		const messages = makeSelector(
+			(state) => state.messages || {},
+			(obj) => obj[this.props.chat.id] || []
+		);
 
-		const days: { [key: string]: IMessage[] } = groupBy(chat.messages, (item) =>
-			getFormatDate(item.publishDate)
+		this.setProps({ messages });
+
+		return messages;
+	};
+
+	onSubmit = ({ message }: { message: string }): void => {
+		chatController.sendMessage(this.props.user.id, this.props.chat.id, message);
+		this.setState({ message: '' });
+	};
+
+	toggleModal = (): void => {
+		this.setState({ modalIsOpen: !this.state.modalIsOpen });
+	};
+
+	addUser({ login }) {
+		chatController.addUser(login, this.props.chat.id);
+	}
+
+	render(): Element {
+		const { chat, user, messages = [] } = this.props;
+
+		const days: { [key: string]: IMessage[] } = groupBy(messages, (item) =>
+			getFormatDate(item.time)
 		);
 
 		return compile(template, {
-			avatar: new Avatar({ imageSrc: chat.user.avatar }),
-			userName: chat.user.display_name,
-			days: Object.entries(days).map(
-				([date, messages]: [string, IMessage[]]) => ({
+			avatar: new Avatar({ imageSrc: chat.avatar }),
+			userName: chat.title,
+			days: Object.entries(days)
+				.reverse()
+				.map(([date, messages]: [string, IMessage[]]) => ({
 					date,
 					messages: messages.sort(this.sort).map((message, index) => {
 						const modifiers = [];
 
-						const isOwnMessage = message.fromUserId === user._id;
+						const isOwnMessage = message.user_id === user.id;
 
 						if (isOwnMessage) {
 							modifiers.push('own');
@@ -59,10 +109,8 @@ export default class Chat extends Block {
 							index - 1 < messages.length && messages[index + 1];
 						const isLastMessageInBlock =
 							!nextMessage ||
-							nextMessage.fromUserId !== message.fromUserId ||
-							nextMessage.publishDate.getTime() -
-								message.publishDate.getTime() >
-								60000;
+							nextMessage.user_id !== message.user_id ||
+							nextMessage.time.getTime() - message.time.getTime() > 60000;
 
 						if (isLastMessageInBlock) {
 							modifiers.push('last');
@@ -76,8 +124,7 @@ export default class Chat extends Block {
 							})
 						};
 					})
-				})
-			),
+				})),
 			form: new Form({
 				schema: {
 					message: [
@@ -90,8 +137,9 @@ export default class Chat extends Block {
 				},
 				events: {
 					change: (values) => {
-						this.state = values;
-					}
+						this.setState(values);
+					},
+					submit: this.onSubmit
 				},
 				theme: 'row',
 				render: (errors) => ({
@@ -99,11 +147,11 @@ export default class Chat extends Block {
 						new Button({
 							className: 'chat__clip-button'
 						}),
-						new Element({
+						new NodeElement({
 							tagName: 'div',
 							class: 'chat__text-block',
 							children: [
-								new Element({
+								new NodeElement({
 									tagName: 'textarea',
 									class: 'chat__input',
 									placeholder: 'Сообщение',
@@ -111,7 +159,7 @@ export default class Chat extends Block {
 									name: 'message',
 									children: this.state.message
 								}),
-								new Element({
+								new NodeElement({
 									tagName: 'span',
 									class: 'chat__error',
 									children: errors.message
@@ -124,6 +172,45 @@ export default class Chat extends Block {
 							type: 'submit'
 						})
 					]
+				})
+			}),
+			addUserButton: new Button({
+				icon: icons.add,
+				themes: ['simple'],
+				events: {
+					click: this.toggleModal
+				}
+			}),
+			modal: new Modal({
+				isOpen: this.state.modalIsOpen,
+				onCloseButtonClick: this.toggleModal,
+				render: () => ({
+					header: 'Добавление пользователя',
+					children: new Form({
+						schema: {
+							login: ['required']
+						},
+						events: {
+							change: (newValue) => {
+								this.setState({ newUser: newValue });
+							},
+							submit: this.addUser.bind(this)
+						},
+						render: (errors) => ({
+							body: new Input({
+								label: 'Логин пользователя',
+								type: 'text',
+								name: 'login',
+								value: this.state.newUser.login,
+								error: errors.login
+							}),
+							footer: new Button({
+								text: 'Добавить пользователя',
+								type: 'submit',
+								themes: ['primary']
+							})
+						})
+					})
 				})
 			}),
 			modifiersHelper: modifiers

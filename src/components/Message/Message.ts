@@ -17,11 +17,11 @@ export default class Message extends Block {
 
 	render() {
 		const { message, isOwnMessage } = this.props;
-		const onlyFile = message.fileUrl && !message.text;
+		const onlyFile = message.fileUrl && !message.content;
 
 		return compile(template, {
 			...message,
-			time: formatTime(message.publishDate),
+			time: formatTime(new Date(message.time)),
 			isOwnMessage,
 			modifiers: onlyFile ? ['only-file'] : null,
 			modifiersHelper: modifiers

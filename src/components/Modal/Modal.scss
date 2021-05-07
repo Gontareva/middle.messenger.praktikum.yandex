@@ -1,0 +1,42 @@
+.modal {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+
+	display: none;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	background: transparentize(#000000, 0.4);
+
+	transition: background-color $animation-duration;
+
+	&__content {
+		width: 30vw;
+		height: auto;
+		padding: 20px;
+
+		background: $white-color;
+		border-radius: $border-radius;
+	}
+
+	&__body {
+		font-size: 16px;
+	}
+
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20px;
+
+		font-size: 14px;
+	}
+
+	&_open {
+		display: flex;
+	}
+}

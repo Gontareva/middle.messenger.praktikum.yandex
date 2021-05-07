@@ -6,6 +6,7 @@ import AppLink from '../../components/AppLink';
 
 import Block from '../../utils/Block';
 import compile from '../../utils/compile';
+import authController from '../../utils/controllers/auth';
 
 import template from 'pageTemplates/Login.template.js';
 
@@ -23,17 +24,22 @@ export default class LoginPage extends Block {
 		};
 	}
 
+	onSubmit = (data: Record<string, any>): void => {
+		authController.login(data);
+	};
+
 	render(): Element {
 		return compile(template, {
 			form: new Form({
 				schema: {
-					login: ['email', 'required'],
+					login: ['required'],
 					password: ['password', 'required']
 				},
 				events: {
 					change: (newValue) => {
 						this.setState(newValue);
-					}
+					},
+					submit: this.onSubmit
 				},
 				render: (errors) => ({
 					body: new List({
@@ -63,7 +69,7 @@ export default class LoginPage extends Block {
 							}),
 							new AppLink({
 								className: 'button button_stretch',
-								href: '/signin',
+								href: '/signup',
 								text: 'Нет аккаунта?'
 							})
 						]

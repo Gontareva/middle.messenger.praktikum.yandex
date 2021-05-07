@@ -7,7 +7,7 @@ import template from 'componentTemplates/Search.template.js';
 import { ISearchProps } from './types';
 
 export default class Search extends Block {
-	constructor(props: ISearchProps) {
+	constructor(props?: ISearchProps) {
 		super({ id: 'search', placeholder: 'Поиск', ...props });
 	}
 

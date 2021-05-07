@@ -18,7 +18,6 @@ class Block {
 
 	private _element: Element;
 	protected _meta: { props: IBlockProps };
-	private _parent: HTMLElement;
 	private readonly _id: string;
 	private readonly _eventBus: () => EventBus;
 	protected readonly _props: IBlockProps;
@@ -171,7 +170,7 @@ class Block {
 	}
 
 	render(): Element {
-		return;
+		return document.createElement('div');
 	}
 
 	getContent(): Element {
@@ -237,6 +236,7 @@ class Block {
 
 	show(): void {
 		this.element.classList.remove('hidden');
+		this._eventBus().emit(Block.EVENTS.FLOW_CDM);
 	}
 }
 

@@ -6,10 +6,11 @@ import AppLink from '../../components/AppLink';
 
 import Block from '../../utils/Block';
 import compile from '../../utils/compile';
+import authController from '../../utils/controllers/auth';
 
-import template from 'pageTemplates/Signin.template.js';
+import template from 'pageTemplates/Signup.template.js';
 
-export default class SigninPage extends Block {
+export default class SignupPage extends Block {
 	constructor() {
 		super();
 
@@ -28,12 +29,16 @@ export default class SigninPage extends Block {
 		};
 	}
 
+	onSubmit = (data: Record<string, any>): void => {
+		authController.signup(data);
+	};
+
 	render(): Element {
 		return compile(template, {
 			form: new Form({
 				schema: {
 					email: ['email', 'required'],
-					login: ['email', 'required'],
+					login: ['required'],
 					phone: ['phone', 'required'],
 					password: ['password', 'required'],
 					confirm_password: [
@@ -45,7 +50,8 @@ export default class SigninPage extends Block {
 				events: {
 					change: (newValue) => {
 						this.setState(newValue);
-					}
+					},
+					submit: this.onSubmit
 				},
 				render: (errors) => ({
 					body: new List({

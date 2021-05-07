@@ -7,12 +7,13 @@ const enum METHODS {
 
 interface IOption {
 	headers?: Record<string, unknown>;
-	data?: Record<string, unknown>;
+	data?: Record<string, any> | FormData;
 	timeout?: number;
 	method?: METHODS;
+	withCredentials?: boolean;
 }
 
-function queryStringify(data) {
+function queryStringify(data = {}) {
 	//const string = new URLSearchParams(data).toString();
 	const string = Object.entries(data)
 		.reduce((memo, [key, val]) => `${memo}${key}=${val}&`, '')
@@ -21,7 +22,13 @@ function queryStringify(data) {
 	return string ? `?${string}` : '';
 }
 
-class HTTPTransport {
+export default class HTTPTransport {
+	private apiUrl: string;
+
+	constructor(apiUrl: string) {
+		this.apiUrl = apiUrl;
+	}
+
 	get = (url: string, options: IOption = {}): Promise<XMLHttpRequest> => {
 		const { data, timeout, ...rest } = options;
 		const query = queryStringify(data);
@@ -51,32 +58,44 @@ class HTTPTransport {
 		return this.request(url, { ...rest, method: METHODS.DELETE }, timeout);
 	};
 
-	request = (
+	request(
 		url: string,
 		options: IOption,
 		timeout = 5000
-	): Promise<XMLHttpRequest> =>
-		new Promise((resolve, reject) => {
-			const { data, headers = {}, method = METHODS.GET } = options;
+	): Promise<XMLHttpRequest> {
+		return new Promise((resolve, reject) => {
+			const {
+				data,
+				headers = { 'Content-Type': 'application/json' },
+				method = METHODS.GET,
+				withCredentials = true
+			} = options;
 
 			const xhr = new XMLHttpRequest();
 
 			if (method === METHODS.GET && data) {
-				xhr.open(method, `${url}${queryStringify(data)}`, true);
+				xhr.open(method, `${this.apiUrl}${url}${queryStringify(data)}`, true);
 			} else {
-				xhr.open(method, url, true);
+				xhr.open(method, `${this.apiUrl}${url}`, true);
 			}
 
 			Object.entries(headers).forEach((header: [string, string]) =>
 				xhr.setRequestHeader(...header)
 			);
 
+			xhr.withCredentials = withCredentials;
 			xhr.timeout = timeout;
 			xhr.ontimeout = reject;
 			xhr.onloadend = reject;
 			xhr.onerror = reject;
 
-			xhr.onload = () => resolve(xhr);
+			xhr.onload = () => {
+				if (xhr.status >= 400) {
+					return reject(xhr);
+				}
+
+				return resolve(xhr);
+			};
 
 			if (method === METHODS.GET || !data) {
 				xhr.send();
@@ -84,6 +103,10 @@ class HTTPTransport {
 				xhr.send(JSON.stringify(data));
 			}
 
+			// eslint-disable-next-line no-console
+			console.log('fetch', method, url, data);
+
 			return xhr;
 		});
+	}
 }
