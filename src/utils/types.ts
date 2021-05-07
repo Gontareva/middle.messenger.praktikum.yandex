@@ -20,9 +20,10 @@ export interface IMessage {
 	content?: string;
 	time: Date;
 	status?: StatusEnum;
+	is_read: boolean;
 	chat_id: number;
 	user_id: number;
-	fileUrl?: string;
+	file?: string;
 	user?: IUser;
 	created_by: number;
 }
@@ -34,5 +35,6 @@ export interface IChat {
 	avatar: string;
 	title: string;
 	user: IUser;
+	users?: IUser[];
 	messages: IMessage[];
 }

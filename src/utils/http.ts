@@ -11,6 +11,7 @@ interface IOption {
 	timeout?: number;
 	method?: METHODS;
 	withCredentials?: boolean;
+	isFormData?: boolean;
 }
 
 function queryStringify(data = {}) {
@@ -66,18 +67,21 @@ export default class HTTPTransport {
 		return new Promise((resolve, reject) => {
 			const {
 				data,
-				headers = { 'Content-Type': 'application/json' },
+				headers = {
+					'Content-Type': 'application/json'
+				},
 				method = METHODS.GET,
-				withCredentials = true
+				withCredentials = true,
+				isFormData = false
 			} = options;
 
 			const xhr = new XMLHttpRequest();
+			const fullUrl =
+				method === METHODS.GET && data
+					? `${this.apiUrl}${url}${queryStringify(data)}`
+					: `${this.apiUrl}${url}`;
 
-			if (method === METHODS.GET && data) {
-				xhr.open(method, `${this.apiUrl}${url}${queryStringify(data)}`, true);
-			} else {
-				xhr.open(method, `${this.apiUrl}${url}`, true);
-			}
+			xhr.open(method, fullUrl, true);
 
 			Object.entries(headers).forEach((header: [string, string]) =>
 				xhr.setRequestHeader(...header)
@@ -91,8 +95,14 @@ export default class HTTPTransport {
 
 			xhr.onload = () => {
 				if (xhr.status >= 400) {
+					// eslint-disable-next-line no-console
+					console.log('fetch--->error', method, fullUrl, data);
+
 					return reject(xhr);
 				}
+
+				// eslint-disable-next-line no-console
+				console.log('fetch--->end', method, fullUrl, data);
 
 				return resolve(xhr);
 			};
@@ -100,11 +110,11 @@ export default class HTTPTransport {
 			if (method === METHODS.GET || !data) {
 				xhr.send();
 			} else {
-				xhr.send(JSON.stringify(data));
+				xhr.send(isFormData ? (data as FormData) : JSON.stringify(data));
 			}
 
 			// eslint-disable-next-line no-console
-			console.log('fetch', method, url, data);
+			console.log('fetch', method, fullUrl, data);
 
 			return xhr;
 		});

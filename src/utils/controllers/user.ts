@@ -17,7 +17,12 @@ export class UserController {
 	}
 
 	changeAvatar(data: FormData) {
-		return this.userApi.changeAvatar(data).catch(errorHandler);
+		return dispatch('user', () =>
+			this.userApi
+				.changeAvatar(data)
+				.then(({ response }) => JSON.parse(response))
+				.catch(errorHandler)
+		)();
 	}
 
 	getUserById(id: number) {

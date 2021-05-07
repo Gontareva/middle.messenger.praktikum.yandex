@@ -15,7 +15,10 @@ export class UserAPI extends BaseAPI {
 	}
 
 	changeAvatar(data: FormData) {
-		return userAPIInstance.put('/profile/avatar', { data });
+		return userAPIInstance.put('/profile/avatar', {
+			data,
+			isFormData: true
+		});
 	}
 
 	getUserById(id: number) {

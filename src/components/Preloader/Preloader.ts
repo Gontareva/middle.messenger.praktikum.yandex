@@ -1,5 +1,5 @@
 import Block from '../../utils/Block';
-import Element from '../Element';
+import NodeElement from '../NodeElement';
 
 export default class Preloader extends Block {
 	constructor(props) {
@@ -7,7 +7,7 @@ export default class Preloader extends Block {
 	}
 
 	render() {
-		return new Element({
+		return new NodeElement({
 			tagName: 'div',
 			class: 'preloader'
 		}).getContent();

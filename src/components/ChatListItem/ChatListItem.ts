@@ -36,7 +36,7 @@ export default class ChatListItem extends Block {
 			user: {} as IUser,
 			...chat.last_message
 		};
-		const ownMessage = user.id === lastMessage.created_by;
+		const ownMessage = user.login === lastMessage.user.login;
 		const avatar = ownMessage ? user.avatar : lastMessage.user.avatar;
 
 		return compile(template, {

@@ -30,7 +30,7 @@ const shortMonthsNames = [
 	'дек'
 ];
 
-export function getFormatDate(inputDate: VarDate): string {
+export function getFormatDate(inputDate: Date): string {
 	const date = new Date(inputDate);
 	const now = new Date();
 
@@ -43,7 +43,7 @@ export function getFormatDate(inputDate: VarDate): string {
 	return formattedDate;
 }
 
-export function getFormatAccurateDate(inputDate: VarDate): string {
+export function getFormatAccurateDate(inputDate: Date): string {
 	const date = new Date(inputDate);
 	let formattedDate: string;
 	const now = new Date();

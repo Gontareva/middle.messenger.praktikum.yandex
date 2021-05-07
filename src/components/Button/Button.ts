@@ -1,5 +1,5 @@
 import Block from '../../utils/Block';
-import Element from '../Element';
+import NodeElement from '../NodeElement';
 
 import classnames from '../../utils/classnames';
 
@@ -26,7 +26,7 @@ export default class Button extends Block {
 			className
 		);
 
-		const el = new Element({
+		const el = new NodeElement({
 			tagName: 'button',
 			class: classes,
 			...attrs

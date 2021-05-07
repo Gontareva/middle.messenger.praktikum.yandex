@@ -1,6 +1,6 @@
 import List from '../../components/List';
 import AppLink from '../../components/AppLink';
-import NodeElement from '../../components/Element';
+import NodeElement from '../../components/NodeElement';
 import Search from '../../components/Search';
 import ChatListItem from '../../components/ChatListItem';
 import Chat from '../../components/Chat';
@@ -60,7 +60,11 @@ export default class ChatPage extends Block {
 	}
 
 	onChatListItemClick = (chat: IChat): void => {
-		this.setState({ activeChat: chat });
+		if (!chat.users) {
+			chatController.getUsers(chat.id);
+		}
+
+		this.setState({ activeChatId: chat.id });
 	};
 
 	toggleModal = (): void => {
@@ -78,6 +82,10 @@ export default class ChatPage extends Block {
 	}
 
 	render(): Element {
+		const activeChat = this.props.chats.find(
+			({ id }) => id === this.state.activeChatId
+		);
+
 		return compile(template, {
 			sidebar: new List({
 				theme: 'line',
@@ -106,8 +114,7 @@ export default class ChatPage extends Block {
 						})
 					},
 					...this.props.chats.map((chat) => {
-						const isActive =
-							this.state.activeChat && this.state.activeChat === chat;
+						const isActive = activeChat && this.state.activeChatId === chat.id;
 						const node = new ChatListItem({
 							chat,
 							user: this.props.user,
@@ -122,8 +129,8 @@ export default class ChatPage extends Block {
 					})
 				]
 			}),
-			body: this.state.activeChat
-				? new Chat({ chat: this.state.activeChat, user: this.props.user })
+			body: activeChat
+				? new Chat({ chat: activeChat, user: this.props.user })
 				: 'Выберите чат, чтобы отправить сообщение',
 			modal: new Modal({
 				isOpen: this.state.modalIsOpen,

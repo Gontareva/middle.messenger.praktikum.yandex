@@ -1,5 +1,6 @@
 import EventBus from '../eventBus';
 import set from '../set';
+import deepCopy from '../deepCopy';
 
 class Store {
 	private readonly _eventBus: () => EventBus;
@@ -51,7 +52,7 @@ export const dispatch = (path: string, func: (...args) => any) => (
 };
 
 export const makeSelector = (...selectors: ((any) => any)[]) =>
-	selectors.reduce((memo, func) => func(memo), { ...storeInstance.state });
+	deepCopy(selectors.reduce((memo, func) => func(memo), storeInstance.state));
 
 let storeInstance = null;
 

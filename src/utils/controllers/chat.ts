@@ -3,15 +3,19 @@ import { dispatch, makeSelector } from '../Store';
 import { baseApiUrl, wsProtocol } from '../../../config';
 import UserAPI from '../api/user';
 import { errorHandler } from '../errorHandler';
+import ResourcesAPI from '../api/resources';
+import { union } from '../union';
 
 class ChatController {
 	private chatApi: ChatAPI;
 	public sockets: Record<string, WebSocket>;
 	private userApi: UserAPI;
+	private resourcesAPI: ResourcesAPI;
 
 	constructor() {
 		this.chatApi = new ChatAPI();
 		this.userApi = new UserAPI();
+		this.resourcesAPI = new ResourcesAPI();
 
 		this.sockets = {};
 	}
@@ -47,9 +51,9 @@ class ChatController {
 		return new Promise((resolve, reject) => {
 			this.chatApi
 				.token(chatId)
-				.then((token) => {
-					this.createChatSocket(userId, chatId, token).then(resolve);
-				})
+				.then((token) =>
+					this.createChatSocket(userId, chatId, token).then(resolve)
+				)
 				.catch(reject);
 		});
 	}
@@ -78,14 +82,14 @@ class ChatController {
 	}
 
 	sendMessage(userId: number, chatId: number, content: string) {
-		this.getSocket(userId, chatId).then((socket: WebSocket) =>
+		this.getSocket(userId, chatId).then((socket: WebSocket) => {
 			socket.send(
 				JSON.stringify({
 					content,
 					type: 'message'
 				})
-			)
-		);
+			);
+		});
 	}
 
 	/* eslint-disable no-console */
@@ -118,7 +122,7 @@ class ChatController {
 			socket.addEventListener('message', (event) => {
 				console.log('Получены данные', event.data);
 
-				let data = JSON.parse(event.data);
+				let data = JSON.parse(event.data) || [];
 				data = Array.isArray(data) ? data : [data];
 				data = data.map(({ time, ...message }) => ({
 					...message,
@@ -129,7 +133,9 @@ class ChatController {
 					(obj) => obj[chatId] || []
 				);
 
-				dispatch(`messages`, () => ({ [chatId]: messages.concat(data) }))();
+				dispatch(`messages`, () => ({
+					[chatId]: union(messages, data, 'id')
+				}))();
 			});
 
 			socket.addEventListener('error', (event: ErrorEvent) => {
@@ -146,7 +152,39 @@ class ChatController {
 		return this.userApi
 			.search(login)
 			.then(([{ id }]) => this.chatApi.addUser(id, chatId))
+			.then(() => this.getUsers(chatId))
 			.catch(errorHandler);
+	}
+
+	removeUser(login: string, chatId: number) {
+		return this.userApi
+			.search(login)
+			.then(([{ id }]) => this.chatApi.removeUser(id, chatId))
+			.then(() => this.getUsers(chatId))
+			.catch(errorHandler);
+	}
+
+	getUsers(chatId: number) {
+		return dispatch('chats', () =>
+			this.chatApi.getUsers(chatId).then((users) => {
+				const chats = makeSelector((state) => state.chats || {});
+				const chat = chats.find(({ id }) => id === chatId);
+				chat.users = users;
+
+				return chats;
+			})
+		)();
+	}
+
+	sendFile(data: FormData, chatId: number) {
+		return this.resourcesAPI.save(data).then((file: { id: number }) => {
+			this.sockets[chatId].send(
+				JSON.stringify({
+					content: file.id,
+					type: 'file'
+				})
+			);
+		});
 	}
 }
 

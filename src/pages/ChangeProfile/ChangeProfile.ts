@@ -47,10 +47,16 @@ export default class ChangeProfilePage extends Block {
 		userController.changeProfile(data);
 	};
 
+	changeAvatar(formData: FormData): void {
+		userController.changeAvatar(formData);
+	}
+
 	render(): Element {
 		return compile(template, {
 			avatar: new Avatar({
-				imageSrc: this.state.user.avatar
+				imageSrc: this.state.user.avatar,
+				canChange: true,
+				onChange: this.changeAvatar.bind(this)
 			}),
 			backButton: new BackButton({}),
 			form: new Form({

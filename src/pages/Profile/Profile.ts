@@ -12,6 +12,8 @@ import {
 	attachListener,
 	detachListener
 } from '../../utils/Store';
+import userController from '../../utils/controllers/user';
+import deepCopy from '../../utils/deepCopy';
 
 import template from 'pageTemplates/Profile.template.js';
 
@@ -23,31 +25,32 @@ export default class ProfilePage extends Block {
 	}
 
 	init(): void {
-		this.state = {
-			user: {}
-		};
+		this.setProps({ user: {} });
+
+		this.getUser();
+		attachListener('user', this.getUser.bind(this));
 	}
 
-	getUser = (): void => {
+	getUser(): void {
 		const user = makeSelector((store) => store.user);
-		this.setState({ user: user || {} });
-	};
-
-	componentDidMount(): void {
-		this.getUser();
-
-		attachListener('user', this.getUser);
+		this.setProps({ user: deepCopy(user) || {} });
 	}
 
 	componentWillUnmount(): void {
-		detachListener('user', this.getUser);
+		detachListener('user', this.getUser.bind(this));
+	}
+
+	changeAvatar(formData: FormData): void {
+		userController.changeAvatar(formData);
 	}
 
 	render(): Element {
 		return compile(template, {
-			title: this.state.user.display_name,
+			title: this.props.user.display_name,
 			avatar: new Avatar({
-				imageSrc: this.state.user.avatar
+				imageSrc: this.props.user.avatar,
+				canChange: true,
+				onChange: this.changeAvatar.bind(this)
 			}),
 			backButton: new BackButton(),
 			form: new Form({
@@ -58,37 +61,37 @@ export default class ProfilePage extends Block {
 						items: [
 							new FormInput({
 								title: 'Почта',
-								value: this.state.user.email,
+								value: this.props.user.email,
 								name: 'email',
 								readOnly: true
 							}),
 							new FormInput({
 								title: 'Логин',
-								value: this.state.user.login,
+								value: this.props.user.login,
 								name: 'login',
 								readOnly: true
 							}),
 							new FormInput({
 								title: 'Имя',
-								value: this.state.user.first_name,
+								value: this.props.user.first_name,
 								name: 'first_name',
 								readOnly: true
 							}),
 							new FormInput({
 								title: 'Фамилия',
-								value: this.state.user.second_name,
+								value: this.props.user.second_name,
 								name: 'second_name',
 								readOnly: true
 							}),
 							new FormInput({
 								title: 'Имя в чате',
-								value: this.state.user.display_name,
+								value: this.props.user.display_name,
 								name: 'display_name',
 								readOnly: true
 							}),
 							new FormInput({
 								title: 'Телефон',
-								value: this.state.user.phone,
+								value: this.props.user.phone,
 								name: 'phone',
 								readOnly: true
 							})

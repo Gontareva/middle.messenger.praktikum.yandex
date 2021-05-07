@@ -2,14 +2,14 @@ import Block from '../../utils/Block';
 
 import compile from '../../utils/compile';
 
-import template from 'componentTemplates/Element.template.js';
+import template from 'componentTemplates/NodeElement.template.js';
 
-import { IElementProps } from './types';
+import { INodeElementProps } from './types';
 
-export default class Element extends Block {
-	readonly props: IElementProps;
+export default class NodeElement extends Block {
+	readonly props: INodeElementProps;
 
-	constructor(props: IElementProps) {
+	constructor(props: INodeElementProps) {
 		super(props);
 	}
 

@@ -2,7 +2,7 @@ import Block from '../../utils/Block';
 import Avatar from '../Avatar';
 import Message from '../Message';
 import Form from '../Form';
-import NodeElement from '../Element';
+import NodeElement from '../NodeElement';
 import Button from '../Button';
 import Modal from '../Modal';
 import Input from '../Input';
@@ -23,14 +23,18 @@ import template from 'componentTemplates/Chat.template.js';
 
 import { IChatProps } from './types';
 import { IMessage } from '../../utils/types';
+import UserList from '../UserList/UserList';
 
 export default class Chat extends Block {
 	readonly props: IChatProps;
 	private state: {
 		message: string;
 		modalIsOpen: boolean;
-		newUser: { login: string };
+		actionUser: { login: string };
+		addUser: boolean;
 	};
+	private input: NodeElement;
+	private htmlInputElement: HTMLInputElement;
 
 	constructor(props: IChatProps) {
 		super(props);
@@ -42,13 +46,20 @@ export default class Chat extends Block {
 		this.state = {
 			message: '',
 			modalIsOpen: false,
-			newUser: { login: '' }
+			actionUser: { login: '' },
+			addUser: true
 		};
 
 		chatController.initChat(this.props.user.id, this.props.chat.id);
-	}
 
-	// componentDidMount() {}
+		this.input = new NodeElement({
+			tagName: 'input',
+			type: 'file',
+			class: 'hidden',
+			events: { change: this.sendFile.bind(this) }
+		});
+		this.htmlInputElement = this.input.getContent() as HTMLInputElement;
+	}
 
 	componentWillUnmount(): void {
 		detachListener('messages', this.getMessages);
@@ -80,8 +91,33 @@ export default class Chat extends Block {
 
 	addUser({ login }) {
 		chatController.addUser(login, this.props.chat.id).then(() => {
-			this.setState({ modalIsOpen: false });
+			this.setState({ modalIsOpen: false, actionUser: { login: '' } });
 		});
+	}
+
+	removeUser({ login }) {
+		chatController.removeUser(login, this.props.chat.id).then(() => {
+			this.setState({ modalIsOpen: false, actionUser: { login: '' } });
+		});
+	}
+
+	onAddUserButton = () => {
+		this.setState({ modalIsOpen: !this.state.modalIsOpen, addUser: true });
+	};
+
+	onRemoveUserButton = () => {
+		this.setState({ modalIsOpen: !this.state.modalIsOpen, addUser: false });
+	};
+
+	sendFile(): void {
+		const formData = new FormData();
+		formData.set('file', this.htmlInputElement.files[0]);
+
+		chatController.sendFile(formData, this.props.chat.id);
+	}
+
+	onSendButtonClick() {
+		this.htmlInputElement.click();
 	}
 
 	render(): Element {
@@ -90,6 +126,7 @@ export default class Chat extends Block {
 		const days: { [key: string]: IMessage[] } = groupBy(messages, (item) =>
 			getFormatDate(item.time)
 		);
+		const { users = [] } = chat;
 
 		return compile(template, {
 			avatar: new Avatar({ imageSrc: chat.avatar }),
@@ -146,8 +183,12 @@ export default class Chat extends Block {
 				theme: 'row',
 				render: (errors) => ({
 					body: [
+						this.input,
 						new Button({
-							className: 'chat__clip-button'
+							className: 'chat__clip-button',
+							events: {
+								click: this.onSendButtonClick.bind(this)
+							}
 						}),
 						new NodeElement({
 							tagName: 'div',
@@ -180,34 +221,57 @@ export default class Chat extends Block {
 				icon: icons.add,
 				themes: ['simple'],
 				events: {
-					click: this.toggleModal
+					click: this.onAddUserButton
+				}
+			}),
+			removeUserButton: new Button({
+				icon: icons.remove,
+				themes: ['simple'],
+				events: {
+					click: this.onRemoveUserButton
 				}
 			}),
 			modal: new Modal({
 				isOpen: this.state.modalIsOpen,
 				onCloseButtonClick: this.toggleModal,
 				render: () => ({
-					header: 'Добавление пользователя',
+					header: this.state.addUser
+						? 'Добавление пользователя'
+						: 'Удаление пользователя',
 					children: new Form({
 						schema: {
 							login: ['required']
 						},
 						events: {
 							change: (newValue) => {
-								this.setState({ newUser: newValue });
+								this.setState({ actionUser: newValue });
 							},
-							submit: this.addUser.bind(this)
+							submit: this.state.addUser
+								? this.addUser.bind(this)
+								: this.removeUser.bind(this)
 						},
 						render: (errors) => ({
-							body: new Input({
-								label: 'Логин пользователя',
-								type: 'text',
-								name: 'login',
-								value: this.state.newUser.login,
-								error: errors.login
-							}),
+							body: [
+								new Input({
+									label: 'Логин пользователя',
+									type: 'text',
+									name: 'login',
+									value: this.state.actionUser.login,
+									error: errors.login
+								}),
+								new NodeElement({
+									tagName: 'div',
+									children: [
+										new NodeElement({
+											tagName: 'br'
+										}),
+										'Пользователи',
+										new UserList({ users })
+									]
+								})
+							],
 							footer: new Button({
-								text: 'Добавить пользователя',
+								text: this.state.addUser ? 'Добавить' : 'Удалить',
 								type: 'submit',
 								themes: ['primary']
 							})

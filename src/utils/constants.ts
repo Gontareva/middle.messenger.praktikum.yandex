@@ -10,5 +10,12 @@ export const icons = {
 			<line x1="5.49988" y1="11" x2="16.4999" y2="11" stroke="#3369F3" stroke-width="1.5"/>
 			<circle cx="11" cy="11" r="10.25" stroke="#3369F3" stroke-width="1.5"/>
 		</svg>
+	`,
+	remove: `
+		<svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<line x1="18.1108" y1="18.111" x2="25.8889" y2="25.8892" stroke="#3369F3" stroke-width="1.5"/>
+			<line x1="18.1108" y1="25.8891" x2="25.889" y2="18.1109" stroke="#3369F3" stroke-width="1.5"/>
+			<circle cx="22" cy="22" r="10.25" stroke="#3369F3" stroke-width="1.5"/>
+		</svg>
 	`
 };

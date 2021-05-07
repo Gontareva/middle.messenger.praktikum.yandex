@@ -30,7 +30,19 @@ export default class ChatAPI extends BaseAPI {
 			.then(({ response }) => JSON.parse(response).token);
 	}
 
+	getUsers(chatId: number): Promise<unknown> {
+		return chatAPIInstance
+			.get(`/${chatId}/users`)
+			.then(({ response }) => JSON.parse(response));
+	}
+
 	addUser(userId: number, chatId: number): Promise<unknown> {
-		return chatAPIInstance.put(`/users`, { data: { users: [userId], chatId } });
+		return chatAPIInstance.put('/users', { data: { users: [userId], chatId } });
+	}
+
+	removeUser(userId: number, chatId: number): Promise<unknown> {
+		return chatAPIInstance.delete('/users', {
+			data: { users: [userId], chatId }
+		});
 	}
 }

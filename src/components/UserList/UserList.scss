@@ -1,0 +1,33 @@
+.user-list {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	padding: 0;
+
+	list-style: none;
+}
+
+.user-list-item {
+	display: flex;
+	align-items: center;
+	margin-bottom: 20px;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	&__avatar {
+		width: 40px;
+		height: 40px;
+		margin-right: 10px;
+	}
+
+	&__body {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__subtitle {
+		opacity: 80%;
+	}
+}

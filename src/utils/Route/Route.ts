@@ -28,7 +28,8 @@ class Route {
 
 	leave(): void {
 		if (this.block) {
-			this.block.hide();
+			this.block.element.remove();
+			this.block = null;
 		}
 	}
 
