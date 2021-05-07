@@ -1,7 +1,7 @@
 import Block from '../../utils/Block';
 
 import compile from '../../utils/compile';
-import { router } from '../../utils/router';
+import { router } from '../../utils/Router';
 
 import template from 'componentTemplates/BackButton.template.js';
 
