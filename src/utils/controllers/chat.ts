@@ -5,6 +5,7 @@ import UserAPI from '../api/user';
 import { errorHandler } from '../errorHandler';
 import ResourcesAPI from '../api/resources';
 import { union } from '../union';
+import { IChat, IUser } from '../types';
 
 class ChatController {
 	private chatApi: ChatAPI;
@@ -151,22 +152,46 @@ class ChatController {
 	addUser(login: string, chatId: number) {
 		return this.userApi
 			.search(login)
-			.then(([{ id }]) => this.chatApi.addUser(id, chatId))
+			.then((users) => {
+				const user = users.find(({ login: userLogin }) => login === userLogin);
+
+				if (user) {
+					return this.chatApi.addUser(user.id, chatId);
+				}
+
+				throw new Error('Пользователь не найден');
+			})
 			.then(() => this.getUsers(chatId))
 			.catch(errorHandler);
 	}
 
 	removeUser(login: string, chatId: number) {
+		const chat = this.chatSelector(chatId) as IChat;
+
 		return this.userApi
 			.search(login)
-			.then(([{ id }]) => this.chatApi.removeUser(id, chatId))
+			.then((users: IUser[]) => {
+				const user = users.find(
+					({ id, login: userLogin }) =>
+						id !== chat.created_by && login === userLogin
+				);
+
+				if (user) {
+					return this.chatApi.removeUser(user.id, chatId);
+				}
+			})
 			.then(() => this.getUsers(chatId))
 			.catch(errorHandler);
 	}
 
+	chatSelector(chatId: number): IChat {
+		const chats = makeSelector((state) => state.chats || {}) as IChat[];
+		return chats.find(({ id }) => id === chatId);
+	}
+
 	getUsers(chatId: number) {
 		return dispatch('chats', () =>
-			this.chatApi.getUsers(chatId).then((users) => {
+			this.chatApi.getUsers(chatId).then((users: IUser[]) => {
 				const chats = makeSelector((state) => state.chats || {});
 				const chat = chats.find(({ id }) => id === chatId);
 				chat.users = users;

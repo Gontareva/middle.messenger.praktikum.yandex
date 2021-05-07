@@ -1,4 +1,4 @@
-export const errorHandler = ({ response }) => {
-	const { reason = 'Неизвестная ошибка' } = JSON.parse(response);
+export const errorHandler = ({ response = '{}', message }) => {
+	const { reason = message || 'Неизвестная ошибка' } = JSON.parse(response);
 	alert(reason);
 };

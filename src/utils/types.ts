@@ -25,7 +25,6 @@ export interface IMessage {
 	user_id: number;
 	file?: string;
 	user?: IUser;
-	created_by: number;
 }
 
 export interface IChat {
@@ -37,4 +36,5 @@ export interface IChat {
 	user: IUser;
 	users?: IUser[];
 	messages: IMessage[];
+	created_by: number;
 }

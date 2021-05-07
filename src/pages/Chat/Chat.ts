@@ -10,7 +10,7 @@ import Input from '../../components/Input';
 import Button from '../../components/Button';
 
 import compile from '../../utils/compile';
-import Block from '../../utils/Block';
+import Block, { IBlockProps } from '../../utils/Block';
 import { IChat } from '../../utils/types';
 import chatController from '../../utils/controllers/chat';
 import {
@@ -38,7 +38,7 @@ export default class ChatPage extends Block {
 
 	init(): void {
 		this.state = {
-			activeChat: null,
+			activeChatId: null,
 			modalIsOpen: false,
 			newChat: { title: '' }
 		};
@@ -50,9 +50,27 @@ export default class ChatPage extends Block {
 	};
 
 	getChats = (): void => {
-		const chats = makeSelector((store) => store.chats);
-		this.setProps({ chats: chats || [] });
+		const chats = makeSelector((store) => store.chats) || [];
+
+		if (chats.length && !this.props.chats.length) {
+			this.setState({ activeChatId: chats[0].id });
+		}
+
+		this.setProps({ chats });
 	};
+
+	componentDidUpdate(prevProps: IBlockProps, prevState: Record<string, any>) {
+		const activeChat = this.props.chats.find(
+			({ id }) => id === this.state.activeChatId
+		);
+
+		if (
+			prevState.activeChatId !== this.state.activeChatId &&
+			!activeChat.users
+		) {
+			chatController.getUsers(activeChat.id);
+		}
+	}
 
 	componentWillUnmount(): void {
 		detachListener('user', this.getUser);
@@ -60,10 +78,6 @@ export default class ChatPage extends Block {
 	}
 
 	onChatListItemClick = (chat: IChat): void => {
-		if (!chat.users) {
-			chatController.getUsers(chat.id);
-		}
-
 		this.setState({ activeChatId: chat.id });
 	};
 
