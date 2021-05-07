@@ -212,6 +212,7 @@ export default class Chat extends Block {
 						new Button({
 							className: 'chat__send-button',
 							themes: ['primary'],
+							icon: icons.arrow,
 							type: 'submit'
 						})
 					]

@@ -4,6 +4,7 @@ import compile from '../../utils/compile';
 import { router } from '../../utils/Router';
 
 import template from 'componentTemplates/BackButton.template.js';
+import { icons } from '../../utils/constants';
 
 export default class BackButton extends Block {
 	constructor(props?: Record<string, unknown>) {
@@ -24,6 +25,6 @@ export default class BackButton extends Block {
 	}
 
 	render(): Element {
-		return compile(template, this.props);
+		return compile(template, { ...this.props, icon: icons.arrow });
 	}
 }

@@ -121,6 +121,9 @@
 	&__send-button {
 		position: relative;
 
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		width: 28px;
 		height: 28px;
 		margin-left: 10px;
@@ -137,9 +140,13 @@
 			height: 100%;
 			transform: rotate(135rad);
 
-			background: url('/images/arrow.svg');
 			background-repeat: no-repeat;
 			background-position: center;
+		}
+
+		svg {
+			flex: 0 0 auto;
+			transform: rotate(180deg);
 		}
 	}
 
