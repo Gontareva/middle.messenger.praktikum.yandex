@@ -18,12 +18,6 @@ import deepCopy from '../../utils/deepCopy';
 import template from 'pageTemplates/Profile.template.js';
 
 export default class ProfilePage extends Block {
-	constructor() {
-		super();
-
-		document.title = 'Профиль';
-	}
-
 	init(): void {
 		this.setProps({ user: {} });
 

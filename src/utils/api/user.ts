@@ -1,5 +1,4 @@
-import HTTPTransport from '../http';
-import { BaseAPI } from './base';
+import HTTPTransport from '../HTTPTransport';
 import { baseApiUrl, httpProtocol } from '../../../config';
 import { IUser } from '../types';
 
@@ -7,7 +6,7 @@ const userAPIInstance = new HTTPTransport(
 	`${httpProtocol}://${baseApiUrl}/api/v2/user`
 );
 
-export class UserAPI extends BaseAPI {
+export class UserAPI {
 	changeProfile(data: IUser) {
 		return userAPIInstance
 			.put('/profile', { data })

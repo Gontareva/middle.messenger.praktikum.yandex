@@ -11,12 +11,6 @@ import authController from '../../utils/controllers/auth';
 import template from 'pageTemplates/Login.template.js';
 
 export default class LoginPage extends Block {
-	constructor() {
-		super();
-
-		document.title = 'Авторизация';
-	}
-
 	init(): void {
 		this.state = {
 			login: '',

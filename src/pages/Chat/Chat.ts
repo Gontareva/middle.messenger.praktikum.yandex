@@ -27,8 +27,6 @@ export default class ChatPage extends Block {
 			chats: []
 		});
 
-		document.title = 'Чат';
-
 		this.getUser();
 		this.getChats();
 

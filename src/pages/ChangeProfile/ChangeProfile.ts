@@ -18,12 +18,6 @@ import { IUser } from '../../utils/types';
 import template from 'pageTemplates/ChangeProfile.template.js';
 
 export default class ChangeProfilePage extends Block {
-	constructor() {
-		super();
-
-		document.title = 'Изменить профиль';
-	}
-
 	init(): void {
 		this.state = { user: {} };
 	}

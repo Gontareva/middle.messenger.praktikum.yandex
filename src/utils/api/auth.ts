@@ -1,12 +1,11 @@
-import HTTPTransport from '../http';
-import { BaseAPI } from './base';
+import HTTPTransport from '../HTTPTransport';
 import { baseApiUrl, httpProtocol } from '../../../config';
 
 const authAPIInstance = new HTTPTransport(
 	`${httpProtocol}://${baseApiUrl}/api/v2/auth`
 );
 
-export class AuthAPI extends BaseAPI {
+export class AuthAPI {
 	login(data: Record<string, any>) {
 		return authAPIInstance.post('/signin', { data });
 	}

@@ -9,8 +9,8 @@ class Router {
 	private readonly rootQuery: string;
 	private errorPathname: string;
 
-	constructor(rootQuery: string) {
-		if (Router.instance) {
+	constructor(rootQuery: string, singletone = true) {
+		if (Router.instance && singletone) {
 			return Router.instance;
 		}
 
@@ -19,18 +19,32 @@ class Router {
 		this.currentRoute = null;
 		this.rootQuery = rootQuery;
 
-		Router.instance = this;
+		if (singletone) {
+			Router.instance = this;
+		}
 	}
 
-	use(pathname: string, getBlock: () => { new (): Block }): Router {
-		const route = new Route(pathname, getBlock, { rootQuery: this.rootQuery });
+	use(
+		pathname: string,
+		title: string,
+		getBlock: () => { new(): Block }
+	): Router {
+		const route = new Route(pathname, title, getBlock, {
+			rootQuery: this.rootQuery
+		});
 		this.routes.push(route);
 
 		return this;
 	}
 
-	useError(pathname: string, getBlock: () => { new (): Block }): Router {
-		const route = new Route(pathname, getBlock, { rootQuery: this.rootQuery });
+	useError(
+		pathname: string,
+		title: string,
+		getBlock: () => { new(): Block }
+	): Router {
+		const route = new Route(pathname, title, getBlock, {
+			rootQuery: this.rootQuery
+		});
 		this.routes.push(route);
 		this.errorPathname = pathname;
 
@@ -45,7 +59,7 @@ class Router {
 		};
 	}
 
-	onRoute(pathname: string): void {
+	onRoute(pathname: string): Route {
 		const route = this.getRoute(pathname);
 
 		if (this.currentRoute) {
@@ -54,11 +68,14 @@ class Router {
 
 		this.currentRoute = route;
 		route.render();
+
+		return route;
 	}
 
 	go(pathname: string): void {
-		this.onRoute(pathname);
-		this.history.pushState({}, pathname, pathname);
+		const route = this.onRoute(pathname);
+		pathname = pathname.startsWith(route.pathname) ? pathname : route.pathname;
+		this.history.pushState({ page: pathname }, route.title, pathname);
 	}
 
 	back(): void {

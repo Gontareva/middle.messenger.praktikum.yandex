@@ -33,15 +33,15 @@ function auth(block) {
 }
 
 router
-	.use('/', () => Main)
-	.use('/change-password', () => auth(ChangePassword))
-	.use('/change-profile', () => auth(ChangeProfile))
-	.use('/profile', () => auth(Profile))
-	.use('/chat', () => auth(Chat))
-	.use('/login', () => Login)
-	.use('/signup', () => Signup)
-	.use('/logout', () => Logout)
-	.useError('/error', () => ErrorPage)
+	.use('/', 'Messenger', () => Main)
+	.use('/change-password', 'Изменить пароль', () => auth(ChangePassword))
+	.use('/change-profile', 'Изменить профиль', () => auth(ChangeProfile))
+	.use('/profile', 'Профиль', () => auth(Profile))
+	.use('/chat', 'Чат', () => auth(Chat))
+	.use('/login', 'Авторизация', () => Login)
+	.use('/signup', 'Регистрация', () => Signup)
+	.use('/logout', 'Выход', () => Logout)
+	.useError('/error', 'Ошибка', () => ErrorPage)
 	.start();
 
 authController.user().then(() => {

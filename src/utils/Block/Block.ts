@@ -179,7 +179,9 @@ class Block {
 
 	private _makePropsProxy = (props: IBlockProps) =>
 		new Proxy(props, {
-			get: (target: IBlockProps, prop: string) => {
+			get: (target: IBlockProps, prop: string | symbol) => {
+				prop = typeof prop === 'symbol' ? prop.description : prop;
+
 				if (!prop.startsWith('_')) {
 					return typeof target[prop] === 'function'
 						? target[prop].bind(self)
@@ -188,7 +190,13 @@ class Block {
 
 				return undefined;
 			},
-			set: (target: IBlockProps, prop: string, value: unknown): boolean => {
+			set: (
+				target: IBlockProps,
+				prop: string | symbol,
+				value: unknown
+			): boolean => {
+				prop = typeof prop === 'symbol' ? prop.description : prop;
+
 				if (!prop.startsWith('_') && target[prop] !== value) {
 					const newProps = Object.assign({}, target, { [prop]: value });
 
@@ -236,7 +244,7 @@ class Block {
 
 	show(): void {
 		this.element.classList.remove('hidden');
-		this._eventBus().emit(Block.EVENTS.FLOW_CDM);
+		// this._eventBus().emit(Block.EVENTS.FLOW_CDM);
 	}
 }
 

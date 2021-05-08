@@ -11,12 +11,6 @@ import authController from '../../utils/controllers/auth';
 import template from 'pageTemplates/Signup.template.js';
 
 export default class SignupPage extends Block {
-	constructor() {
-		super();
-
-		document.title = 'Регистрация';
-	}
-
 	init(): void {
 		this.state = {
 			login: '',

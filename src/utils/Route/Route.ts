@@ -3,19 +3,22 @@ import isEqual from '../isEqual';
 import { renderPage } from '../common';
 
 class Route {
-	private pathname: string;
+	public pathname: string;
 	private readonly getBlock: () => { new (): Block };
 	private block: Block | null;
 	private props: Record<string, any>;
+	public title: string;
 
 	constructor(
 		pathname: string,
+		title: string,
 		getBlock: () => { new (): Block },
 		props: Record<string, any>
 	) {
 		this.pathname = pathname;
 		this.getBlock = getBlock;
 		this.block = null;
+		this.title = title;
 		this.props = props;
 	}
 
@@ -41,6 +44,9 @@ class Route {
 		if (!this.block) {
 			const blockClass = this.getBlock();
 			this.block = new blockClass();
+
+			document.title = this.title;
+
 			renderPage(this.props.rootQuery, this.block);
 			return;
 		}

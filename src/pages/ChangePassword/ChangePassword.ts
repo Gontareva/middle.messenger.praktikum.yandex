@@ -18,8 +18,6 @@ export default class ChangePasswordPage extends Block {
 	constructor(props: IChangePasswordPageProps) {
 		super({ user: {}, ...props });
 
-		document.title = 'Изменить пароль';
-
 		this.getUser();
 		addEventListener('user', this.getUser.bind(this));
 	}

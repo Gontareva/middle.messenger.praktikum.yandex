@@ -7,11 +7,6 @@ import Block from '../../utils/Block';
 import template from 'pageTemplates/Main.template.js';
 
 export default class MainPage extends Block {
-	constructor() {
-		super();
-
-		document.title = 'Messenger';
-	}
 	render(): Element {
 		return compile(template, {
 			list: new List({
