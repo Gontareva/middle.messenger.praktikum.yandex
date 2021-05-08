@@ -1,39 +1,23 @@
 import { expect } from 'chai';
 
 import Block from './Block';
+import TestBlock from '../../../test/TestBlock';
+import DocumentMock from '../../../test/DocumentMock';
 
 describe('Block', () => {
 	const blockProps = { title: 1 };
 
-	class TestBlock extends Block {
-		public static renderCount: number;
-		public static changedCount: number;
-
-		constructor(props) {
-			TestBlock.renderCount = 0;
-			TestBlock.changedCount = 0;
-
-			super(props);
-		}
-
-		componentDidUpdate() {
-			TestBlock.changedCount += 1;
-		}
-
-		render() {
-			TestBlock.renderCount += 1;
-
-			return super.render();
-		}
-	}
-
 	let block;
+
+	before(() => {
+		global.document = new DocumentMock();
+	});
 
 	beforeEach(function () {
 		block = new TestBlock(blockProps);
 	});
 
-	it('should change props', () => {
+	it('should change props', (done) => {
 		expect(TestBlock.renderCount).to.be.equal(1);
 		expect(TestBlock.changedCount).to.be.equal(0);
 
@@ -45,10 +29,11 @@ describe('Block', () => {
 		setTimeout(() => {
 			expect(TestBlock.renderCount).to.be.equal(2);
 			expect(TestBlock.changedCount).to.be.equal(1);
-		}, 300);
+			done();
+		}, 1000);
 	});
 
-	it('should change state', () => {
+	it('should change state', (done) => {
 		expect(TestBlock.renderCount).to.be.equal(1);
 		expect(TestBlock.changedCount).to.be.equal(0);
 
@@ -61,10 +46,11 @@ describe('Block', () => {
 		setTimeout(() => {
 			expect(TestBlock.renderCount).to.be.equal(2);
 			expect(TestBlock.changedCount).to.be.equal(1);
-		}, 300);
+			done();
+		}, 1000);
 	});
 
-	it('component should not update', () => {
+	it('component should not update', (done) => {
 		expect(TestBlock.renderCount).to.be.equal(1);
 		expect(TestBlock.changedCount).to.be.equal(0);
 		expect(block.props).to.include(blockProps);
@@ -76,6 +62,7 @@ describe('Block', () => {
 		setTimeout(() => {
 			expect(TestBlock.renderCount).to.be.equal(1);
 			expect(TestBlock.changedCount).to.be.equal(0);
-		}, 300);
+			done();
+		}, 1000);
 	});
 });

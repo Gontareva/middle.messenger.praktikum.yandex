@@ -2,16 +2,19 @@ import { expect } from 'chai';
 import HTTPTransport from './HTTPTransport';
 import { XMLHttpRequest } from 'xmlhttprequest';
 import ServerMock from '../../../test/ServerMock';
+import config from '../../../config';
 
 describe('HTTP', () => {
-	const url = 'http://localhost:3000/api';
+	const url = `http://localhost:${config.test.serverPort}/api`;
 	let httpTransport;
+	let serverInstance;
 
 	before(() => {
 		global.XMLHttpRequest = XMLHttpRequest;
 		httpTransport = new HTTPTransport(url);
 
-		new ServerMock().listen(3000);
+		serverInstance = new ServerMock();
+		serverInstance.listen(config.test.serverPort);
 	});
 
 	it('should send get request', (done) => {
@@ -86,5 +89,9 @@ describe('HTTP', () => {
 			expect(status).to.be.equal(400);
 			done();
 		});
+	});
+
+	after(() => {
+		serverInstance.server.close();
 	});
 });

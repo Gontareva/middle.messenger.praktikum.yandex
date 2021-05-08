@@ -7,5 +7,8 @@ export default {
 	baseApiUrl,
 	httpProtocol,
 	wsProtocol,
-	staticDomain
+	staticDomain,
+	test: {
+		serverPort: 4000
+	}
 };
