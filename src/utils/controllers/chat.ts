@@ -75,7 +75,7 @@ class ChatController {
 			const socket = this.sockets[chatId];
 
 			if (!socket) {
-				this.getChat(userId, chatId).then(resolve).catch(reject);
+				return this.getChat(userId, chatId).then(resolve).catch(reject);
 			}
 
 			resolve(socket);

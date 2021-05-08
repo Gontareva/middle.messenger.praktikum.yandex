@@ -49,6 +49,8 @@ export default class Form extends Block {
 	}
 
 	onChange = (event: Event): void => {
+		event.preventDefault();
+
 		const { change } = this._props.events || {};
 
 		if (change && typeof change === 'function') {
@@ -57,6 +59,8 @@ export default class Form extends Block {
 	};
 
 	onSubmitForm = (event: Event) => {
+		event.preventDefault();
+
 		if (!this.validator || this.validator.validate()) {
 			const data = onSubmitForm(event);
 
@@ -66,8 +70,6 @@ export default class Form extends Block {
 				submit(data);
 			}
 		}
-
-		event.preventDefault();
 	};
 
 	onErrorsChange = (errors) => {
