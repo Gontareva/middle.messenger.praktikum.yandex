@@ -19,6 +19,8 @@ export default class ChatListItem extends Block {
 		super({
 			events: {
 				click: (event) => {
+					event.preventDefault();
+
 					if (!event.target.closest('.chat-list-item button')) {
 						props.onItemClick();
 					}

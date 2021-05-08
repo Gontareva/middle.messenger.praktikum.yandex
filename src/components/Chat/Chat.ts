@@ -50,8 +50,6 @@ export default class Chat extends Block {
 			addUser: true
 		};
 
-		chatController.initChat(this.props.user.id, this.props.chat.id);
-
 		this.input = new NodeElement({
 			tagName: 'input',
 			type: 'file',
@@ -59,6 +57,10 @@ export default class Chat extends Block {
 			events: { change: this.sendFile.bind(this) }
 		});
 		this.htmlInputElement = this.input.getContent() as HTMLInputElement;
+	}
+
+	componentDidMount() {
+		chatController.initChat(this.props.user.id, this.props.chat.id);
 	}
 
 	componentWillUnmount(): void {

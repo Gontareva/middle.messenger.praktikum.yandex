@@ -9,7 +9,8 @@ import { IChat, IUser } from '../types';
 
 class ChatController {
 	private chatApi: ChatAPI;
-	public sockets: Record<string, WebSocket>;
+	private sockets: Record<string, WebSocket>;
+	private tokens: Record<string, string>;
 	private userApi: UserAPI;
 	private resourcesAPI: ResourcesAPI;
 
@@ -19,6 +20,7 @@ class ChatController {
 		this.resourcesAPI = new ResourcesAPI();
 
 		this.sockets = {};
+		this.tokens = {};
 	}
 
 	create(data) {
@@ -50,12 +52,21 @@ class ChatController {
 
 	getChat(userId: number, chatId: number): Promise<WebSocket> {
 		return new Promise((resolve, reject) => {
-			this.chatApi
-				.token(chatId)
-				.then((token) =>
-					this.createChatSocket(userId, chatId, token).then(resolve)
-				)
-				.catch(reject);
+			const token = this.tokens[chatId];
+
+			if (!token) {
+				return this.chatApi
+					.token(chatId)
+					.then((newToken) => {
+						this.tokens[chatId] = newToken;
+						return this.createChatSocket(userId, chatId, newToken).then(
+							resolve
+						);
+					})
+					.catch(reject);
+			}
+
+			return this.createChatSocket(userId, chatId, token).then(resolve);
 		});
 	}
 
@@ -78,7 +89,7 @@ class ChatController {
 				return this.getChat(userId, chatId).then(resolve).catch(reject);
 			}
 
-			resolve(socket);
+			return resolve(socket);
 		});
 	}
 
