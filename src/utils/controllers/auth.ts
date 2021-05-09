@@ -12,32 +12,38 @@ export class AuthController {
 	}
 
 	login(data: Record<string, any>) {
-		return this.authApi
-			.login(data)
+		const promise = this.authApi.login(data);
+		promise
 			.then(() => {
 				this.user().then(() => {
 					chatController.request().then(() => router.go('/chat'));
 				});
 			})
 			.catch(errorHandler);
+
+		return promise;
 	}
 
 	signup(data: Record<string, any>) {
-		return this.authApi
-			.signup(data)
+		const promise = this.authApi.signup(data);
+		promise
 			.then(() => {
 				router.go('/login');
 			})
 			.catch(errorHandler);
+
+		return promise;
 	}
 
 	logout() {
-		return this.authApi
-			.logout()
+		const promise = this.authApi.logout();
+		promise
 			.then(() => {
 				router.go('/login');
 			})
 			.catch(errorHandler);
+
+		return promise;
 	}
 
 	user() {

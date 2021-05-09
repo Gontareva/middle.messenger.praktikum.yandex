@@ -27,7 +27,7 @@ class Router {
 	use(
 		pathname: string,
 		title: string,
-		getBlock: () => { new(): Block }
+		getBlock: () => { new (): Block }
 	): Router {
 		const route = new Route(pathname, title, getBlock, {
 			rootQuery: this.rootQuery
@@ -40,7 +40,7 @@ class Router {
 	useError(
 		pathname: string,
 		title: string,
-		getBlock: () => { new(): Block }
+		getBlock: () => { new (): Block }
 	): Router {
 		const route = new Route(pathname, title, getBlock, {
 			rootQuery: this.rootQuery

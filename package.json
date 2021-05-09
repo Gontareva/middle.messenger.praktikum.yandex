@@ -4,8 +4,11 @@
 	"description": "Проект доступен по адресу: https://amazing-tereshkova-cec837.netlify.app",
 	"main": "server.ts",
 	"dependencies": {
+		"@types/htmlparser2": "^3.10.2",
+		"@types/sanitize-html": "^2.3.1",
 		"express": "^4.17.1",
 		"pug-cli": "^1.0.0-alpha6",
+		"sanitize-html": "^2.3.3",
 		"scss": "^0.2.4",
 		"uuid": "^8.3.2"
 	},

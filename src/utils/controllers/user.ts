@@ -26,15 +26,24 @@ export class UserController {
 	}
 
 	getUserById(id: number) {
-		return this.userApi.getUserById(id).catch(errorHandler);
+		const promise = this.userApi.getUserById(id);
+		promise.catch(errorHandler);
+
+		return promise;
 	}
 
 	changePassword(data: Record<string, any>) {
-		return this.userApi.changePassword(data).catch(errorHandler);
+		const promise = this.userApi.changePassword(data);
+		promise.catch(errorHandler);
+
+		return promise;
 	}
 
 	search(login: string) {
-		return this.userApi.search(login).catch(errorHandler);
+		const promise = this.userApi.search(login);
+		promise.catch(errorHandler);
+
+		return promise;
 	}
 }
 

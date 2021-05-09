@@ -24,30 +24,37 @@ class ChatController {
 	}
 
 	create(data) {
-		return this.chatApi
-			.create(data)
-			.then(() => this.request().catch(errorHandler));
+		const promise = this.chatApi.create(data);
+		promise.then(() => this.request().catch(errorHandler));
+
+		return promise;
 	}
 
 	request(data?: Record<string, any>) {
-		return dispatch('chats', () =>
-			this.chatApi.request(data).catch(errorHandler)
-		)();
+		return dispatch('chats', () => {
+			const promise = this.chatApi.request(data);
+			promise.catch(errorHandler);
+
+			return promise;
+		})();
 	}
 
 	delete(id: number) {
-		return this.chatApi
-			.delete(id)
-			.then(() => this.request())
-			.catch(errorHandler);
+		const promise = this.chatApi.delete(id);
+		promise.then(() => this.request()).catch(errorHandler);
+
+		return promise;
 	}
 
-	initChat(userId: number, chatId: number): void {
-		this.getChat(userId, chatId)
+	initChat(userId: number, chatId: number) {
+		const promise = this.getChat(userId, chatId);
+		promise
 			.then(() => {
 				this.getOldMessage(userId, chatId, 0);
 			})
 			.catch(errorHandler);
+
+		return promise;
 	}
 
 	getChat(userId: number, chatId: number): Promise<WebSocket> {
@@ -70,8 +77,8 @@ class ChatController {
 		});
 	}
 
-	getOldMessage(userId: number, chatId: number, skip: number): void {
-		this.getSocket(userId, chatId).then((socket) =>
+	getOldMessage(userId: number, chatId: number, skip: number) {
+		return this.getSocket(userId, chatId).then((socket) =>
 			socket.send(
 				JSON.stringify({
 					content: skip.toString(),
@@ -94,7 +101,7 @@ class ChatController {
 	}
 
 	sendMessage(userId: number, chatId: number, content: string) {
-		this.getSocket(userId, chatId).then((socket: WebSocket) => {
+		return this.getSocket(userId, chatId).then((socket: WebSocket) => {
 			socket.send(
 				JSON.stringify({
 					content,
@@ -161,8 +168,8 @@ class ChatController {
 	/* eslint-enable no-console */
 
 	addUser(login: string, chatId: number) {
-		return this.userApi
-			.search(login)
+		const promise = this.userApi.search(login);
+		promise
 			.then((users) => {
 				const user = users.find(({ login: userLogin }) => login === userLogin);
 
@@ -174,13 +181,15 @@ class ChatController {
 			})
 			.then(() => this.getUsers(chatId))
 			.catch(errorHandler);
+
+		return promise;
 	}
 
 	removeUser(login: string, chatId: number) {
 		const chat = this.chatSelector(chatId) as IChat;
 
-		return this.userApi
-			.search(login)
+		const promise = this.userApi.search(login);
+		promise
 			.then((users: IUser[]) => {
 				const user = users.find(
 					({ id, login: userLogin }) =>
@@ -193,6 +202,8 @@ class ChatController {
 			})
 			.then(() => this.getUsers(chatId))
 			.catch(errorHandler);
+
+		return promise;
 	}
 
 	chatSelector(chatId: number): IChat {

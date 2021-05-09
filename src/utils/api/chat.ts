@@ -1,5 +1,6 @@
 import HTTPTransport from '../HTTPTransport';
 import { baseApiUrl, httpProtocol } from '../../../config';
+import { errorHandler } from '../errorHandler';
 
 const chatAPIInstance = new HTTPTransport(
 	`${httpProtocol}://${baseApiUrl}/api/v2/chats`
@@ -7,7 +8,7 @@ const chatAPIInstance = new HTTPTransport(
 
 export default class ChatAPI {
 	create(data: Record<string, any>): Promise<unknown> | never {
-		return chatAPIInstance.post('', { data });
+		return chatAPIInstance.post('', { data }).catch(errorHandler);
 	}
 
 	request(data = {}) {
@@ -20,7 +21,9 @@ export default class ChatAPI {
 	}
 
 	delete(id: number) {
-		return chatAPIInstance.delete('', { data: { chatId: id } });
+		return chatAPIInstance
+			.delete('', { data: { chatId: id } })
+			.catch(errorHandler);
 	}
 
 	token(id: number) {
@@ -36,12 +39,16 @@ export default class ChatAPI {
 	}
 
 	addUser(userId: number, chatId: number): Promise<unknown> {
-		return chatAPIInstance.put('/users', { data: { users: [userId], chatId } });
+		return chatAPIInstance
+			.put('/users', { data: { users: [userId], chatId } })
+			.catch(errorHandler);
 	}
 
 	removeUser(userId: number, chatId: number): Promise<unknown> {
-		return chatAPIInstance.delete('/users', {
-			data: { users: [userId], chatId }
-		});
+		return chatAPIInstance
+			.delete('/users', {
+				data: { users: [userId], chatId }
+			})
+			.catch(errorHandler);
 	}
 }
