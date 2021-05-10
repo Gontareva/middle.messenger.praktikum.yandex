@@ -66,8 +66,9 @@ export default class ChatPage extends Block {
 			prevState.activeChatId !== this.state.activeChatId &&
 			!activeChat.users
 		) {
-			chatController.request();
-			chatController.getUsers(activeChat.id);
+			chatController
+				.request()
+				.then(() => chatController.getUsers(activeChat.id));
 		}
 	}
 

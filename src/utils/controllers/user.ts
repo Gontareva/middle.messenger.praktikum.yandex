@@ -2,6 +2,7 @@ import { IUser } from '../types';
 import { UserAPI } from '../api/user';
 import { dispatch } from '../Store';
 import { errorHandler } from '../errorHandler';
+import { escape, escapeObject, unescapeObject } from '../../escape';
 
 export class UserController {
 	private userApi: UserAPI;
@@ -11,16 +12,20 @@ export class UserController {
 	}
 
 	changeProfile(data: IUser): void {
-		return dispatch('user', () =>
-			this.userApi.changeProfile(data).catch(errorHandler)
-		)();
+		return dispatch('user', () => {
+			const promise = this.userApi.changeProfile(escapeObject(data));
+
+			promise.then(unescapeObject).catch(errorHandler);
+
+			return promise;
+		})();
 	}
 
 	changeAvatar(data: FormData) {
 		return dispatch('user', () =>
 			this.userApi
 				.changeAvatar(data)
-				.then(({ response }) => JSON.parse(response))
+				.then(({ response }) => unescapeObject(JSON.parse(response)))
 				.catch(errorHandler)
 		)();
 	}
@@ -33,14 +38,14 @@ export class UserController {
 	}
 
 	changePassword(data: Record<string, any>) {
-		const promise = this.userApi.changePassword(data);
-		promise.catch(errorHandler);
+		const promise = this.userApi.changePassword(escapeObject(data));
+		promise.then(unescapeObject).catch(errorHandler);
 
 		return promise;
 	}
 
 	search(login: string) {
-		const promise = this.userApi.search(login);
+		const promise = this.userApi.search(escape(login));
 		promise.catch(errorHandler);
 
 		return promise;

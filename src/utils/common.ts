@@ -9,14 +9,7 @@ export function getData(
 }
 
 export function onSubmitForm(event: any): Record<string, unknown> {
-	event.preventDefault();
-
-	const data = getData(event.target);
-
-	// eslint-disable-next-line no-console
-	console.log(data);
-
-	return data;
+	return getData(event.target);
 }
 
 export function renderPage(query: string, block: Block): Element {

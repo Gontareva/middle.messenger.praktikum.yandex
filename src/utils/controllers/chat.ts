@@ -6,6 +6,7 @@ import { errorHandler } from '../errorHandler';
 import ResourcesAPI from '../api/resources';
 import { union } from '../union';
 import { IChat, IUser } from '../types';
+import { escape, escapeObject, unescapeObject } from '../../escape';
 
 class ChatController {
 	private chatApi: ChatAPI;
@@ -24,7 +25,7 @@ class ChatController {
 	}
 
 	create(data) {
-		const promise = this.chatApi.create(data);
+		const promise = this.chatApi.create(escapeObject(data));
 		promise.then(() => this.request().catch(errorHandler));
 
 		return promise;
@@ -33,7 +34,7 @@ class ChatController {
 	request(data?: Record<string, any>) {
 		return dispatch('chats', () => {
 			const promise = this.chatApi.request(data);
-			promise.catch(errorHandler);
+			promise.then(unescapeObject).catch(errorHandler);
 
 			return promise;
 		})();
@@ -104,7 +105,7 @@ class ChatController {
 		return this.getSocket(userId, chatId).then((socket: WebSocket) => {
 			socket.send(
 				JSON.stringify({
-					content,
+					content: escape(content),
 					type: 'message'
 				})
 			);
@@ -143,16 +144,18 @@ class ChatController {
 
 				let data = JSON.parse(event.data) || [];
 				data = Array.isArray(data) ? data : [data];
-				data = data.map(({ time, ...message }) => ({
-					...message,
-					time: new Date(time)
-				}));
+				data = unescapeObject(
+					data.map(({ time, ...message }) => ({
+						...message,
+						time: new Date(time)
+					}))
+				);
 				const messages = makeSelector(
 					(state) => state.messages || {},
 					(obj) => obj[chatId] || []
 				);
 
-				dispatch(`messages`, () => ({
+				dispatch('messages', () => ({
 					[chatId]: union(messages, data, 'id')
 				}))();
 			});

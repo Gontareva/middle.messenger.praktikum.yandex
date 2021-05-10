@@ -1,8 +1,9 @@
 div.modal(class=className)
     .modal__content
-        if header
+        if header || closeButton
             .modal__header
-                | !{header}
+                .modal__title
+                    | #{header}
                 .modal__close
                     | !{closeButton}
         .modal__body

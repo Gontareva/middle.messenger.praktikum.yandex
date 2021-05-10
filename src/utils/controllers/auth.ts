@@ -3,6 +3,7 @@ import { router } from '../Router';
 import { dispatch } from '../Store';
 import { errorHandler } from '../errorHandler';
 import chatController from './chat';
+import { escapeObject, unescapeObject } from '../../escape';
 
 export class AuthController {
 	private authApi: AuthAPI;
@@ -12,7 +13,7 @@ export class AuthController {
 	}
 
 	login(data: Record<string, any>) {
-		const promise = this.authApi.login(data);
+		const promise = this.authApi.login(escapeObject(data));
 		promise
 			.then(() => {
 				this.user().then(() => {
@@ -25,7 +26,7 @@ export class AuthController {
 	}
 
 	signup(data: Record<string, any>) {
-		const promise = this.authApi.signup(data);
+		const promise = this.authApi.signup(escapeObject(data));
 		promise
 			.then(() => {
 				router.go('/login');
@@ -47,7 +48,7 @@ export class AuthController {
 	}
 
 	user() {
-		return dispatch('user', () => this.authApi.user())();
+		return dispatch('user', () => this.authApi.user().then(unescapeObject))();
 	}
 }
 

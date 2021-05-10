@@ -53,7 +53,7 @@ export function getFormatAccurateDate(inputDate: Date): string {
 	if (diff < 86400000) {
 		formattedDate = formatTime(date);
 	} else if (diff < 86400000 * 7) {
-		formattedDate = dayOfWeekNames[date.getDay() + 1];
+		formattedDate = dayOfWeekNames[date.getDay() - 1];
 	} else {
 		formattedDate = `${date.getDate()} ${shortMonthsNames[date.getMonth()]}`;
 

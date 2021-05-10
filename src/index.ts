@@ -7,11 +7,13 @@ import Chat from './pages/Chat';
 import ErrorPage from './pages/Error';
 import Signup from './pages/Signup';
 import Logout from './pages/Logout';
+import Notification from './components/Notification';
 
 import { router } from './utils/Router';
 import authController from './utils/controllers/auth';
 import chatController from './utils/controllers/chat';
 import { createStore, getState } from './utils/Store';
+import { renderPage } from './utils/common';
 
 createStore({ user: {} });
 
@@ -47,3 +49,5 @@ router
 authController.user().then(() => {
 	chatController.request().then(() => router.go('/chat'));
 });
+
+renderPage('#notification', new Notification());

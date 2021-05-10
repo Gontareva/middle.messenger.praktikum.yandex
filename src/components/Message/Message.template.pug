@@ -3,7 +3,7 @@
         img.message__file(src=file)
 
     if content
-        .message__text !{content}
+        .message__text #{content}
 
     .message__label
         if isOwnMessage && status
