@@ -32,8 +32,8 @@ export default class Form extends Block {
 		});
 	}
 
-	shouldComponentUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
-		const equal = isEqual(oldProps, newProps);
+	shouldComponentUpdate(nextProps: IBlockProps) {
+		const equal = isEqual(this.props, nextProps);
 
 		if (!equal && this.validator) {
 			this.validator.detachListeners();
@@ -42,13 +42,15 @@ export default class Form extends Block {
 		return !equal;
 	}
 
-	componentDidUpdate(oldProps: IBlockProps, newProps: IBlockProps) {
+	componentDidUpdate() {
 		if (this.validator) {
 			this.validator.addListeners(this.element);
 		}
 	}
 
 	onChange = (event: Event): void => {
+		event.preventDefault();
+
 		const { change } = this._props.events || {};
 
 		if (change && typeof change === 'function') {
@@ -57,6 +59,8 @@ export default class Form extends Block {
 	};
 
 	onSubmitForm = (event: Event) => {
+		event.preventDefault();
+
 		if (!this.validator || this.validator.validate()) {
 			const data = onSubmitForm(event);
 
@@ -66,8 +70,6 @@ export default class Form extends Block {
 				submit(data);
 			}
 		}
-
-		event.preventDefault();
 	};
 
 	onErrorsChange = (errors) => {

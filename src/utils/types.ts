@@ -1,7 +1,7 @@
 export interface IUser {
-	_id: number;
+	id: number;
 	avatar?: string;
-	display_name: string;
+	display_name?: string;
 	email?: string;
 	first_name?: string;
 	second_name?: string;
@@ -17,15 +17,24 @@ export enum StatusEnum {
 }
 
 export interface IMessage {
-	text?: string;
-	publishDate: Date;
+	content?: string;
+	time: Date;
 	status?: StatusEnum;
-	fromUserId: number;
-	toUserId: number;
-	fileUrl?: string;
+	is_read: boolean;
+	chat_id: number;
+	user_id: number;
+	file?: string;
+	user?: IUser;
 }
 
 export interface IChat {
+	id: number;
+	last_message: IMessage;
+	unread_count: number;
+	avatar: string;
+	title: string;
 	user: IUser;
+	users?: IUser[];
 	messages: IMessage[];
+	created_by: number;
 }

@@ -2,17 +2,19 @@
 @import "../components/Form/Form";
 @import "../components/Button/Button";
 @import "../components/Input/Input";
-@import "../components/Page/Page";
-@import "../pages/error/Error";
+@import "./Page";
+@import "../pages/Error/Error";
 @import "../components/Avatar/Avatar";
 @import "../components/FormInput/FormInput";
 @import "../components/Link/Link";
 @import "../components/Search/Search";
 @import "../components/List/List";
+@import "../components/UserList/UserList";
 @import "../components/ChatListItem/ChatListItem";
 @import "../components/Chat/Chat";
 @import "../components/Message/Message";
 @import "../components/Preloader/Preloader";
+@import "../components/Modal/Modal";
 
 body {
 	box-sizing: border-box;
@@ -53,4 +55,8 @@ input {
 	font-family: 'Padauk', sans-serif;
 
 	border: none;
+}
+
+.hidden {
+	display: none;
 }

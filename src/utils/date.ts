@@ -30,7 +30,7 @@ const shortMonthsNames = [
 	'дек'
 ];
 
-export function getFormatDate(inputDate: VarDate): string {
+export function getFormatDate(inputDate: Date): string {
 	const date = new Date(inputDate);
 	const now = new Date();
 
@@ -43,7 +43,7 @@ export function getFormatDate(inputDate: VarDate): string {
 	return formattedDate;
 }
 
-export function getFormatAccurateDate(inputDate: VarDate): string {
+export function getFormatAccurateDate(inputDate: Date): string {
 	const date = new Date(inputDate);
 	let formattedDate: string;
 	const now = new Date();
@@ -53,7 +53,7 @@ export function getFormatAccurateDate(inputDate: VarDate): string {
 	if (diff < 86400000) {
 		formattedDate = formatTime(date);
 	} else if (diff < 86400000 * 7) {
-		formattedDate = dayOfWeekNames[date.getDay() + 1];
+		formattedDate = dayOfWeekNames[date.getDay() - 1];
 	} else {
 		formattedDate = `${date.getDate()} ${shortMonthsNames[date.getMonth()]}`;
 

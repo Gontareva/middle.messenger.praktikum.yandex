@@ -1,5 +1,5 @@
 import Block from '../../utils/Block';
-import Element from '../Element';
+import NodeElement from '../NodeElement';
 
 import classnames from '../../utils/classnames';
 
@@ -13,19 +13,25 @@ export default class Button extends Block {
 	}
 
 	render() {
-		const { text, themes = [], className, ...attrs } = this.props;
+		const {
+			text = '',
+			themes = [],
+			className,
+			icon = '',
+			...attrs
+		} = this.props;
 		const classes = classnames(
 			'button',
 			themes.map((theme) => `button_${theme}`),
 			className
 		);
 
-		const el = new Element({
+		const el = new NodeElement({
 			tagName: 'button',
 			class: classes,
 			...attrs
 		}).getContent();
-		el.textContent = text;
+		el.innerHTML = `${icon}${text}`;
 
 		return el;
 	}

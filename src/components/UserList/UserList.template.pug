@@ -1,0 +1,7 @@
+ul.user-list
+    each user in users
+        li.user-list-item
+            .user-list-item__avatar !{user.avatar}
+            .user-list-item__body
+                .user-list-item__title #{user.title}
+                .user-list-item__subtitle #{user.subtitle}

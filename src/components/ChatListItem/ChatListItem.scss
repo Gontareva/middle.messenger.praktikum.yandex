@@ -64,4 +64,15 @@
 		align-items: flex-end;
 		margin: 0 0 0 auto;
 	}
+
+	&__close {
+		width: 10px;
+		height: 10px;
+
+		visibility: hidden;
+	}
+
+	&:hover &__close {
+		visibility: visible;
+	}
 }

@@ -2,54 +2,145 @@ import Block from '../../utils/Block';
 import Avatar from '../Avatar';
 import Message from '../Message';
 import Form from '../Form';
-import Element from '../Element';
+import NodeElement from '../NodeElement';
 import Button from '../Button';
+import Modal from '../Modal';
+import Input from '../Input';
 
 import compile from '../../utils/compile';
 import { getFormatDate } from '../../utils/date';
 import groupBy from '../../utils/groupBy';
 import { modifiers } from '../../utils/styles';
+import chatController from '../../utils/controllers/chat';
+import {
+	attachListener,
+	detachListener,
+	makeSelector
+} from '../../utils/Store';
+import { icons } from '../../utils/constants';
 
 import template from 'componentTemplates/Chat.template.js';
 
 import { IChatProps } from './types';
 import { IMessage } from '../../utils/types';
+import UserList from '../UserList/UserList';
 
 export default class Chat extends Block {
 	readonly props: IChatProps;
-	private state: { message: string };
+	private state: {
+		message: string;
+		modalIsOpen: boolean;
+		actionUser: { login: string };
+		addUser: boolean;
+	};
+	private input: NodeElement;
+	private htmlInputElement: HTMLInputElement;
 
 	constructor(props: IChatProps) {
 		super(props);
+
+		attachListener('messages', this.getMessages);
 	}
 
 	init() {
-		this.state = { message: '' };
+		this.state = {
+			message: '',
+			modalIsOpen: false,
+			actionUser: { login: '' },
+			addUser: true
+		};
+
+		this.input = new NodeElement({
+			tagName: 'input',
+			type: 'file',
+			class: 'hidden',
+			events: { change: this.sendFile.bind(this) }
+		});
+		this.htmlInputElement = this.input.getContent() as HTMLInputElement;
+	}
+
+	componentDidMount() {
+		chatController.initChat(this.props.user.id, this.props.chat.id);
+	}
+
+	componentWillUnmount(): void {
+		detachListener('messages', this.getMessages);
 	}
 
 	sort(message1: IMessage, message2: IMessage): number {
-		return message1.publishDate.getTime() - message2.publishDate.getTime() >= 0
-			? 1
-			: -1;
+		return message1.time.getTime() - message2.time.getTime() >= 0 ? 1 : -1;
 	}
 
-	render() {
-		const { chat, user } = this.props;
-
-		const days: { [key: string]: IMessage[] } = groupBy(chat.messages, (item) =>
-			getFormatDate(item.publishDate)
+	getMessages = (): void => {
+		const messages = makeSelector(
+			(state) => state.messages || {},
+			(obj) => obj[this.props.chat.id] || []
 		);
 
+		this.setProps({ messages });
+
+		return messages;
+	};
+
+	onSubmit = ({ message }: { message: string }): void => {
+		chatController.sendMessage(this.props.user.id, this.props.chat.id, message);
+		this.setState({ message: '' });
+	};
+
+	toggleModal = (): void => {
+		this.setState({ modalIsOpen: !this.state.modalIsOpen });
+	};
+
+	addUser({ login }) {
+		chatController.addUser(login, this.props.chat.id).then(() => {
+			this.setState({ modalIsOpen: false, actionUser: { login: '' } });
+		});
+	}
+
+	removeUser({ login }) {
+		chatController.removeUser(login, this.props.chat.id).then(() => {
+			this.setState({ modalIsOpen: false, actionUser: { login: '' } });
+		});
+	}
+
+	onAddUserButton = () => {
+		this.setState({ modalIsOpen: !this.state.modalIsOpen, addUser: true });
+	};
+
+	onRemoveUserButton = () => {
+		this.setState({ modalIsOpen: !this.state.modalIsOpen, addUser: false });
+	};
+
+	sendFile(): void {
+		const formData = new FormData();
+		formData.set('file', this.htmlInputElement.files[0]);
+
+		chatController.sendFile(formData, this.props.chat.id);
+	}
+
+	onSendButtonClick() {
+		this.htmlInputElement.click();
+	}
+
+	render(): Element {
+		const { chat, user, messages = [] } = this.props;
+
+		const days: { [key: string]: IMessage[] } = groupBy(messages, (item) =>
+			getFormatDate(item.time)
+		);
+		const { users = [] } = chat;
+
 		return compile(template, {
-			avatar: new Avatar({ imageSrc: chat.user.avatar }),
-			userName: chat.user.display_name,
-			days: Object.entries(days).map(
-				([date, messages]: [string, IMessage[]]) => ({
+			avatar: new Avatar({ imageSrc: chat.avatar }),
+			userName: chat.title,
+			days: Object.entries(days)
+				.reverse()
+				.map(([date, messages]: [string, IMessage[]]) => ({
 					date,
 					messages: messages.sort(this.sort).map((message, index) => {
 						const modifiers = [];
 
-						const isOwnMessage = message.fromUserId === user._id;
+						const isOwnMessage = message.user_id === user.id;
 
 						if (isOwnMessage) {
 							modifiers.push('own');
@@ -59,10 +150,8 @@ export default class Chat extends Block {
 							index - 1 < messages.length && messages[index + 1];
 						const isLastMessageInBlock =
 							!nextMessage ||
-							nextMessage.fromUserId !== message.fromUserId ||
-							nextMessage.publishDate.getTime() -
-								message.publishDate.getTime() >
-								60000;
+							nextMessage.user_id !== message.user_id ||
+							nextMessage.time.getTime() - message.time.getTime() > 60000;
 
 						if (isLastMessageInBlock) {
 							modifiers.push('last');
@@ -76,8 +165,7 @@ export default class Chat extends Block {
 							})
 						};
 					})
-				})
-			),
+				})),
 			form: new Form({
 				schema: {
 					message: [
@@ -90,20 +178,25 @@ export default class Chat extends Block {
 				},
 				events: {
 					change: (values) => {
-						this.state = values;
-					}
+						this.setState(values);
+					},
+					submit: this.onSubmit
 				},
 				theme: 'row',
 				render: (errors) => ({
 					body: [
+						this.input,
 						new Button({
-							className: 'chat__clip-button'
+							className: 'chat__clip-button',
+							events: {
+								click: this.onSendButtonClick.bind(this)
+							}
 						}),
-						new Element({
+						new NodeElement({
 							tagName: 'div',
 							class: 'chat__text-block',
 							children: [
-								new Element({
+								new NodeElement({
 									tagName: 'textarea',
 									class: 'chat__input',
 									placeholder: 'Сообщение',
@@ -111,7 +204,7 @@ export default class Chat extends Block {
 									name: 'message',
 									children: this.state.message
 								}),
-								new Element({
+								new NodeElement({
 									tagName: 'span',
 									class: 'chat__error',
 									children: errors.message
@@ -121,9 +214,72 @@ export default class Chat extends Block {
 						new Button({
 							className: 'chat__send-button',
 							themes: ['primary'],
+							icon: icons.arrow,
 							type: 'submit'
 						})
 					]
+				})
+			}),
+			addUserButton: new Button({
+				icon: icons.add,
+				themes: ['simple'],
+				events: {
+					click: this.onAddUserButton
+				}
+			}),
+			removeUserButton: new Button({
+				icon: icons.remove,
+				themes: ['simple'],
+				events: {
+					click: this.onRemoveUserButton
+				}
+			}),
+			modal: new Modal({
+				isOpen: this.state.modalIsOpen,
+				onCloseButtonClick: this.toggleModal,
+				render: () => ({
+					header: this.state.addUser
+						? 'Добавление пользователя'
+						: 'Удаление пользователя',
+					children: new Form({
+						schema: {
+							login: ['required']
+						},
+						events: {
+							change: (newValue) => {
+								this.setState({ actionUser: newValue });
+							},
+							submit: this.state.addUser
+								? this.addUser.bind(this)
+								: this.removeUser.bind(this)
+						},
+						render: (errors) => ({
+							body: [
+								new Input({
+									label: 'Логин пользователя',
+									type: 'text',
+									name: 'login',
+									value: this.state.actionUser.login,
+									error: errors.login
+								}),
+								new NodeElement({
+									tagName: 'div',
+									children: [
+										new NodeElement({
+											tagName: 'br'
+										}),
+										'Пользователи',
+										new UserList({ users })
+									]
+								})
+							],
+							footer: new Button({
+								text: this.state.addUser ? 'Добавить' : 'Удалить',
+								type: 'submit',
+								themes: ['primary']
+							})
+						})
+					})
 				})
 			}),
 			modifiersHelper: modifiers
