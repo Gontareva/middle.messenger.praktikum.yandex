@@ -1,5 +1,3 @@
-import { escape } from '../../escape';
-
 enum METHODS {
 	GET = 'GET',
 	PUT = 'PUT',

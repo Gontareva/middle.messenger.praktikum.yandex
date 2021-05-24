@@ -1,19 +1,18 @@
 .error {
-	font-weight: 500;
-	font-size: 40px;
-	text-align: center;
+  font-weight: 500;
+  font-size: 40px;
+  text-align: center;
 
-	&__code {
-		margin-bottom: 0.5em;
-	}
+  &__code {
+    margin-bottom: 0.5em;
+  }
 
-	&__message {
-		font-size: 0.5em;
-	}
+  &__message {
+    font-size: 0.5em;
+  }
 
-	&__link {
-		margin-top: 2em;
-
-		font-size: 0.35em;
-	}
+  &__link {
+    margin-top: 2em;
+    font-size: 0.35em;
+  }
 }

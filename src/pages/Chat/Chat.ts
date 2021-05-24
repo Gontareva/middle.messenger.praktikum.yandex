@@ -19,7 +19,8 @@ import {
 	makeSelector
 } from '../../utils/Store';
 
-import template from 'pageTemplates/Chat.template.js';
+// @ts-ignore
+import template from './Chat.template';
 
 export default class ChatPage extends Block {
 	constructor() {
@@ -57,9 +58,12 @@ export default class ChatPage extends Block {
 		this.setProps({ chats });
 	};
 
-	componentDidUpdate(prevProps: IBlockProps, prevState: Record<string, any>) {
+	componentDidUpdate(
+		prevProps: IBlockProps,
+		prevState: Record<string, any>
+	): void {
 		const activeChat = this.props.chats.find(
-			({ id }) => id === this.state.activeChatId
+			({ id }: { id: number }) => id === this.state.activeChatId
 		);
 
 		if (
@@ -102,7 +106,7 @@ export default class ChatPage extends Block {
 
 	render(): Element {
 		const activeChat = this.props.chats.find(
-			({ id }) => id === this.state.activeChatId
+			({ id }: { id: number }) => id === this.state.activeChatId
 		);
 
 		return compile(template, {

@@ -8,7 +8,9 @@ describe('Router', () => {
 	let router;
 
 	beforeEach(() => {
+		// @ts-ignore
 		global.window = new WindowMock();
+		// @ts-ignore
 		global.document = new DocumentMock();
 
 		router = new Router('', false);

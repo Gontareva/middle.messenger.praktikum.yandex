@@ -15,7 +15,8 @@ import {
 } from '../../utils/Store';
 import { IUser } from '../../utils/types';
 
-import template from 'pageTemplates/ChangeProfile.template.js';
+// @ts-ignore
+import template from './ChangeProfile.template';
 
 export default class ChangeProfilePage extends Block {
 	init(): void {

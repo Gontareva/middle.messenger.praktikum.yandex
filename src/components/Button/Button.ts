@@ -5,6 +5,8 @@ import classnames from '../../utils/classnames';
 
 import { IButtonProps } from './types';
 
+import './Button.scss';
+
 export default class Button extends Block {
 	readonly props: IButtonProps;
 
@@ -12,7 +14,7 @@ export default class Button extends Block {
 		super(props);
 	}
 
-	render() {
+	render(): Element {
 		const {
 			text = '',
 			themes = [],

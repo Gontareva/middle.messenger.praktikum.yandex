@@ -7,10 +7,13 @@ import { getFormatAccurateDate } from '../../utils/date';
 import { prune } from '../../utils/string';
 import { icons } from '../../utils/constants';
 
-import template from 'componentTemplates/ChatListItem.template.js';
+// @ts-ignore
+import template from './ChatListItem.template';
 
 import { IChatListItemProps } from './types';
 import { IMessage, IUser } from '../../utils/types';
+
+import './ChatListItem.scss';
 
 export default class ChatListItem extends Block {
 	readonly props: IChatListItemProps;
@@ -18,10 +21,11 @@ export default class ChatListItem extends Block {
 	constructor(props: IChatListItemProps) {
 		super({
 			events: {
-				click: (event) => {
+				click: (event: Event) => {
 					event.preventDefault();
+					const target = event.target as Element;
 
-					if (!event.target.closest('.chat-list-item button')) {
+					if (!target.closest('.chat-list-item button')) {
 						props.onItemClick();
 					}
 				}
@@ -30,7 +34,7 @@ export default class ChatListItem extends Block {
 		});
 	}
 
-	render() {
+	render(): Element {
 		const { chat, user } = this.props;
 
 		const lastMessage: IMessage = {

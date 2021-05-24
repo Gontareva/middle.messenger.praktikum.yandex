@@ -4,9 +4,12 @@ import compile from '../../utils/compile';
 import classnames from '../../utils/classnames';
 import { modifiers } from '../../utils/styles';
 
-import template from 'componentTemplates/List.template.js';
+// @ts-ignore
+import template from './List.template';
 
 import { IListProps } from './types';
+
+import './List.scss';
 
 export default class List extends Block {
 	readonly props: IListProps;
@@ -15,7 +18,7 @@ export default class List extends Block {
 		super({ items: [], ...props });
 	}
 
-	render() {
+	render(): Element {
 		const { theme, ...props } = this.props;
 		const className = classnames({ [`list_${theme}`]: theme });
 

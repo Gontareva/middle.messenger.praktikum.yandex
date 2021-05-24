@@ -1,6 +1,5 @@
 import HTTPTransport from '../HTTPTransport';
 import { baseApiUrl, httpProtocol } from '../../../config';
-import { escape } from '../../escape';
 
 const authAPIInstance = new HTTPTransport(
 	`${httpProtocol}://${baseApiUrl}/api/v2/auth`

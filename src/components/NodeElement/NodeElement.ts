@@ -2,7 +2,8 @@ import Block from '../../utils/Block';
 
 import compile from '../../utils/compile';
 
-import template from 'componentTemplates/NodeElement.template.js';
+// @ts-ignore
+import template from './NodeElement.template';
 
 import { INodeElementProps } from './types';
 
@@ -13,7 +14,7 @@ export default class NodeElement extends Block {
 		super(props);
 	}
 
-	render() {
+	render(): Element {
 		const { tagName, events, children, ...props } = this.props;
 
 		return compile(template, {

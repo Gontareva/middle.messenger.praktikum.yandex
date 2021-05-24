@@ -15,6 +15,8 @@ import chatController from './utils/controllers/chat';
 import { createStore, getState } from './utils/Store';
 import { renderPage } from './utils/common';
 
+import './styles/main.scss';
+
 createStore({ user: {} });
 
 class AuthErrorPage extends ErrorPage {

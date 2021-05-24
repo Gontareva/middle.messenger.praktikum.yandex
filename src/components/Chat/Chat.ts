@@ -19,15 +19,18 @@ import {
 } from '../../utils/Store';
 import { icons } from '../../utils/constants';
 
-import template from 'componentTemplates/Chat.template.js';
+// @ts-ignore
+import template from './Chat.template';
 
 import { IChatProps } from './types';
 import { IMessage } from '../../utils/types';
 import UserList from '../UserList/UserList';
 
+import './Chat.scss';
+
 export default class Chat extends Block {
 	readonly props: IChatProps;
-	private state: {
+	public state: {
 		message: string;
 		modalIsOpen: boolean;
 		actionUser: { login: string };
@@ -42,7 +45,7 @@ export default class Chat extends Block {
 		attachListener('messages', this.getMessages);
 	}
 
-	init() {
+	init(): void {
 		this.state = {
 			message: '',
 			modalIsOpen: false,
@@ -59,7 +62,7 @@ export default class Chat extends Block {
 		this.htmlInputElement = this.input.getContent() as HTMLInputElement;
 	}
 
-	componentDidMount() {
+	componentDidMount(): void {
 		chatController.initChat(this.props.user.id, this.props.chat.id);
 	}
 
@@ -91,23 +94,23 @@ export default class Chat extends Block {
 		this.setState({ modalIsOpen: !this.state.modalIsOpen });
 	};
 
-	addUser({ login }) {
+	addUser({ login }: { login: string }): void {
 		chatController.addUser(login, this.props.chat.id).then(() => {
 			this.setState({ modalIsOpen: false, actionUser: { login: '' } });
 		});
 	}
 
-	removeUser({ login }) {
+	removeUser({ login }: { login: string }): void {
 		chatController.removeUser(login, this.props.chat.id).then(() => {
 			this.setState({ modalIsOpen: false, actionUser: { login: '' } });
 		});
 	}
 
-	onAddUserButton = () => {
+	onAddUserButton = (): void => {
 		this.setState({ modalIsOpen: !this.state.modalIsOpen, addUser: true });
 	};
 
-	onRemoveUserButton = () => {
+	onRemoveUserButton = (): void => {
 		this.setState({ modalIsOpen: !this.state.modalIsOpen, addUser: false });
 	};
 
@@ -118,7 +121,7 @@ export default class Chat extends Block {
 		chatController.sendFile(formData, this.props.chat.id);
 	}
 
-	onSendButtonClick() {
+	onSendButtonClick(): void {
 		this.htmlInputElement.click();
 	}
 
@@ -169,7 +172,7 @@ export default class Chat extends Block {
 			form: new Form({
 				schema: {
 					message: [
-						(string) =>
+						(string: string) =>
 							/апельсин/.test(string)
 								? 'Нельзя использовать слово "апельсин"!'
 								: null,

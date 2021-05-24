@@ -1,4 +1,4 @@
-import { escape } from '../escape';
+import { escape } from './escape';
 import { dispatch } from './Store';
 
 export const errorHandler = ({ response = '{}', message }) => {

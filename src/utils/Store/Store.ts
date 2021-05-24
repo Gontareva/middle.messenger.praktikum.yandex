@@ -26,53 +26,56 @@ class Store {
 		});
 	}
 
-	attachListener = (path, callback) => {
+	attachListener = (path: string, callback: () => void) => {
 		this._eventBus().on(path, callback);
 	};
 
-	detachListener = (path, callback) => {
+	detachListener = (path: string, callback: () => void) => {
 		this._eventBus().off(path, callback);
 	};
 }
 
-export const dispatch = (path: string, func: (...args) => any) => (
-	...args: any[]
-) => {
-	const result = func(args);
+export const dispatch = function (
+	path: string,
+	func: (...args: unknown[]) => any
+) {
+	return (...args: unknown[]) => {
+		const result = func(args);
 
-	if (result && result.then) {
-		result.then((data) => {
-			set(storeInstance.state, path, data);
-		});
-	} else {
-		set(storeInstance.state, path, result);
-	}
+		if (result && result.then) {
+			result.then((data: unknown) => {
+				set(storeInstance.state, path, data);
+			});
+		} else {
+			set(storeInstance.state, path, result);
+		}
 
-	return result;
+		return result;
+	};
 };
 
-export const makeSelector = (...selectors: ((any) => any)[]) =>
+export const makeSelector = (...selectors: ((arg: any) => any)[]) =>
 	deepCopy(selectors.reduce((memo, func) => func(memo), storeInstance.state));
 
-let storeInstance = null;
+let storeInstance: Store = null;
 
-export const createStore = (defaultState) => {
+export const createStore = (defaultState: Record<string, unknown>): void => {
 	storeInstance = new Store(defaultState);
 };
 
-export const attachListener = (path, callback) => {
+export const attachListener = (path: string, callback: () => void): void => {
 	if (storeInstance) {
 		storeInstance.attachListener(path, callback);
 	}
 };
 
-export const detachListener = (path, callback) => {
+export const detachListener = (path: string, callback: () => void): void => {
 	if (storeInstance) {
 		storeInstance.detachListener(path, callback);
 	}
 };
 
-export const getState = () => {
+export const getState = (): Record<string, any> | never => {
 	if (storeInstance) {
 		return storeInstance.state;
 	}

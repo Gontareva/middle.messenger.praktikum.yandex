@@ -2,16 +2,19 @@ import Block from '../../utils/Block';
 
 import compile from '../../utils/compile';
 
-import template from 'componentTemplates/FormInput.template.js';
+// @ts-ignore
+import template from './FormInput.template';
 
 import { IFormInputProps } from './types';
+
+import './FormInput.scss';
 
 export default class FormInput extends Block {
 	constructor(props: IFormInputProps) {
 		super(props);
 	}
 
-	render() {
+	render(): Element {
 		return compile(template, this.props);
 	}
 }

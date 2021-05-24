@@ -5,10 +5,7 @@
 		"module": "ES2020",
 		"baseUrl": ".",
 		"lib": ["DOM", "ES2020", "dom.iterable"],
-		"paths": {
-			"componentTemplates/*": ["./dist/templates/*"],
-			"pageTemplates/*": ["./dist/pages/*"]
-		},
-		"allowSyntheticDefaultImports": true
+		"allowSyntheticDefaultImports": true,
+		"noImplicitAny": true
 	}
 }

@@ -1,78 +1,74 @@
+@import "../../styles/helpers/variables";
+
 .chat-list-item {
-	display: flex;
-	width: 100%;
+  display: flex;
+  width: 100%;
+  cursor: pointer;
 
-	cursor: pointer;
+  &__avatar {
+    width: 47px;
+    height: 47px;
+    margin-right: 10px;
+  }
 
-	&__avatar {
-		width: 47px;
-		height: 47px;
-		margin-right: 10px;
-	}
+  &__counter {
+    display: block;
+    margin-top: 5px;
+    padding: 5px 8px;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 12px;
+    text-align: center;
+    color: $white-color;
+    background: $royal-blue-color;
+    border-radius: 100%;
+  }
 
-	&__counter {
-		display: block;
-		margin-top: 5px;
-		padding: 5px 8px;
+  &__user-name {
+    margin-bottom: 4px;
+    font-weight: 600;
+    font-size: 13px;
+  }
 
-		font-weight: 500;
-		font-size: 11px;
-		line-height: 12px;
-		text-align: center;
-		color: $white-color;
+  &__body {
+    width: 70%;
+  }
 
-		background: $royal-blue-color;
-		border-radius: 100%;
-	}
+  &__text {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    color: $dusty-gray-color;
+  }
 
-	&__user-name {
-		margin-bottom: 4px;
+  &__date {
+    font-weight: 500;
+    font-size: 9px;
+    line-height: 13px;
+    color: $dusty-gray-color;
+  }
 
-		font-weight: 600;
-		font-size: 13px;
-	}
+  &__label {
+    margin-right: 0.5em;
+    color: $cod-gray-color;
+  }
 
-	&__body {
-		width: 70%;
-	}
+  &__labels {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 0 0 0 auto;
+  }
 
-	&__text {
-		font-weight: 500;
-		font-size: 12px;
-		line-height: 15px;
-		color: $dusty-gray-color;
-	}
+  &__close {
+    width: 10px;
+    height: 10px;
+    visibility: hidden;
+  }
 
-	&__date {
-		font-weight: 500;
-		font-size: 9px;
-		line-height: 13px;
-		color: $dusty-gray-color;
-	}
-
-	&__label {
-		margin-right: 0.5em;
-
-		color: $cod-gray-color;
-	}
-
-	&__labels {
-		display: flex;
-		flex: 0 0 auto;
-		flex-direction: column;
-		justify-content: space-between;
-		align-items: flex-end;
-		margin: 0 0 0 auto;
-	}
-
-	&__close {
-		width: 10px;
-		height: 10px;
-
-		visibility: hidden;
-	}
-
-	&:hover &__close {
-		visibility: visible;
-	}
+  &:hover &__close {
+    visibility: visible;
+  }
 }

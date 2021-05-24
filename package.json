@@ -7,10 +7,10 @@
 		"@types/htmlparser2": "^3.10.2",
 		"@types/sanitize-html": "^2.3.1",
 		"express": "^4.17.1",
-		"pug-cli": "^1.0.0-alpha6",
-		"sanitize-html": "^2.3.3",
+		"http": "^0.0.1-security",
 		"scss": "^0.2.4",
-		"uuid": "^8.3.2"
+		"uuid": "^8.3.2",
+		"webpack": "^5.37.1"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.14.0",
@@ -24,38 +24,43 @@
 		"@typescript-eslint/eslint-plugin": "^4.21.0",
 		"@typescript-eslint/parser": "^4.21.0",
 		"chai": "^4.3.4",
-		"cssnano": "^4.1.10",
+		"css-loader": "^5.2.5",
+		"cssnano": "^5.0.4",
 		"eslint": "^7.22.0",
 		"eslint-config-airbnb": "^18.2.1",
 		"eslint-config-airbnb-base": "^14.2.1",
 		"eslint-config-prettier": "^8.1.0",
 		"eslint-plugin-prettier": "^3.3.1",
-		"http": "0.0.1-security",
+		"file-loader": "^6.2.0",
+		"html-webpack-plugin": "^5.3.1",
+		"html-webpack-pug-plugin": "^3.0.0",
+		"husky": "^6.0.0",
+		"lint-staged": "^11.0.0",
 		"mocha": "^8.4.0",
-		"parcel-bundler": "^1.12.5",
 		"prettier": "^2.2.1",
 		"pug": "^3.0.2",
+		"pug-loader": "^2.4.0",
 		"sass": "^1.32.8",
-		"stylelint": "^13.12.0",
-		"stylelint-config-dvpnt": "^1.4.0",
+		"sass-loader": "^11.1.1",
+		"style-loader": "^2.0.0",
+		"stylelint": "^13.13.1",
+		"stylelint-config-standard": "^22.0.0",
+		"svg-url-loader": "^7.1.1",
+		"ts-loader": "^9.2.2",
 		"typescript": "^4.2.4",
+		"webpack-cli": "^4.7.0",
 		"xmlhttprequest": "^1.8.0"
 	},
 	"scripts": {
-		"clientBuild": "pug -O '{module: true}' -c --no-debug --name-after-file -o dist/templates src/components/*/*.template.pug && pug -O '{module: true}' -c --no-debug --name-after-file -o dist/pages src/pages/*/*.template.pug",
-		"cleanup": "rm -rf .cache dist",
 		"test": "mocha",
-		"parcelStart": "parcel -p 3001 src/index.pug --no-cache",
-		"parcelBuild": "parcel build src/index.pug --no-cache",
-		"start": "npm run clientBuild && npm run parcelBuild && node server.ts",
+		"start": "npm run build && node server.ts",
 		"lint": "eslint --ext js,ts -- './' && stylelint --syntax scss -- './**.scss'",
 		"lintJsFix": "eslint --ext js,ts --cache --fix -- './'",
 		"lintSCSSFix": "stylelint --syntax scss --fix -- './**.scss'",
-		"lintFix": "nrun lintJsFix && nrun lintSCSSFix"
-	},
-	"alias": {
-		"componentTemplates": "./dist/templates",
-		"pageTemplates": "./dist/pages"
+		"lintFix": "nrun lintJsFix && nrun lintSCSSFix",
+		"build": "webpack",
+		"prepare": "husky install",
+		"precommit": "lint-staged --quiet"
 	},
 	"repository": {
 		"type": "git",
@@ -66,13 +71,8 @@
 	"bugs": {
 		"url": "https://github.com/Gontareva/middle.messenger.praktikum.yandex/issues"
 	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged --quiet"
-		}
-	},
 	"lint-staged": {
-		"*.js,*.ts": "eslint --quiet",
+		"*.{js,ts}": "eslint --quiet",
 		"*.scss": "stylelint --syntax scss"
 	},
 	"homepage": "https://github.com/Gontareva/middle.messenger.praktikum.yandex#readme",

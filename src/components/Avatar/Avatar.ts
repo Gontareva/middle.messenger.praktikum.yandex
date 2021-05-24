@@ -4,9 +4,12 @@ import Block from '../../utils/Block';
 import compile from '../../utils/compile';
 import NodeElement from '../NodeElement';
 
-import template from 'componentTemplates/Avatar.template.js';
+// @ts-ignore
+import template from './Avatar.template';
 
 import { IAvatarProps } from './types';
+
+import './Avatar.scss';
 
 export default class Avatar extends Block {
 	readonly props: IAvatarProps;
@@ -21,7 +24,7 @@ export default class Avatar extends Block {
 		});
 	}
 
-	init() {
+	init(): void {
 		this.setProps({
 			events: {
 				click: this.onClick.bind(this)
@@ -49,13 +52,13 @@ export default class Avatar extends Block {
 		}
 	}
 
-	onClick() {
+	onClick(): void {
 		if (this.props.canChange) {
 			this.htmlInputElement.click();
 		}
 	}
 
-	render() {
+	render(): Element {
 		const { onChange, ...props } = this.props;
 
 		return compile(template, {

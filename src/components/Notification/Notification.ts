@@ -20,13 +20,13 @@ export default class Notification extends Block {
 		attachListener('notification', this.getNotification);
 	}
 
-	init() {
+	init(): void {
 		this.state = {
 			isOpen: false
 		};
 	}
 
-	getNotification() {
+	getNotification(): void {
 		const notification = makeSelector((state) => state.notification);
 
 		if (notification) {
@@ -44,7 +44,7 @@ export default class Notification extends Block {
 		}
 	}
 
-	componentWillUnmount() {
+	componentWillUnmount(): void {
 		detachListener('notification', this.getNotification);
 	}
 
@@ -55,7 +55,7 @@ export default class Notification extends Block {
 		this.setState({ isOpen: false });
 	};
 
-	render() {
+	render(): Element {
 		return new Modal({
 			isOpen: this.state.isOpen,
 			onCloseButtonClick: this.handleCloseButtonClick,

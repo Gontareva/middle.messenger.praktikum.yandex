@@ -8,7 +8,8 @@ import Block from '../../utils/Block';
 import compile from '../../utils/compile';
 import authController from '../../utils/controllers/auth';
 
-import template from 'pageTemplates/Login.template.js';
+// @ts-ignore
+import template from './Login.template';
 
 export default class LoginPage extends Block {
 	init(): void {
@@ -18,7 +19,7 @@ export default class LoginPage extends Block {
 		};
 	}
 
-	onSubmit = (data: Record<string, any>): void => {
+	onSubmit = (data: Record<string, string>): void => {
 		authController.login(data);
 	};
 

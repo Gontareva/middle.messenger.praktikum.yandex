@@ -5,9 +5,12 @@ import compile from '../../utils/compile';
 import classnames from '../../utils/classnames';
 import { icons } from '../../utils/constants';
 
-import template from 'componentTemplates/Modal.template.js';
+// @ts-ignore
+import template from './Modal.template';
 
 import { IModalProps } from './types';
+
+import './Modal.scss';
 
 export default class Modal extends Block {
 	constructor(props: IModalProps) {
@@ -20,7 +23,7 @@ export default class Modal extends Block {
 		}
 	}
 
-	render() {
+	render(): Element {
 		const { theme, render, isOpen } = this.props;
 		const { className, ...props } = render();
 		const classes = classnames(className, {

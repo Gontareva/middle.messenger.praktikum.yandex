@@ -1,41 +1,40 @@
+@import "../../styles/helpers/variables";
+
 .button {
-	display: block;
-	padding: 1em;
+  display: block;
+  padding: 1em;
+  font-size: 13px;
+  text-align: center;
+  color: $royal-blue-color;
+  text-decoration: none;
+  background: none;
+  border: none;
+  border-radius: $small-border-radius;
+  cursor: pointer;
 
-	font-size: 13px;
-	text-align: center;
-	color: $royal-blue-color;
-	text-decoration: none;
+  &:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
 
-	background: none;
-	border: none;
-	border-radius: $small-border-radius;
-	cursor: pointer;
+  &_primary {
+    color: $white-color;
+    background: $royal-blue-color;
+  }
 
-	&:hover {
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-	}
+  &_stretch {
+    width: 100%;
+  }
 
-	&_primary {
-		color: $white-color;
+  &_wide {
+    padding-right: 70px;
+    padding-left: 70px;
+  }
 
-		background: $royal-blue-color;
-	}
+  &_simple {
+    padding: 0;
 
-	&_stretch {
-		width: 100%;
-	}
-
-	&_wide {
-		padding-right: 70px;
-		padding-left: 70px;
-	}
-
-	&_simple {
-		padding: 0;
-
-		&:hover {
-			box-shadow: none;
-		}
-	}
+    &:hover {
+      box-shadow: none;
+    }
+  }
 }

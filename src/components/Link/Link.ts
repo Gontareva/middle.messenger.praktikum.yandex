@@ -5,6 +5,8 @@ import classnames from '../../utils/classnames';
 
 import { ILinkProps } from './types';
 
+import './Link.scss';
+
 export default class Link extends Block {
 	readonly props: ILinkProps;
 
@@ -12,7 +14,7 @@ export default class Link extends Block {
 		super(props);
 	}
 
-	render() {
+	render(): Element {
 		const { text, themes = [], className, ...attrs } = this.props;
 
 		const classes = classnames(

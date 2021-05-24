@@ -4,7 +4,8 @@ type ValidateFuncType = (str?: unknown) => string | undefined | null;
 type SchemaType = { [key: string]: (string | ValidateFuncType)[] };
 
 export default class Validator {
-	private readonly emailRegExp: RegExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	private readonly emailRegExp: RegExp =
+		/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	private readonly phoneRegExp: RegExp = /^((\+7|7|8)+([0-9]){10})$/;
 	private readonly listeners = {};
 	private readonly _errors: Record<string, unknown> = {};
