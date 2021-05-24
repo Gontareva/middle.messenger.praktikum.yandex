@@ -6,6 +6,6 @@
 		"baseUrl": ".",
 		"lib": ["DOM", "ES2020", "dom.iterable"],
 		"allowSyntheticDefaultImports": true,
-		"noImplicitAny": true
+		"noImplicitAny": false
 	}
 }
