@@ -244,7 +244,6 @@ class Block {
 
 	show(): void {
 		this.element.classList.remove('hidden');
-		// this._eventBus().emit(Block.EVENTS.FLOW_CDM);
 	}
 }
 
