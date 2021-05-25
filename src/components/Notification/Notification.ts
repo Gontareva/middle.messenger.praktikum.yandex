@@ -10,7 +10,7 @@ import {
 import { INotificationProps } from './types';
 
 export default class Notification extends Block {
-	private timeoutHandle: NodeJS.Timeout;
+	private timeoutHandle: ReturnType<typeof setTimeout>;
 
 	constructor(props?: INotificationProps) {
 		super(props);
