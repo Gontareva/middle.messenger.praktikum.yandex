@@ -1,9 +1,5 @@
-FROM ubuntu:latest
-RUN apt update
-RUN apt install curl -y
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt install -y nodejs
+FROM node:14
 WORKDIR /var/www
-COPY ./ ./
+COPY . .
 EXPOSE 3000
-CMD npm ci && npm run build && node server.ts
+CMD npm ci && npm run start

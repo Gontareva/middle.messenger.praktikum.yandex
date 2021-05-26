@@ -8,6 +8,7 @@ import {
 } from '../../utils/Store';
 
 import { INotificationProps } from './types';
+import { NotificationsController } from '../../utils/controllers/notifications';
 
 export default class Notification extends Block {
 	private timeoutHandle: ReturnType<typeof setTimeout>;
@@ -41,6 +42,8 @@ export default class Notification extends Block {
 					isOpen: false
 				});
 			}, 3000);
+		} else {
+			this.setState({ isOpen: false });
 		}
 	}
 

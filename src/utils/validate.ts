@@ -4,6 +4,7 @@ type ValidateFuncType = (str?: unknown) => string | undefined | null;
 type SchemaType = { [key: string]: (string | ValidateFuncType)[] };
 
 export default class Validator {
+	// https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
 	private readonly emailRegExp: RegExp =
 		/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	private readonly phoneRegExp: RegExp = /^((\+7|7|8)+([0-9]){10})$/;
@@ -40,8 +41,8 @@ export default class Validator {
 		);
 	}
 
-	addListeners(form) {
-		this.form = form;
+	addListeners(form: HTMLFormElement | Element): void {
+		this.form = form as HTMLFormElement;
 
 		Object.keys(this.schema).forEach((name) => {
 			const el = this.form.querySelector(`[name="${name}"]`);
@@ -61,7 +62,7 @@ export default class Validator {
 		});
 	}
 
-	detachListeners() {
+	detachListeners(): void {
 		Object.keys(this.listeners).forEach((elementName) => {
 			const { el, handle } = this.listeners[elementName];
 
@@ -72,7 +73,7 @@ export default class Validator {
 		});
 	}
 
-	validate() {
+	validate(): boolean {
 		const errors = Object.keys(this.listeners).reduce((memo, elementName) => {
 			memo[elementName] = this.validateElement(elementName);
 
@@ -84,7 +85,7 @@ export default class Validator {
 		return !Object.keys(this._errors).length;
 	}
 
-	validateElement(elementName) {
+	validateElement(elementName: string): string | null {
 		const data = new FormData(this.form);
 		const value = data.get(elementName);
 
@@ -95,23 +96,23 @@ export default class Validator {
 			.filter(Boolean)[0];
 	}
 
-	email(string = '') {
+	email(string = ''): string | null {
 		return !string || this.emailRegExp.test(string) ? null : 'Невалидный email';
 	}
 
-	password(string = '') {
+	password(string = ''): string | null {
 		return !string || string.length > 4
 			? null
 			: 'Пароль должен быть больше 4 символов';
 	}
 
-	phone(string = '') {
+	phone(string = ''): string | null {
 		return !string || this.phoneRegExp.test(string)
 			? null
 			: 'Неверный формат номера! Пример: +79803777869 или 89803777869';
 	}
 
-	required(string = '') {
+	required(string = ''): string | null {
 		return string ? null : 'Обязательное поле!';
 	}
 

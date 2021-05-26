@@ -21,7 +21,7 @@ export default class HistoryMock {
 		this.stateIndex = 0;
 	}
 
-	pushState(data: any, title: string, url?: string | null) {
+	pushState(data: any, title: string, url?: string | null): void {
 		this.length += 1;
 		this.state = { data, title, url };
 		this.stateIndex += 1;
@@ -29,7 +29,7 @@ export default class HistoryMock {
 		this.queue.push(this.state);
 	}
 
-	forward() {
+	forward(): void {
 		this.stateIndex += 1;
 
 		if (this.stateIndex >= this.queue.length) {
@@ -39,7 +39,7 @@ export default class HistoryMock {
 		this.state = this.queue[this.stateIndex];
 	}
 
-	back() {
+	back(): void {
 		this.stateIndex -= 1;
 
 		if (this.stateIndex < 0) {

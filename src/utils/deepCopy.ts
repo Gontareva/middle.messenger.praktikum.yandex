@@ -1,4 +1,6 @@
-export default function deepCopy(obj) {
+export default function deepCopy(
+	obj: Record<string, any>
+): Record<string, any> {
 	if (Array.isArray(obj)) {
 		return obj.map(deepCopy);
 	} else if (obj instanceof Date) {

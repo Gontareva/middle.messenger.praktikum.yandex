@@ -54,7 +54,7 @@ export const dispatch = function (
 	};
 };
 
-export const makeSelector = (...selectors: ((arg: any) => any)[]) =>
+export const makeSelector = (...selectors: ((arg: any) => any)[]): unknown =>
 	deepCopy(selectors.reduce((memo, func) => func(memo), storeInstance.state));
 
 let storeInstance: Store = null;

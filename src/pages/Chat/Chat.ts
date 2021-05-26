@@ -49,7 +49,7 @@ export default class ChatPage extends Block {
 	};
 
 	getChats = (): void => {
-		const chats = makeSelector((store) => store.chats) || [];
+		const chats = (makeSelector((store) => store.chats) as IChat[]) || [];
 
 		if (chats.length && !this.props.chats.length) {
 			this.setState({ activeChatId: chats[0].id });

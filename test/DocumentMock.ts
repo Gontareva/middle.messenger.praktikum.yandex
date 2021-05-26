@@ -1,3 +1,8 @@
+type RootType = {
+	append: () => RootType;
+	remove: () => null;
+};
+
 export default class DocumentMock {
 	public title: string;
 
@@ -6,13 +11,13 @@ export default class DocumentMock {
 	}
 
 	root = {
-		append: () => this.root,
-		remove: () => null
+		append: (): RootType => this.root,
+		remove: (): null => null
 	};
 
-	querySelector() {
+	querySelector(): RootType {
 		return this.root;
 	}
 
-	createElement = () => this.root;
+	createElement = (): RootType => this.root;
 }

@@ -11,11 +11,11 @@ export default class TestBlock extends Block {
 		super(props);
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate(): void {
 		TestBlock.changedCount += 1;
 	}
 
-	render() {
+	render(): Element {
 		TestBlock.renderCount += 1;
 
 		return super.render();

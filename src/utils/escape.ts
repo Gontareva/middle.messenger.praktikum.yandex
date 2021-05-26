@@ -18,7 +18,7 @@ export const escapeObject = (obj) =>
 		return memo;
 	}, obj);
 
-export const unescape = (str) =>
+export const unescape = (str: string): string =>
 	str
 		.replace(/&lt;/g, '<')
 		.replace(/&gt;/g, '>')
@@ -26,7 +26,7 @@ export const unescape = (str) =>
 		.replace(/&#039;/g, "'")
 		.replace(/&amp;/g, '&');
 
-export const unescapeObject = (obj) =>
+export const unescapeObject = (obj: Record<string, any>): Record<string, any> =>
 	obj &&
 	Object.keys(obj).reduce((memo, key) => {
 		if (typeof obj[key] === 'object' && !(obj[key] instanceof Date)) {

@@ -74,11 +74,11 @@ export default class Chat extends Block {
 		return message1.time.getTime() - message2.time.getTime() >= 0 ? 1 : -1;
 	}
 
-	getMessages = (): void => {
+	getMessages = (): IMessage[] => {
 		const messages = makeSelector(
 			(state) => state.messages || {},
 			(obj) => obj[this.props.chat.id] || []
-		);
+		) as IMessage[];
 
 		this.setProps({ messages });
 

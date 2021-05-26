@@ -10,8 +10,7 @@ describe('Block', () => {
 	let block;
 
 	before(() => {
-		// @ts-ignore
-		global.document = new DocumentMock();
+		global.document = new DocumentMock() as unknown as Document;
 	});
 
 	beforeEach(function () {

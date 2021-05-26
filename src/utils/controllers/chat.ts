@@ -5,7 +5,7 @@ import UserAPI from '../api/user';
 import { errorHandler } from '../errorHandler';
 import ResourcesAPI from '../api/resources';
 import { union } from '../union';
-import { IChat, IUser } from '../types';
+import { IChat, IMessage, IUser } from '../types';
 import { escape, escapeObject, unescapeObject } from '../escape';
 
 class ChatController {
@@ -42,7 +42,7 @@ class ChatController {
 
 	delete(id: number) {
 		const promise = this.chatApi.delete(id);
-		promise.then(() => this.request()).catch(errorHandler);
+		promise.catch(errorHandler);
 
 		return promise;
 	}
@@ -153,7 +153,7 @@ class ChatController {
 				const messages = makeSelector(
 					(state) => state.messages || {},
 					(obj) => obj[chatId] || []
-				);
+				) as IMessage[];
 
 				dispatch('messages', () => ({
 					[chatId]: union(messages, data, 'id')
@@ -219,7 +219,7 @@ class ChatController {
 	getUsers(chatId: number) {
 		return dispatch('chats', () =>
 			this.chatApi.getUsers(chatId).then((users: IUser[]) => {
-				const chats = makeSelector((state) => state.chats || {});
+				const chats = makeSelector((state) => state.chats || {}) as IChat[];
 				const chat = chats.find(({ id }: { id: number }) => id === chatId);
 				chat.users = users;
 
