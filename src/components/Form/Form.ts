@@ -3,13 +3,16 @@ import Block, { IBlockProps } from '../../utils/Block';
 import compile from '../../utils/compile';
 import { getData, onSubmitForm } from '../../utils/common';
 import Validator from '../../utils/validate';
+import classnames from '../../utils/classnames';
 import isEqual from '../../utils/isEqual';
+import { modifiers } from '../../utils/styles';
 
-import template from 'componentTemplates/Form.template.js';
+// @ts-ignore
+import template from './Form.template';
 
 import { IFormProps } from './types';
-import { modifiers } from '../../utils/styles';
-import classnames from '../../utils/classnames';
+
+import './Form.scss';
 
 export default class Form extends Block {
 	validator?: Validator;
@@ -18,7 +21,7 @@ export default class Form extends Block {
 		super(props);
 	}
 
-	componentDidMount() {
+	componentDidMount(): void {
 		if (this.props.schema) {
 			this.validator = new Validator(this.props.schema, this.onErrorsChange);
 			this.validator.addListeners(this.element);
@@ -32,7 +35,7 @@ export default class Form extends Block {
 		});
 	}
 
-	shouldComponentUpdate(nextProps: IBlockProps) {
+	shouldComponentUpdate(nextProps: IBlockProps): boolean {
 		const equal = isEqual(this.props, nextProps);
 
 		if (!equal && this.validator) {
@@ -42,7 +45,7 @@ export default class Form extends Block {
 		return !equal;
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate(): void {
 		if (this.validator) {
 			this.validator.addListeners(this.element);
 		}
@@ -58,7 +61,7 @@ export default class Form extends Block {
 		}
 	};
 
-	onSubmitForm = (event: Event) => {
+	onSubmitForm = (event: Event): void => {
 		event.preventDefault();
 
 		if (!this.validator || this.validator.validate()) {
@@ -72,11 +75,11 @@ export default class Form extends Block {
 		}
 	};
 
-	onErrorsChange = (errors) => {
+	onErrorsChange = (errors: Record<string, string>): void => {
 		this.setProps({ errors });
 	};
 
-	render() {
+	render(): Element {
 		const { errors = {}, theme, render } = this.props;
 		const { className, ...props } = render(errors);
 

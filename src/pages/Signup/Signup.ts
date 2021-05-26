@@ -8,7 +8,8 @@ import Block from '../../utils/Block';
 import compile from '../../utils/compile';
 import authController from '../../utils/controllers/auth';
 
-import template from 'pageTemplates/Signup.template.js';
+// @ts-ignore
+import template from './Signup.template.pug';
 
 export default class SignupPage extends Block {
 	init(): void {

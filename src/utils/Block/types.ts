@@ -1,4 +1,4 @@
 export interface IBlockProps {
-	events?: { [key: string]: (...args) => void };
-	[key: string]: ((...args) => unknown) | any;
+	events?: { [key: string]: (...args: any[]) => void };
+	[key: string]: ((...args: any[]) => unknown) | any;
 }

@@ -4,16 +4,19 @@ import compile from '../../utils/compile';
 import classnames from '../../utils/classnames';
 import { modifiers } from '../../utils/styles';
 
-import template from 'componentTemplates/Input.template.js';
+// @ts-ignore
+import template from './Input.template';
 
 import { IInputProps } from './types';
+
+import './Input.scss';
 
 export default class Input extends Block {
 	constructor(props: IInputProps) {
 		super(props);
 	}
 
-	render() {
+	render(): Element {
 		const { className, error, ...props } = this.props;
 		return compile(template, {
 			className: classnames(className, error && modifiers('input', ['error'])),

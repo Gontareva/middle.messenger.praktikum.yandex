@@ -5,8 +5,8 @@ import UserAPI from '../api/user';
 import { errorHandler } from '../errorHandler';
 import ResourcesAPI from '../api/resources';
 import { union } from '../union';
-import { IChat, IUser } from '../types';
-import { escape, escapeObject, unescapeObject } from '../../escape';
+import { IChat, IMessage, IUser } from '../types';
+import { escape, escapeObject, unescapeObject } from '../escape';
 
 class ChatController {
 	private chatApi: ChatAPI;
@@ -24,7 +24,7 @@ class ChatController {
 		this.tokens = {};
 	}
 
-	create(data) {
+	create(data: Record<string, string>) {
 		const promise = this.chatApi.create(escapeObject(data));
 		promise.then(() => this.request().catch(errorHandler));
 
@@ -42,7 +42,7 @@ class ChatController {
 
 	delete(id: number) {
 		const promise = this.chatApi.delete(id);
-		promise.then(() => this.request()).catch(errorHandler);
+		promise.catch(errorHandler);
 
 		return promise;
 	}
@@ -145,7 +145,7 @@ class ChatController {
 				let data = JSON.parse(event.data) || [];
 				data = Array.isArray(data) ? data : [data];
 				data = unescapeObject(
-					data.map(({ time, ...message }) => ({
+					data.map(({ time, ...message }: { time: string }) => ({
 						...message,
 						time: new Date(time)
 					}))
@@ -153,7 +153,7 @@ class ChatController {
 				const messages = makeSelector(
 					(state) => state.messages || {},
 					(obj) => obj[chatId] || []
-				);
+				) as IMessage[];
 
 				dispatch('messages', () => ({
 					[chatId]: union(messages, data, 'id')
@@ -174,7 +174,9 @@ class ChatController {
 		const promise = this.userApi.search(login);
 		promise
 			.then((users) => {
-				const user = users.find(({ login: userLogin }) => login === userLogin);
+				const user = users.find(
+					({ login: userLogin }: { login: string }) => login === userLogin
+				);
 
 				if (user) {
 					return this.chatApi.addUser(user.id, chatId);
@@ -217,8 +219,8 @@ class ChatController {
 	getUsers(chatId: number) {
 		return dispatch('chats', () =>
 			this.chatApi.getUsers(chatId).then((users: IUser[]) => {
-				const chats = makeSelector((state) => state.chats || {});
-				const chat = chats.find(({ id }) => id === chatId);
+				const chats = makeSelector((state) => state.chats || {}) as IChat[];
+				const chat = chats.find(({ id }: { id: number }) => id === chatId);
 				chat.users = users;
 
 				return chats;

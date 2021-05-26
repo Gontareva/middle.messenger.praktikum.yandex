@@ -4,10 +4,13 @@ import compile from '../../utils/compile';
 import { formatTime } from '../../utils/date';
 import { modifiers } from '../../utils/styles';
 
-import template from 'componentTemplates/Message.template.js';
+// @ts-ignore
+import template from './Message.template';
 
 import { IMessageProps } from './types';
 import { StatusEnum } from '../../utils/types';
+
+import './Message.scss';
 
 export default class Message extends Block {
 	readonly props: IMessageProps;
@@ -16,7 +19,7 @@ export default class Message extends Block {
 		super(props);
 	}
 
-	render() {
+	render(): Element {
 		const { message, isOwnMessage } = this.props;
 		const onlyFile = message.file && !message.content;
 

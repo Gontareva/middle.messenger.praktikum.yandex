@@ -41,7 +41,7 @@ export default class ServerMock {
 		});
 	}
 
-	listen(...params): void {
+	listen(...params: any[]): void {
 		this.server.listen(...params);
 	}
 }

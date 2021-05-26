@@ -12,27 +12,15 @@ import Notification from './components/Notification';
 import { router } from './utils/Router';
 import authController from './utils/controllers/auth';
 import chatController from './utils/controllers/chat';
-import { createStore, getState } from './utils/Store';
+import { createStore, dispatch } from './utils/Store';
 import { renderPage } from './utils/common';
+import { auth } from './utils/authMiddleware';
+
+import './styles/main.scss';
+import { errorHandler } from './utils/errorHandler';
+import notificationsController from './utils/controllers/notifications';
 
 createStore({ user: {} });
-
-class AuthErrorPage extends ErrorPage {
-	constructor() {
-		super({
-			code: 401
-		});
-	}
-}
-
-function auth(block) {
-	const { user = {} } = getState();
-
-	if (user.id) {
-		return block;
-	}
-	return AuthErrorPage;
-}
 
 router
 	.use('/', 'Messenger', () => Main)
@@ -51,3 +39,10 @@ authController.user().then(() => {
 });
 
 renderPage('#notification', new Notification());
+
+window.addEventListener('online', () =>
+	notificationsController.add('Вы снова online!')
+);
+window.addEventListener('offline', () =>
+	notificationsController.add('Нет сети...')
+);

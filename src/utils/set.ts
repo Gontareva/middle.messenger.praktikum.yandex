@@ -2,7 +2,7 @@ type Indexed<T = unknown> = {
 	[key in string]: T;
 };
 
-function isObject(val) {
+function isObject(val: unknown) {
 	return typeof val === 'object' && !Array.isArray(val) && val;
 }
 

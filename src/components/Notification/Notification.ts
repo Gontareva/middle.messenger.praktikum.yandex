@@ -8,9 +8,10 @@ import {
 } from '../../utils/Store';
 
 import { INotificationProps } from './types';
+import { NotificationsController } from '../../utils/controllers/notifications';
 
 export default class Notification extends Block {
-	private timeoutHandle: NodeJS.Timeout;
+	private timeoutHandle: ReturnType<typeof setTimeout>;
 
 	constructor(props?: INotificationProps) {
 		super(props);
@@ -20,13 +21,13 @@ export default class Notification extends Block {
 		attachListener('notification', this.getNotification);
 	}
 
-	init() {
+	init(): void {
 		this.state = {
 			isOpen: false
 		};
 	}
 
-	getNotification() {
+	getNotification(): void {
 		const notification = makeSelector((state) => state.notification);
 
 		if (notification) {
@@ -41,10 +42,12 @@ export default class Notification extends Block {
 					isOpen: false
 				});
 			}, 3000);
+		} else {
+			this.setState({ isOpen: false });
 		}
 	}
 
-	componentWillUnmount() {
+	componentWillUnmount(): void {
 		detachListener('notification', this.getNotification);
 	}
 
@@ -55,7 +58,7 @@ export default class Notification extends Block {
 		this.setState({ isOpen: false });
 	};
 
-	render() {
+	render(): Element {
 		return new Modal({
 			isOpen: this.state.isOpen,
 			onCloseButtonClick: this.handleCloseButtonClick,

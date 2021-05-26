@@ -4,14 +4,15 @@ import compile from '../../utils/compile';
 import { router } from '../../utils/Router';
 import { icons } from '../../utils/constants';
 
-import template from 'componentTemplates/BackButton.template.js';
+// @ts-ignore
+import template from './BackButton.template';
 
 export default class BackButton extends Block {
 	constructor(props?: Record<string, unknown>) {
 		super(props);
 	}
 
-	init() {
+	init(): void {
 		this.setProps({
 			events: {
 				click: this.onBackButtonClick.bind(this),

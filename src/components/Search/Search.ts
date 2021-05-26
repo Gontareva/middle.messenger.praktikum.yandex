@@ -3,9 +3,12 @@ import Block from '../../utils/Block';
 import compile from '../../utils/compile';
 import { getData } from '../../utils/common';
 
-import template from 'componentTemplates/Search.template.js';
+// @ts-ignore
+import template from './Search.template';
 
 import { ISearchProps } from './types';
+
+import './Search.scss';
 
 export default class Search extends Block {
 	constructor(props?: ISearchProps) {
@@ -16,7 +19,7 @@ export default class Search extends Block {
 		});
 	}
 
-	init() {
+	init(): void {
 		this.setProps({
 			events: {
 				submit: this.onChange.bind(this)
@@ -24,14 +27,14 @@ export default class Search extends Block {
 		});
 	}
 
-	onChange(event) {
+	onChange(event: Event): void {
 		event.preventDefault();
 		const title = getData(event.target)[this.props.id];
 
 		this.props.onChange(title);
 	}
 
-	render() {
+	render(): Element {
 		return compile(template, this.props);
 	}
 }

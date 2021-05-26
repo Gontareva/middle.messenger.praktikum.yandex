@@ -2,7 +2,7 @@ import { IUser } from '../types';
 import { UserAPI } from '../api/user';
 import { dispatch } from '../Store';
 import { errorHandler } from '../errorHandler';
-import { escape, escapeObject, unescapeObject } from '../../escape';
+import { escape, escapeObject, unescapeObject } from '../escape';
 
 export class UserController {
 	private userApi: UserAPI;
@@ -37,7 +37,7 @@ export class UserController {
 		return promise;
 	}
 
-	changePassword(data: Record<string, any>) {
+	changePassword(data: Record<string, string>) {
 		const promise = this.userApi.changePassword(escapeObject(data));
 		promise.then(unescapeObject).catch(errorHandler);
 

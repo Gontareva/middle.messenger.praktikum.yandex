@@ -3,9 +3,12 @@ import Avatar from '../Avatar';
 
 import compile from '../../utils/compile';
 
-import template from 'componentTemplates/UserList.template.js';
+// @ts-ignore
+import template from './UserList.template';
 
 import { IUserListProps } from './types';
+
+import './UserList.scss';
 
 export default class UserList extends Block {
 	readonly props: IUserListProps;
@@ -14,7 +17,7 @@ export default class UserList extends Block {
 		super(props);
 	}
 
-	render() {
+	render(): Element {
 		const { users = [] } = this.props;
 
 		return compile(template, {

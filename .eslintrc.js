@@ -51,7 +51,8 @@ module.exports = {
 		'no-use-before-define': 0,
 		'id-length': ['error', { min: 2, exceptions: ['_'] }],
 		'prefer-template': 2,
-		'@typescript-eslint/no-var-requires': 0
+		'@typescript-eslint/no-var-requires': 0,
+		'@typescript-eslint/ban-ts-comment': 0
 	},
 	settings: {
 		'import/resolver': {

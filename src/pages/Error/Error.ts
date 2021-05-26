@@ -4,7 +4,10 @@ import AppLink from '../../components/AppLink';
 import compile from '../../utils/compile';
 import { errorHash } from '../../utils/constants';
 
-import template from 'pageTemplates/Error.template.js';
+// @ts-ignore
+import template from './Error.template';
+
+import './Error.scss';
 
 export default class ErrorPage extends Block {
 	render(): Element {

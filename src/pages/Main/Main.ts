@@ -4,7 +4,8 @@ import List from '../../components/List';
 import compile from '../../utils/compile';
 import Block from '../../utils/Block';
 
-import template from 'pageTemplates/Main.template.js';
+// @ts-ignore
+import template from './Main.template';
 
 export default class MainPage extends Block {
 	render(): Element {

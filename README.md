@@ -1,16 +1,16 @@
 # Messenger
 
-Deploy:
-[https://amazing-tereshkova-cec837.netlify.app](https://amazing-tereshkova-cec837.netlify.app)
+Deploy on Heroku.com:
+[https://messenger-yandex-praktikum-mid.herokuapp.com/](https://messenger-yandex-praktikum-mid.herokuapp.com)
 
 ## Установка
-npm install
+`npm install`
 
 ## Запуск
-npm run start
+`npm run start`
 
 ## Тесты
-npm run test
+`npm run test`
 
 ## Pull requests
 - Sprint 1:  [https://github.com/Gontareva/middle.messenger.praktikum.yandex/pull/1](https://github.com/Gontareva/middle.messenger.praktikum.yandex/pull/1)
@@ -26,3 +26,6 @@ npm run test
 В работе с чатами доступно создание, просмотр всех чатов, поиск чатов. 
 После создания в чат можно добавить пользователя по логину или удалить из списка уже добавленных.
 Можно отправить и получить real-time сообщения.
+
+#Сборка
+Сделана Docker-сборка и проект с ней размещен на Heroku.com. Собрать проект можно с помощью `npm run build`.

@@ -10,7 +10,8 @@ import compile from '../../utils/compile';
 import userController from '../../utils/controllers/user';
 import { detachListener, makeSelector } from '../../utils/Store';
 
-import template from 'pageTemplates/ChangePassword.template.js';
+// @ts-ignore
+import template from './ChangePassword.template';
 
 import { IChangePasswordPageProps } from './types';
 
@@ -30,7 +31,7 @@ export default class ChangePasswordPage extends Block {
 		};
 	}
 
-	componentWillUnmount() {
+	componentWillUnmount(): void {
 		detachListener('user', this.getUser.bind(this));
 	}
 
@@ -39,7 +40,7 @@ export default class ChangePasswordPage extends Block {
 		this.setProps({ user: user || {} });
 	}
 
-	onSubmit = (data) => {
+	onSubmit = (data: Record<string, string>): void => {
 		userController.changePassword(data);
 	};
 

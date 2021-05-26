@@ -2,11 +2,11 @@ import Block from './Block/Block';
 
 export default function (
 	template: (props: Record<string, unknown>) => string,
-	props
+	props: Record<string, unknown>
 ): Element {
 	const blocks: Block[] = [];
 
-	const preparedProps = processOne(props, blocks);
+	const preparedProps = processOne(props, blocks) as Record<string, unknown>;
 
 	const element = document.createElement('div');
 	element.innerHTML = template(preparedProps);
@@ -18,7 +18,7 @@ export default function (
 	return element.firstElementChild;
 }
 
-function getElement(block, blocks: Block[]) {
+function getElement(block: unknown, blocks: Block[]): any {
 	if (block instanceof Block) {
 		return block.getPlaceholderHtml();
 	}
@@ -30,7 +30,7 @@ function getElement(block, blocks: Block[]) {
 	return processOne(block, blocks);
 }
 
-function rememberBlock(block, blocks) {
+function rememberBlock(block: unknown, blocks: Block[]) {
 	const el = getElement(block, blocks);
 
 	if (block instanceof Block) {
@@ -40,11 +40,11 @@ function rememberBlock(block, blocks) {
 	return el;
 }
 
-function processOne(item: unknown, blocks: Block[]) {
+function processOne(item: Record<string, any>, blocks: Block[]): unknown {
 	if (Array.isArray(item)) {
 		return item.map((block) => rememberBlock(block, blocks));
 	} else if (item && typeof item === 'object' && !(item instanceof Block)) {
-		return Object.keys(item).reduce((memo, key) => {
+		return Object.keys(item).reduce((memo: Record<string, unknown>, key) => {
 			memo[key] = processOne(item[key], blocks);
 
 			return memo;

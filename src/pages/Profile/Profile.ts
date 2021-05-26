@@ -15,7 +15,8 @@ import {
 import userController from '../../utils/controllers/user';
 import deepCopy from '../../utils/deepCopy';
 
-import template from 'pageTemplates/Profile.template.js';
+// @ts-ignore
+import template from './Profile.template';
 
 export default class ProfilePage extends Block {
 	init(): void {
